@@ -1,0 +1,958 @@
+<header class="home-header-profile">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 logo-profile">
+                <a routerLink="/user/homepage"><img src="/assets/front-assets/images/ibigo-golden.png" alt="logo2"></a>
+            </div>
+            <div class="col-sm-6 dropdown-profile" *ngIf="this.is_user_logged_in==true">
+                <ul class="header-icon-bar">
+                    <li class="dropdown" [ngClass]="(this.notificationOpen==true)?'open':''">
+                        <a href="javascript:void(0)"  class="dropdown-toggle" (click)="notificationDropDown()" ><div class="bell-icon"><span *ngIf="notification_cnt>0">{{notification_cnt}}</span></div></a>
+                        <ul class="dropdown-menu">
+                            <h6>Notifications</h6>
+                            <li *ngFor="let notification of all_notifications">
+                                <div class="notification-box" *ngIf="notification.notification_type==1">
+                                    <div class="notification-image">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{notification.user_profile}}">
+                                        <img *ngIf="!notification.user_profile" src="/assets/front-assets/images/pic1.png">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{notification.user_profile}}">
+                                    </div>
+                                    <div class="notification-details">
+                                        <h6><a routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  invited to you like <a routerLink="/spot/{{notification.spot_user_unique_id}}/{{notification.spot_user_slug}}">{{notification.spot_user_name}}.</a></h6>
+                                        <p>{{notification.notification_time}}</p>
+                                    </div>
+                                </div>
+                                <div class="notification-box" *ngIf="notification.notification_type==3">
+                                    <div class="notification-image">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{notification.user_profile}}">
+                                        <img *ngIf="!notification.user_profile" src="/assets/front-assets/images/pic1.png">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{notification.user_profile}}">
+                                    </div>
+                                    <div class="notification-details">
+                                        <h6><a  routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  likes your post. <span *ngIf="notification.notification_post_title">: "{{(notification.notification_post_title.length>32)? (notification.notification_post_title | slice:0:32)+'...':(notification.notification_post_title)}}"</span></h6>
+                                        <p>{{notification.notification_time}}</p>
+                                    </div>
+                                </div>
+                                <div class="notification-box" *ngIf="notification.notification_type==4">
+                                    <div class="notification-image">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{notification.user_profile}}">
+                                        <img *ngIf="!notification.user_profile" src="/assets/front-assets/images/pic1.png">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{notification.user_profile}}">
+                                    </div>
+                                    <div class="notification-details">
+                                        <h6><a routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  commented on your post.</h6>
+                                        <p>{{notification.notification_time}}</p>
+                                    </div>
+                                </div>
+                                <div class="notification-box" *ngIf="notification.notification_type==5">
+                                    <div class="notification-image">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{notification.user_profile}}">
+                                        <img *ngIf="!notification.user_profile" src="/assets/front-assets/images/pic1.png">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{notification.user_profile}}">
+                                    </div>
+                                    <div class="notification-details">
+                                        <h6><a  routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  sent you a friend request.</h6>
+                                        <p>{{notification.notification_time}}</p>
+                                    </div>
+                                </div>
+                                <div class="notification-box" *ngIf="notification.notification_type==6">
+                                    <div class="notification-image">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{notification.user_profile}}">
+                                        <img *ngIf="!notification.user_profile" src="/assets/front-assets/images/pic1.png">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{notification.user_profile}}">
+                                    </div>
+                                    <div class="notification-details">
+                                        <h6><a  routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  accepted your a friend request.</h6>
+                                        <p>{{notification.notification_time}}</p>
+                                    </div>
+                                </div>
+                                <div class="notification-box" *ngIf="notification.notification_type==8">
+                                    <div class="notification-image">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{notification.user_profile}}">
+                                        <img *ngIf="!notification.user_profile" src="/assets/front-assets/images/pic1.png">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{notification.user_profile}}">
+                                    </div>
+                                    <div class="notification-details">
+                                        <h6><a routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  invited you to join <a routerLink="/group/{{notification.group_unique_id}}/{{notification.group_slug}}">{{notification.group_name}}.</a></h6>
+                                        <p>{{notification.notification_time}}</p>
+                                    </div>
+                                </div>
+                                <div class="notification-box" *ngIf="notification.notification_type==10">
+                                    <div class="notification-image">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{notification.user_profile}}">
+                                        <img *ngIf="!notification.user_profile" src="/assets/front-assets/images/pic1.png">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{notification.user_profile}}">
+                                    </div>
+                                    <div class="notification-details">
+                                        <h6 *ngIf="notification.invited_group_id==null"><a routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  invited you to event <a routerLink="/event/{{notification.event_unique_id}}/{{notification.event_slug}}">{{notification.event_title}}.</a></h6>
+                                        <h6 *ngIf="notification.invited_group_id!=null"><a routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  invited you to event <a routerLink="/event/{{notification.event_unique_id}}/{{notification.event_slug}}">{{notification.event_title}} </a> in <a routerLink="/group/{{notification.group_unique_id}}/{{notification.group_slug}}">{{notification.group_name}}</a></h6>
+                                        <p>{{notification.notification_time}}</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li *ngIf="!all_notifications.length">
+                                <div class="col-sm-12 text-center"><span>No notifications</span></div>                                
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a routerLink="/user/info/friends"><img src="/assets/front-assets/images/icon2.png" alt="icon2"></a>
+                    </li>
+                    <li><a routerLink="/todo/go-list"><img src="/assets/front-assets/images/icon3.png" alt="icon3"></a></li>
+                </ul>
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><img class="img-user" src="{{this.user_profile}}" alt="icon4">{{this.first_name}}
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a routerLink="/user/updateprofile"><img class="img-user" src="{{this.user_profile}}" alt="icon5">{{this.first_name}} {{this.last_name}}</a>
+                        </li>
+                        <li><a routerLink="/user/home/profile"><i class="fa fa-user" aria-hidden="true"></i> Profile</a></li>
+                        <li><a routerLink="/user/home/password"><i class="fa fa-key" aria-hidden="true"></i>Wachtwoord</a></li>
+                        <li><a routerLink="/user/home/interest"><i class="fa fa-heart" aria-hidden="true"></i>Interesses</a></li>
+                        <li><a routerLink="/user/home/notify"><i class="fa fa-bell" aria-hidden="true"></i>Notificaties</a></li>
+                        <li><a routerLink="/message"><i class="fa fa-comments-o" aria-hidden="true"></i>Chat</a></li>
+                        <li><a routerLink="/user/logout"><i class="fa fa-sign-in" aria-hidden="true"></i>Uitloggen</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6 dropdown-profile" *ngIf="this.is_user_logged_in==false">
+                <button routerLink="/user/login" class="btn btn-primary" type="button">Login</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2 search-form-heading">
+                <p>Vind de beste plaatsen om te eten, drinken, winkelen of bezoeken in elke stad ter wereld.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2 search-form">
+                <form [formGroup]="searchForm" autocomplete="off">
+                    <div class="col-sm-12 search-form-location">
+                        <div class="form-group required" data-type="text" data-required="true">
+                            <i id="input-icon" class="fa fa-search"></i>
+                            <input type="text" (keyup)="keyDown($event)" (keyup.enter)="onSearchText()"  class="form-control" id="search-name" value="" formControlName="search_name" placeholder="Zoeken">
+                        </div>
+                        <div class="results-list" *ngIf="this.suggestions.length>0" >
+                            <li *ngFor="let list of suggestions; let i = index" [class.active]="i == arrowkeyLocation" (click)="myclick(i)" >
+                                <span class="result">{{list.user_name}}</span>
+                            </li>
+                        </div>
+                    </div>
+                </form>
+                <!-- <div class="col-sm-3 search-form-btn" style="display: none;">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{this.selected_user_type | titlecase}}
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu">                            
+                            <li><a href="javascript:void(0)" (click)="onUserType('spot')">Spot</a></li>
+                            <li><a href="javascript:void(0)" (click)="onUserType('event')">Event</a></li>
+                            <li><a href="javascript:void(0)" (click)="onUserType('people')">People</a></li>
+                            <li><a href="javascript:void(0)" (click)="onUserType('group')">Group</a></li>
+                        </ul>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 search-form-nav">
+                <ul>
+                    <li *ngFor="let interest of interests" ><a href="javascript:void(0)" (click)="selectInterest(this.interest.id)"><i class="fa {{this.interest.fa_icon}}" [ngClass]="(this.selectedInterests==this.interest.id)?'interest_icon_active':''" aria-hidden="true"></i>{{this.interest.title}}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+<!--============== END HEADER SECTION ===============-->
+
+<!--===== SPOT SECTION =====-->
+<section class="spot-section" id="divToScroll">
+    <div class="container" >
+        <div class="row" >
+            <div [ngClass]="(this.is_user_logged_in==true)?'col-sm-9':'col-sm-12'" infiniteScroll [infiniteScrollDistance]="0.1" (scrolled)="onScroll()">
+                <div *ngIf="this.is_user_logged_in==true" class="col-sm-12 spot-text1" >
+                    <div class="col-sm-12 spot-text1-content">
+                        <div class="col-sm-12 spot-text2-content">
+                            <ul>
+                                <li class="active" (click)="changeTab('normal')" id="menu_post"><a href="#menu1" data-toggle="pill"><i class="fa fa-area-chart" aria-hidden="true"></i><span id="tab-menu1">Add Post</span></a></li>
+                                <li id="menu_checkin" (click)="changeTab('checkin')"><a href="#menu2" data-toggle="pill"><i class="fa fa-map-marker" aria-hidden="true"></i><span id="tab-menu2">Check In</span></a></li>
+                            </ul>
+                        </div>                   
+                    </div>
+                    <!--Tab Content Start-->
+                    <div class="tab-content">
+                        <div id="menu1" class="tab-pane fade in active">
+                            <div class="col-sm-12 spot-text4-content">
+                                <img class="img-user" src="{{this.user_profile}}" alt="icon5">
+                                <form [formGroup]="demoFormPost">
+                                    <textarea id="form-input1" (keyup)="onText($event)" formControlName="descPost" class="form-control" placeholder="Vertel iets over deze spot"></textarea>
+                                </form>
+                            </div>
+                            <div class="col-sm-12 spot-delen-content">
+                                <div class="row m-0">
+                                    <div class="col-sm-8 spot-delen-content2">
+                                        <ul>
+                                            <li>
+                                                <a  href="javascript:void(0)" (click)="openMyModal()"><img src="/assets/front-assets/images/icons/icon1.png" alt="icon1">foto's</a>
+                                            </li>
+                                            <li>
+                                                <a  href="javascript:void(0)" (click)="openMyModal()"><img src="/assets/front-assets/images/icons/icon2.png" alt="icon2">Videos</a>
+                                            </li>
+                                            <li>
+                                                <a  href="javascript:void(0)" (click)="openMyModal()"><img src="/assets/front-assets/images/icons/icon3.png" alt="icon3">Category</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div [ngClass]="(this.is_edit==true)?'col-sm-2':'col-sm-4'">
+                                        <button id="spinner-btn" class="btn-share"  data-toggle="modal" data-target="#myCheckinModal">
+                                            <i class="fa fa-spin"></i>&nbsp;Delen
+                                        </button>
+                                    </div>
+                                    <div [ngClass]="(this.is_edit==true)?'col-sm-2':''">
+                                        <button *ngIf="this.is_edit==true" (click)="cancelPost()" class="btn-cancel">
+                                            <i class="fa fa-spin"></i>&nbsp;Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <!--tab1-->
+                        <div id="menu2" class="tab-pane fade">
+                            <div class="col-sm-12 spot-check-form"> 
+                                <div class="form-group required" data-type="text" data-required="true" [ngClass]="{ 'has-error': spot_error==true }">
+                                    <i id="check-btn" class="fa fa-search"></i>
+                                    <input type="text" autocomplete="off" (keyup)="onKey($event)" class="form-control" id="filter-name" name="filter_name" placeholder="Zoek plek of evenement">                                    
+                                    <div *ngIf="this.spot_error==true" >
+                                        <span class="help-block" *ngIf="spot_error==true">Please select spot.</span>
+                                    </div>
+                                </div>
+                                <div style="max-height: 200px;overflow-y:scroll;" id="search-dropdown-list" class="hidden">
+                                    <ul id="myUL" >
+                                        <li *ngFor="let spot of spots"><a href="javascript:void(0)" (click)="selectSpot(spot.id)">
+                                            <div style="display: flex;">
+                                                <div>
+                                                    <img height="46px" width="46px" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{spot.user_profile}}">
+                                                </div>
+                                                <div>
+                                                    <p class="spot-name">{{spot.business_name}}</p>
+                                                    <span class="spot-address">{{spot.full_address}}</span>
+                                                </div>
+                                            </div>
+                                                </a>
+                                        </li>
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                            <div  id="boeken-check-wrap" class="col-sm-12 boeken-text-wrap hidden">
+                                <div class="col-sm-2 boeken-img">
+                                    <img class="spot-img" src="{{spot_profile}}" alt="img3">
+                                </div>
+                                <div class="col-sm-6 boeken-text">
+                                    <a href="#"><h2 class="active">{{business_name}}</h2></a>
+                                    <h4 class="active">{{short_description}}</h4>
+                                    <ul >
+                                        <li *ngIf="this.like_by.length">Like by</li>
+                                        <li *ngFor="let user of like_by">
+                                            <img class="img-like" *ngIf="user.user_profile&&user.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{user.user_profile}}">
+                                            <img class="img-like" *ngIf="!user.user_profile" src="/assets/front-assets/images/pic1.png">
+                                            <img class="img-like" *ngIf="user.user_profile&&user.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{user.user_profile}}">
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-sm-4 boeken-icon-check">
+                                    <ul class="ratings3">
+                                        <li class="active"><a href="#">{{this.spot_rating}}</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <form [formGroup]="demoForm">
+                            <div class="col-sm-12 spot-text5-content">
+                               <textarea id="desc" (keyup)="onText($event)" formControlName="desc" class="form-control form-input1" placeholder="Vertel iets over deze spot"></textarea>    
+                            </div>
+                            </form>
+                            <div class="col-sm-12 spot-delen-content">
+                                <div class="row m-0">
+                                    <div class="col-sm-8 spot-delen-content2">
+                                        <ul>
+                                            <li>
+                                                <input class="hidden" #file type="file" multiple  accept='image/*' (change)="onPhotoChange($event)" />
+                                                <a href="javascript:void(0)" (click)="openMyModal()" ><img src="/assets/front-assets/images/icons/icon1.png" alt="icon1">foto's</a>
+                                            </li>
+                                            <li>
+                                                <input class="hidden" #video type="file" multiple  accept='video/*' (change)="onVideoChange($event)" />
+                                                <a href="javascript:void(0)" (click)="openMyModal()" ><img src="/assets/front-assets/images/icons/icon2.png" alt="icon2">Videos</a>
+                                            </li>
+                                            <li>
+                                            <!--  data-toggle="modal" data-target="#shareModal" -->
+                                                <a href="javascript:void(0)" (click)="openMyModal()" ><img src="/assets/front-assets/images/icons/icon4.png" alt="icon4">Delen met</a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:void(0)" (click)="openMyModal()" ><img src="/assets/front-assets/images/icons/icon5.png" alt="icon5">Kies Vrienden</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div [ngClass]="(this.is_edit==true)?'col-sm-2':'col-sm-4'" style="padding:0">
+                                        <button id="spinner-btn-check-in" class="hidden" data-toggle="modal" data-target="#myCheckinModal"></button>
+                                        <button class="btn-share" (click)="openMyModal()">
+                                            <i class="fa fa-spin"></i>&nbsp;Check in
+                                        </button>
+                                    </div>
+                                    <div [ngClass]="(this.is_edit==true)?'col-sm-2':''"  style="padding:0">
+                                        <button *ngIf="this.is_edit==true" (click)="cancelPost()" class="btn-cancel">
+                                            <i class="fa fa-spin"></i>&nbsp;Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div id="myModal" class="modal fade" role="dialog">
+                                <div class="modal-dialog modal-md">
+                              
+                                  <!-- Modal content-->
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Tag Friends</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- <div class="friend-check-form">
+                                            <div class="row">
+                                                <div class="col-md-9">
+                                                    <div class="form-group required" data-type="text" data-required="true">
+                                                        <i id="check-btn" class="fa fa-search"></i>
+                                                        <input type="text" autocomplete="off" class="form-control" id="modal-name" value="" name="modal-name" placeholder="Search for friends">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1 spot-delen-btn">
+                                                    <button class="btn-default" data-dismiss="modal" type="button">Done</button>
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                        <div style="max-height: 325px;overflow-y: scroll;">
+                                            <p class="list-heading" id="tagged">TAGGED</p>
+                                            <div class="friend-tag-text" id="friend-tag-text">
+                                                <span *ngFor="let friend of tag_friends">{{friend.first_name}} {{friend.last_name}}<a href="javascript:void(0)" (click)="removeFromTagList(friend.id)"><i class="fa fa-times times-icon"></i></a></span>
+                                            </div>
+                                            <p class="list-heading" id="suggesions">SUGGESTIONS</p>
+                                            <div *ngFor="let friend of friends">
+                                                <div class="friends-list" (click)="addTaglist(friend.id)">
+                                                    <img style="height: 45px;width: 45px;border-radius: 45px;" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{friend.user_profile}}">
+                                                    <span class="search-friend-name">{{friend.first_name}} {{friend.last_name}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                  </div>
+                              
+                                </div>
+                            </div>
+                            <div id="shareModal" class="modal fade" role="dialog">
+                                <div class="modal-dialog modal-md">
+                              
+                                  <!-- Modal content-->
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Share Friends</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- <div class="friend-check-form">
+                                            <div class="row">
+                                                <div class="col-md-9">
+                                                    <div class="form-group required" data-type="text" data-required="true">
+                                                        <i id="check-btn" class="fa fa-search"></i>
+                                                        <input type="text" autocomplete="off" class="form-control" id="modal-name" value="" name="modal-name" placeholder="Search for friends">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1 spot-delen-btn">
+                                                    <button class="btn-default" data-dismiss="modal" type="button">Done</button>
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                        <div style="max-height: 325px;overflow-y: scroll;">
+                                            <p class="list-heading " id="shared">SHARE WITH</p>
+                                            <div class="friend-tag-text" >
+                                                <span *ngFor="let friend of share_friends">{{friend.first_name}} {{friend.last_name}}<a href="javascript:void(0)" (click)="removeFromShareList(friend.id)"><i class="fa fa-times times-icon"></i></a></span>
+                                            </div>
+                                            <p class="list-heading" id="share_suggesions">SUGGESTIONS</p>
+                                            <div *ngFor="let friend of another_friends">
+                                                <div class="friends-list" (click)="addSharelist(friend.id)">
+                                                    <img style="height: 45px;width: 45px;border-radius: 45px;" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{friend.user_profile}}">
+                                                    <span class="search-friend-name">{{friend.first_name}} {{friend.last_name}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                  </div>
+                              
+                                </div>
+                            </div>
+                        </div>
+                        <!--tab2-->
+                    </div>
+                    <!--tab-content-->
+                </div>
+                <div class="col-sm-12 spot-slide-new" *ngIf="spot_suggestions.length>0">
+                    <div class="spot-slide-head">
+                        <h3>Top Plaatsen bij jao in de buurt</h3>
+                    </div>
+                    <div class="col-12" class="spot-suggestions">
+                        <owl-carousel-o [options]="customOptions">
+                                <ng-template carouselSlide *ngFor="let s of spot_suggestions">
+                                    <div class="slides-image">
+                                        <img *ngIf="s.user_profile&&s.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{s.user_profile}}">
+                                        <img *ngIf="!s.user_profile" src="/assets/front-assets/images/pic1.png">                                        
+                                    </div>
+                                    <div class="slides-content">
+                                        <h3><a routerLink="/spot/{{this.s.unique_id}}/{{this.s.user_slug}}">{{s.business_name}}</a></h3>
+                                        <!-- <p>Doner Resturent</p> -->
+                                        <span><i class="fa fa-map-marker"></i> {{s.distance | number : '1.2-2'}} km</span>
+                                    </div>
+                                </ng-template>
+                        </owl-carousel-o>
+                    </div>
+                </div>
+                <!--col-sm-12-->    
+                <div *ngIf="this.is_user_logged_in==true">
+                    
+                    <div *ngIf="load_more_post==true">
+                        <button class="mt-3 btn-share btn-block" (click)="loadMorePost()">Load New Posts</button>
+                    </div>
+                    <div *ngFor="let post of first_5_posts">
+                        <div class="post-gallery" id="post-gallery{{this.post_id}}">
+                            <span class="post-gallery-close" (click)="closeImageVideo(this.post_id)"><i class="fa fa-times"></i></span>
+                            <div id="carousel-example-generic{{this.post_id}}" class="carousel slide carousel-example-generic" data-ride="carousel">
+                                <div class="carousel-inner" role="listbox" >
+                                        <div *ngFor="let pv of photos_videos ;let i = index"  class="item" [ngClass]="(i==this.photo_index)?'active':''"  >
+                                            <img *ngIf="photos_extensions.includes(pv.split('.').pop())" src="https://ibigo.shadowis.nl/server-api/public/spot_images/{{pv}}" alt="img3" >
+                                            <video *ngIf="video_extensions.includes(pv.split('.').pop())" controls>
+                                                <source  src="https://ibigo.shadowis.nl/server-api/public/spot_videos/{{pv}}" type="video/mp4">
+                                            </video>
+                                        </div>
+                                </div>
+                                <a class="left carousel-control" href="#carousel-example-generic{{this.post_id}}" role="button" data-slide="prev">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel-example-generic{{this.post_id}}" role="button" data-slide="next">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 spot-music-main">
+                            <div class="col-sm-12 spot-music2">
+                                <div class="sm-left">
+                                    <div class="spot-music2-img">
+                                        <img class="spot-post-img" *ngIf="this.post.user_profile!=null" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{this.post.user_profile}}" alt="pic27">
+                                        <img class="spot-post-img" *ngIf="this.post.user_profile==null" src="/assets/front-assets/images/pic1.png" alt="pic27">
+                                    </div>
+                                    <div class="spot-music2-text" *ngIf="this.post.group_unique_id">
+                                        <h3><a routerLink="/people/{{this.post.unique_id}}/{{this.post.user_slug}}">{{this.post.user_name}}</a>&nbsp;<i class="fa fa-caret-right" aria-hidden="true"></i>&nbsp;</h3>
+                                        <div style="display:inline-block;"><h3><a routerLink="/group/{{this.post.group_unique_id}}/{{this.post.group_slug}}">{{post.group_name}}</a></h3></div>
+                                        <p>{{this.post.checked_in_datetime}}</p>
+                                    </div>
+                                    <div class="spot-music2-text" *ngIf="this.post.event_unique_id">
+                                        <h3><a routerLink="/people/{{this.post.unique_id}}/{{this.post.user_slug}}">{{this.post.user_name}}</a>&nbsp;<span>shared an event</span>&nbsp;</h3>
+                                        <div style="display:inline-block;"><h3><a routerLink="/event/{{this.post.event_unique_id}}/{{this.post.event_slug}}">{{post.event_title}}</a></h3></div>
+                                        <p>{{this.post.checked_in_datetime}}</p>
+                                    </div>
+                                    <div class="spot-music2-text" *ngIf="!this.post.group_unique_id&&!this.post.event_unique_id">
+                                        <h3><a routerLink="/people/{{this.post.unique_id}}/{{this.post.user_slug}}">{{this.post.user_name}}</a><span *ngIf="this.post.tagged_users_names.length > 0">&nbsp;with&nbsp;</span></h3>
+                                        <div style="display:inline-block;" *ngIf="this.post.tagged_users_names.length < 3"><h3 *ngFor="let f of post.tagged_users_names; let i = index" ><span *ngIf="i>0">&nbsp;and&nbsp;</span><a routerLink="/people/{{this.f.unique_id}}/{{this.f.user_slug}}">{{f.user_name}}</a></h3></div>
+                                        <div style="display:inline-block;" *ngIf="this.post.tagged_users_names.length > 2"><h3><a routerLink="/people/{{this.post.tagged_users_names[0].unique_id}}/{{this.post.tagged_users_names[0].user_slug}}">{{this.post.tagged_users_names[0].user_name}}</a></h3><span>&nbsp;and&nbsp;</span><h3>{{this.post.tagged_users_names.length - 1}} others</h3></div>
+                                        <p>{{this.post.checked_in_datetime}}</p>
+                                    </div>
+                                </div>
+                                <div class="sm-left">
+                                    <div class="spot-music2-dropdown" *ngIf="(this.post.user_id==logged_in_user||this.post.spot_id)&&(!this.post.group_id&&!this.post.event_id)">
+                                        <div class="dropdown">
+                                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Go</button>
+                                            <ul class="dropdown-menu">
+                                                <li *ngIf="this.post.spot_id"><a href="javascript:void(0)" (click)="addToGoList(this.post.spot_id)"><i class="fa fa-plus"></i>To Do</a></li>
+                                                <li *ngIf="this.post.user_id==logged_in_user"><a href="javascript:void(0)" (click)="onShareOpen(this.post.id)"><i class="fa fa-share"></i>Share the post</a><button id="mysharemodalbutton" class="hidden" data-toggle="modal" data-target="#myShareModal"></button></li>
+                                                <!-- <li><a href="#"><i class="fa fa-map-marker"></i>Check in</a></li> -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="spot-text3-dropdown2"  *ngIf="this.post.user_id==logged_in_user&&(!this.post.group_unique_id&&!this.post.event_unique_id)">
+                                        <div class="dropdown">
+                                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"></button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="javascript:void(0)" (click)="editPost(this.post.id)">Edit Post</a></li>
+                                                <li><a href="javascript:void(0)" (click)="deletePost(this.post.id)">Delete Post</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 spot-royal">
+                                <h4 *ngIf="this.post.spot_id"><span>checked in at</span>&nbsp;<a routerLink="/spot/{{this.post.spot_unique_id}}/{{this.post.spot_slug}}">{{this.post.spot_name}}</a></h4>
+                                <p *ngIf="this.post.spot_description">{{this.post.spot_description}}</p>
+                                <!-- <p *ngIf="this.post.event_id">{{this.post.event_description}}</p> -->
+                                <p *ngIf="this.post.event_id"><i class="fa fa-map-marker"></i> {{this.post.location}}</p>
+                                <p *ngIf="this.post.event_id">
+                                    <span *ngIf="(this.post.start_date_time | date:'longDate')==(this.post.end_date_time | date:'longDate')"><i class="fa fa-calendar"></i> {{this.post.start_date_time | date:'d MMM' }} From {{this.post.start_date_time | date:'shortTime' }}-{{this.post.end_date_time | date:'shortTime' }} </span>
+                                    <span *ngIf="(this.post.start_date_time | date:'longDate')!=(this.post.end_date_time | date:'longDate')"><i class="fa fa-calendar"></i> {{this.post.start_date_time | date:'d MMM' }} At {{this.post.start_date_time | date:'shortTime' }} - {{this.post.end_date_time | date:'d MMM' }} At {{this.post.end_date_time | date:'shortTime' }} </span>
+                                </p>
+                            </div>
+                            <div class="col-sm-12" >
+                                <div class="spot-garden-wrap" [ngClass]="(this.post.photos_videos.length>=5)?'in-post-5':'in-post-'+(this.post.photos_videos.length)" >
+                                        <div *ngFor="let post_img_video of this.post.photos_videos ; let i = index" class="spot-garden-img spi-{{i}}" (click)="openImageVideo(this.post.id,this.post.spot_id,this.post_img_video)" >
+                                            <div *ngIf="i<5">
+                                                <div class="sgi-inner" *ngIf="photos_extensions.includes(post_img_video.split('.').pop())" >
+                                                    <div class="last-post">
+                                                        <span *ngIf="this.post.photos_videos.length >= 6"><a *ngIf="i==4" href="#" class="plus-post"><span class="pp-plus">+{{this.post.photos_videos.length-5}}</span></a></span>
+                                                        <img src="https://ibigo.shadowis.nl/server-api/public/spot_images/{{post_img_video}}" alt="img3">
+                                                    </div>
+                                                </div>
+                                                <div class="sgi-inner last-post" *ngIf="video_extensions.includes(post_img_video.split('.').pop())">
+                                                    <span *ngIf="this.post.photos_videos.length >= 6"><a *ngIf="i==4" href="#" class="plus-post"><span class="pp-plus">+{{this.post.photos_videos.length-5}}</span></a></span>
+                                                    <video width="100%" height="100%" >
+                                                        <source src="https://ibigo.shadowis.nl/server-api/public/spot_videos/{{post_img_video}}" type="video/mp4">
+                                                    </video>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    <!-- <div class="spot-garden-img spi-5">
+                                        <div class="sgi-inner">
+                                            <div class="last-post">
+                                                <a href="#" class="plus-post"><span class="pp-plus">+5</span></a>
+                                                <img src="/assets/front-assets/images/garden/img3.png" alt="img3">
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                            <div class="col-sm-12 spot-heart">
+                                <hr>
+                                <div class="spot-heart-like-comment">
+                                    <div class="spot-heart2">
+                                        <a class="react" href="javascript:void(0)"><i class="fa fa-heart" (click)="onLike(this.post.id)" [ngClass]="(this.post.liked_by_logged_in_user==1)?'fa-heart-spot':'in-post-'"></i>
+                                            <span *ngIf="this.post.liked_by_logged_in_user==1">&nbsp;You</span>
+                                            <span *ngIf="this.post.liked_users_names.length > 1 && this.post.liked_by_logged_in_user==1">,</span>
+                                            <span *ngIf="this.post.liked_users_names.length == 1 && this.post.liked_by_logged_in_user==1">&nbsp;and</span>
+                                            <span *ngIf="this.post.liked_users_names.length > 2">&nbsp;{{this.post.liked_users_names[0]}} and {{this.post.liked_users_names.length - 1}} others</span>
+                                            <span *ngIf="this.post.liked_users_names.length < 3">&nbsp;{{this.post.liked_users_names.join(' and ')}}</span></a>
+                                    </div>
+                                    <div class="spot-heart3">
+                                        <a href="javascript:void(0)" (click)="clickEvent(this.post.id)"  
+                                        class="comment-btn"><img src="/assets/front-assets/images/icons/icon6.png" alt="icon6"><span *ngIf="this.post.comments.length > 0">{{this.post.comments.length}}</span></a>
+                                        <a href="#" class="hidden"><img src="/assets/front-assets/images/icons/icon8.png" alt="icon8">8</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 post-comment" [id]="'post-comment'+this.post.id">
+                                <div class="comment-box">
+                                    <div class="all-comment">
+                                        <ul>
+                                            <li *ngFor="let comment of this.post.comments">
+                                                <span class="comment-profile">
+                                                    <img *ngIf="this.comment.comment_user_profile&&this.comment.comment_user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{this.comment.comment_user_profile}}">
+                                                    <img *ngIf="!this.comment.comment_user_profile" src="/assets/front-assets/images/pic1.png">
+                                                    <img *ngIf="this.comment.comment_user_profile&&this.comment.comment_user_profile.indexOf('https://graph.facebook.com') != -1" src="{{this.comment.comment_user_profile}}">
+                                                </span>
+                                                <div class="comment-wrap">
+                                                    <div class="comment-detail" [id]="'comment-detail'+this.comment.id">
+                                                        <a routerLink="/people/{{this.comment.comment_user_unique_id}}/{{this.comment.comment_user_slug}}" class="comment-name">{{this.comment.comment_user_name}} . <span>{{this.comment.comment_date_time}}</span></a>
+                                                        <span class="comment-text">{{this.comment.comment}}</span>
+                                                        <form [formGroup]="commentEditForm" (ngSubmit)="onCommentEditSubmit(this.comment.id,this.post.id)">
+                                                            <input formControlName="comment" class="comment-input-inner" [id]="'comment-input'+this.comment?.id" autocomplete="off" type="text" name="comment" placeholder="Update a comment...">
+                                                            <div class="hidden spinner" [id]="'spinner'+this.comment.id">
+                                                                <div class="bounce1"></div>
+                                                                <div class="bounce2"></div>
+                                                                <div class="bounce3"></div>
+                                                            </div>
+                                                            <div class="hidden cancel-btn" [id]="'cancel-btn'+this.comment.id">
+                                                                <span>Press ESC to </span><span class="only-cancel" (click)="onCancel(this.comment.id)" >cancel</span>
+                                                            </div>
+                                                        </form>
+                                                        
+                                                        <span *ngIf="comment.comment_user_id==logged_in_user" class="comment-menu-icon" [id]="'comment-menu-icon'+this.comment.id"><i class="fa fa-ellipsis-h"  (click)="onOpenModal(this.comment.id)"></i></span>
+                                                        <ul class="comment-box-option">
+                                                            <li><a href="javascript:void(0)" (click)="editComment(this.comment.id,this.comment.comment)" class="comment-edit">Edit</a></li>
+                                                            <li><a href="javascript:void(0)" (click)="deleteComment(this.comment.id,this.post.id)" class="comment-delete">Delete</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="write-comment">
+                                        <form [formGroup]="commentForm" (ngSubmit)="onCommentSubmit(this.post.id)" class="comment-form">
+                                            <div class="comment-input">
+                                                <span class="comment-profile"><img src="{{this.user_profile}}" alt="pic27"></span>
+                                                <input formControlName="comment" autocomplete="off" type="text" name="comment" placeholder="Write a comment...">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 spot-slide-new" *ngIf="friend_suggestions.length>0">
+                        <div class="spot-slide-head">
+                            <h3>Suggesties voor vrienden</h3>
+                        </div>
+                        <div class="col-sm-12" >
+                            <owl-carousel-o [options]="friendsOptions">
+                                <ng-container *ngFor="let f of friend_suggestions">
+                                    <ng-template carouselSlide>
+                                        <div class="slides-image2">
+                                            <img class="friend-suggestion-img" *ngIf="f.user_profile&&f.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{f.user_profile}}">
+                                            <img class="friend-suggestion-img" *ngIf="!f.user_profile" src="/assets/front-assets/images/pic1.png">
+                                            <img class="friend-suggestion-img" *ngIf="f.user_profile&&f.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{f.user_profile}}">
+                                        </div>
+                                        <div class="slides-content2">
+                                            <h3><a routerLink="/people/{{f.unique_id}}/{{f.user_slug}}">{{f.user_name}}</a></h3>
+                                                <button (click)="sendRequest(f.id)" type="button" class="btn-default"><i [id]="'friend'+f.id" class="fa fa-spin"></i>&nbsp;Toevoegen</button>
+                                        </div>
+                                    </ng-template>
+                                </ng-container>
+                            </owl-carousel-o>
+                        </div>
+                        <!--col-sm-12-->
+                    </div>
+                    <div *ngFor="let post of posts">
+                        <div class="post-gallery" id="post-gallery{{this.post_id}}">
+                            <span class="post-gallery-close" (click)="closeImageVideo(this.post_id)"><i class="fa fa-times"></i></span>
+                            <div id="carousel-example-generic{{this.post_id}}" class="carousel slide carousel-example-generic" data-ride="carousel">
+                                <div class="carousel-inner" role="listbox" >
+                                        <div *ngFor="let pv of photos_videos ;let i = index"  class="item" [ngClass]="(i==this.photo_index)?'active':''"  >
+                                            <img *ngIf="photos_extensions.includes(pv.split('.').pop())" src="https://ibigo.shadowis.nl/server-api/public/spot_images/{{pv}}" alt="img3" >
+                                            <video *ngIf="video_extensions.includes(pv.split('.').pop())" controls>
+                                                <source  src="https://ibigo.shadowis.nl/server-api/public/spot_videos/{{pv}}" type="video/mp4">
+                                            </video>
+                                        </div>
+                                </div>
+                                <a class="left carousel-control" href="#carousel-example-generic{{this.post_id}}" role="button" data-slide="prev">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel-example-generic{{this.post_id}}" role="button" data-slide="next">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 spot-music-main">
+                            <div class="col-sm-12 spot-music2">
+                                <div class="sm-left">
+                                    <div class="spot-music2-img">
+                                        <img class="spot-post-img" *ngIf="this.post.user_profile!=null" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{this.post.user_profile}}" alt="pic27">
+                                        <img class="spot-post-img" *ngIf="this.post.user_profile==null" src="/assets/front-assets/images/pic1.png" alt="pic27">
+                                    </div>
+                                    <div class="spot-music2-text" *ngIf="this.post.group_unique_id">
+                                        <h3><a routerLink="/people/{{this.post.unique_id}}/{{this.post.user_slug}}">{{this.post.user_name}}</a>&nbsp;<i class="fa fa-caret-right" aria-hidden="true"></i>&nbsp;</h3>
+                                        <div style="display:inline-block;"><h3><a routerLink="/group/{{this.post.group_unique_id}}/{{this.post.group_slug}}">{{post.group_name}}</a></h3></div>
+                                        <p>{{this.post.checked_in_datetime}}</p>
+                                    </div>
+                                    <div class="spot-music2-text" *ngIf="!this.post.group_unique_id">
+                                        <h3><a routerLink="/people/{{this.post.unique_id}}/{{this.post.user_slug}}">{{this.post.user_name}}</a><span *ngIf="this.post.tagged_users_names.length > 0">&nbsp;with&nbsp;</span></h3>
+                                        <div style="display:inline-block;" *ngIf="this.post.tagged_users_names.length < 3"><h3 *ngFor="let f of post.tagged_users_names; let i = index" ><span *ngIf="i>0">&nbsp;and&nbsp;</span><a routerLink="/people/{{this.f.unique_id}}/{{this.f.user_slug}}">{{f.user_name}}</a></h3></div>
+                                        <div style="display:inline-block;" *ngIf="this.post.tagged_users_names.length > 2"><h3><a routerLink="/people/{{this.post.tagged_users_names[0].unique_id}}/{{this.post.tagged_users_names[0].user_slug}}">{{this.post.tagged_users_names[0].user_name}}</a></h3><span>&nbsp;and&nbsp;</span><h3>{{this.post.tagged_users_names.length - 1}} others</h3></div>
+                                        <p>{{this.post.checked_in_datetime}}</p>
+                                    </div>
+                                </div>
+                                <div class="sm-left">
+                                    <div class="spot-music2-dropdown" *ngIf="(this.post.user_id==logged_in_user||this.post.spot_id)&&!this.post.group_id">
+                                        <div class="dropdown">
+                                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Go</button>
+                                            <ul class="dropdown-menu">
+                                                <li *ngIf="this.post.spot_id"><a href="javascript:void(0)" (click)="addToGoList(this.post.spot_id)"><i class="fa fa-plus"></i>To Do</a></li>
+                                                <li *ngIf="this.post.user_id==logged_in_user"><a href="javascript:void(0)" (click)="onShareOpen(this.post.id)"><i class="fa fa-share"></i>Share the post</a><button id="mysharemodalbutton" class="hidden" data-toggle="modal" data-target="#myShareModal"></button></li>
+                                                <!-- <li><a href="#"><i class="fa fa-map-marker"></i>Check in</a></li> -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="spot-text3-dropdown2"  *ngIf="this.post.user_id==logged_in_user&&!this.post.group_unique_id">
+                                        <div class="dropdown">
+                                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"></button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="javascript:void(0)" (click)="editPost(this.post.id)">Edit Post</a></li>
+                                                <li><a href="javascript:void(0)" (click)="deletePost(this.post.id)">Delete Post</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 spot-royal">
+                                <h4 *ngIf="this.post.spot_id"><span>checked in at</span>&nbsp;<a routerLink="/spot/{{this.post.spot_unique_id}}/{{this.post.spot_slug}}">{{this.post.spot_name}}</a></h4>
+                                <p *ngIf="this.post.spot_description">{{this.post.spot_description}}</p>
+                            </div>
+                            <div class="col-sm-12" >
+                                <div class="spot-garden-wrap" [ngClass]="(this.post.photos_videos.length>=5)?'in-post-5':'in-post-'+(this.post.photos_videos.length)" >
+                                        <div *ngFor="let post_img_video of this.post.photos_videos ; let i = index" class="spot-garden-img spi-{{i}}" (click)="openImageVideo(this.post.id,this.post.spot_id,this.post_img_video)" >
+                                            <div *ngIf="i<5">
+                                                <div class="sgi-inner" *ngIf="photos_extensions.includes(post_img_video.split('.').pop())" >
+                                                    <div class="last-post">
+                                                        <span *ngIf="this.post.photos_videos.length >= 6"><a *ngIf="i==4" href="#" class="plus-post"><span class="pp-plus">+{{this.post.photos_videos.length-5}}</span></a></span>
+                                                        <img src="https://ibigo.shadowis.nl/server-api/public/spot_images/{{post_img_video}}" alt="img3">
+                                                    </div>
+                                                </div>
+                                                <div class="sgi-inner last-post" *ngIf="video_extensions.includes(post_img_video.split('.').pop())">
+                                                    <span *ngIf="this.post.photos_videos.length >= 6"><a *ngIf="i==4" href="#" class="plus-post"><span class="pp-plus">+{{this.post.photos_videos.length-5}}</span></a></span>
+                                                    <video width="100%" height="100%" >
+                                                        <source src="https://ibigo.shadowis.nl/server-api/public/spot_videos/{{post_img_video}}" type="video/mp4">
+                                                    </video>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    <!-- <div class="spot-garden-img spi-5">
+                                        <div class="sgi-inner">
+                                            <div class="last-post">
+                                                <a href="#" class="plus-post"><span class="pp-plus">+5</span></a>
+                                                <img src="/assets/front-assets/images/garden/img3.png" alt="img3">
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                            <div class="col-sm-12 spot-heart">
+                                <hr>
+                                <div class="spot-heart-like-comment">
+                                    <div class="spot-heart2">
+                                        <a class="react" href="javascript:void(0)"><i class="fa fa-heart" (click)="onLike(this.post.id)" [ngClass]="(this.post.liked_by_logged_in_user==1)?'fa-heart-spot':'in-post-'"></i>
+                                            <span *ngIf="this.post.liked_by_logged_in_user==1">&nbsp;You</span>
+                                            <span *ngIf="this.post.liked_users_names.length > 1 && this.post.liked_by_logged_in_user==1">,</span>
+                                            <span *ngIf="this.post.liked_users_names.length == 1 && this.post.liked_by_logged_in_user==1">&nbsp;and</span>
+                                            <span *ngIf="this.post.liked_users_names.length > 2">&nbsp;{{this.post.liked_users_names[0]}} and {{this.post.liked_users_names.length - 1}} others</span>
+                                            <span *ngIf="this.post.liked_users_names.length < 3">&nbsp;{{this.post.liked_users_names.join(' and ')}}</span></a>
+                                    </div>
+                                    <div class="spot-heart3">
+                                        <a href="javascript:void(0)" (click)="clickEvent(this.post.id)"  
+                                        class="comment-btn"><img src="/assets/front-assets/images/icons/icon6.png" alt="icon6"><span *ngIf="this.post.comments.length > 0">{{this.post.comments.length}}</span></a>
+                                        <a href="#" class="hidden"><img src="/assets/front-assets/images/icons/icon8.png" alt="icon8">8</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 post-comment" [id]="'post-comment'+this.post.id">
+                                <div class="comment-box">
+                                    <div class="all-comment">
+                                        <ul>
+                                            <li *ngFor="let comment of this.post.comments">
+                                                <span class="comment-profile">
+                                                    <img *ngIf="this.comment.comment_user_profile&&this.comment.comment_user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{this.comment.comment_user_profile}}">
+                                                    <img *ngIf="!this.comment.comment_user_profile" src="/assets/front-assets/images/pic1.png">
+                                                    <img *ngIf="this.comment.comment_user_profile&&this.comment.comment_user_profile.indexOf('https://graph.facebook.com') != -1" src="{{this.comment.comment_user_profile}}">
+                                                </span>
+                                                <div class="comment-wrap">
+                                                    <div class="comment-detail" [id]="'comment-detail'+this.comment.id">
+                                                        <a routerLink="/people/{{this.comment.comment_user_unique_id}}/{{this.comment.comment_user_slug}}" class="comment-name">{{this.comment.comment_user_name}} . <span>{{this.comment.comment_date_time}}</span></a>
+                                                        <span class="comment-text">{{this.comment.comment}}</span>
+                                                        <form [formGroup]="commentEditForm" (ngSubmit)="onCommentEditSubmit(this.comment.id,this.post.id)">
+                                                            <input formControlName="comment" class="comment-input-inner" [id]="'comment-input'+this.comment?.id" autocomplete="off" type="text" name="comment" placeholder="Update a comment...">
+                                                            <div class="hidden spinner" [id]="'spinner'+this.comment.id">
+                                                                <div class="bounce1"></div>
+                                                                <div class="bounce2"></div>
+                                                                <div class="bounce3"></div>
+                                                            </div>
+                                                            <div class="hidden cancel-btn" [id]="'cancel-btn'+this.comment.id">
+                                                                <span>Press ESC to </span><span class="only-cancel" (click)="onCancel(this.comment.id)" >cancel</span>
+                                                            </div>
+                                                        </form>
+                                                        
+                                                        <span *ngIf="comment.comment_user_id==logged_in_user" class="comment-menu-icon" [id]="'comment-menu-icon'+this.comment.id"><i class="fa fa-ellipsis-h"  (click)="onOpenModal(this.comment.id)"></i></span>
+                                                        <ul class="comment-box-option">
+                                                            <li><a href="javascript:void(0)" (click)="editComment(this.comment.id,this.comment.comment)" class="comment-edit">Edit</a></li>
+                                                            <li><a href="javascript:void(0)" (click)="deleteComment(this.comment.id,this.post.id)" class="comment-delete">Delete</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="write-comment">
+                                        <form [formGroup]="commentForm" (ngSubmit)="onCommentSubmit(this.post.id)" class="comment-form">
+                                            <div class="comment-input">
+                                                <span class="comment-profile"><img src="{{this.user_profile}}" alt="pic27"></span>
+                                                <input formControlName="comment" autocomplete="off" type="text" name="comment" placeholder="Write a comment...">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    <div *ngIf="this.posts.length!=post_length" class="dot-loader"><div></div></div>
+                </div>
+            </div>
+            <!--col-sm-9-->
+            <!-- Sidebar Section-->
+            <div class="col-sm-3" *ngIf="this.is_user_logged_in==true">
+                <app-user-side-widget></app-user-side-widget>
+            </div>
+            <!--sidebar-section-->
+        </div>
+    </div>
+</section>
+<div id="myShareModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Share with</h4>
+            <button type="button" class="close" id="share-close-btn" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <!-- <div class="friend-check-form">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="form-group required" data-type="text" data-required="true">
+                            <i id="check-btn" class="fa fa-search"></i>
+                            <input type="text" autocomplete="off" class="form-control" id="modal-name" value="" name="modal-name" placeholder="Search for friends">
+                        </div>
+                    </div>
+                    <div class="col-md-1 spot-delen-btn">
+                        <button class="btn-default" data-dismiss="modal" type="button">Done</button>
+                    </div>
+                </div>
+            </div> -->
+            <p class="list-heading">Share Suggesions</p>
+            <div style="max-height: 325px;overflow-y: scroll;">
+                <div *ngFor="let friend of another_friends2" >
+                    <div class="friends-list" *ngIf="another_friends2.length" (click)="addSharelist2(friend.id)">
+                        <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="friend.user_profile&&friend.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{friend.user_profile}}">
+                        <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="!friend.user_profile" src="/assets/front-assets/images/pic1.png">
+                        <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="friend.user_profile&&friend.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{friend.user_profile}}">
+                        <span class="search-friend-name">{{friend.first_name}} {{friend.last_name}}</span>
+                    </div>
+                </div>    
+                <div *ngFor="let group of groups2">
+                    <div class="friends-list" *ngIf="groups2.length" (click)="addShareGrouplist2(group.id)">
+                        <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="!group.group_profile" src="/assets/front-assets/images/group_pic1.png">
+                        <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="group.group_profile" src="{{group.group_profile}}">
+                        <span class="search-friend-name">{{group.group_name}}</span>
+                    </div>
+                </div>
+            </div>
+            <p class="list-heading " id="shared" *ngIf="share_friends.length||share_groups.length">Share with</p>
+            <div *ngIf="share_friends2.length||share_groups2.length" class="friend-tag-text">
+                <span *ngFor="let friend of share_friends2">{{friend.first_name}} {{friend.last_name}}<a href="javascript:void(0)" (click)="removeFromShareList2(friend.id)"><i class="fa fa-times times-icon"></i></a></span>
+                <span *ngFor="let group of share_groups2">{{group.group_name}}<a href="javascript:void(0)" (click)="removeFromShareGroupList2(group.id)"><i class="fa fa-times times-icon"></i></a></span>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button (click)="onShareSubmit()" type="button" *ngIf="share_friends2.length||share_groups2.length" class="btn-invite">
+                <i class="fa fa-spin"></i>&nbsp;Share
+              </button>
+        </div>
+      </div>
+  
+    </div>
+</div>
+<section class="model-section" *ngIf="this.is_user_logged_in==true">
+    <div class="modal fade" id="myCheckinModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content modal-spot-popup2">
+                <button id="close-btn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <div class="modal-body spot-review-popup2">
+                    <span class="share"><i class="fa fa-share-alt"></i></span>
+                    <h2 class="deel">Deel Plek</h2>
+                    <div class="col-sm-12 boeken-text-wrap" *ngIf="tabname=='checkin'">
+                        <div class="col-sm-3 boeken-img">
+                            <img class="modal-spot-img" src="{{spot_profile}}" alt="img4">
+                        </div>
+                        <div class="col-sm-7 boeken-text">
+                            <!-- <h3>Boeken</h3> -->
+                            <a href="#"><h2>{{business_name}}</h2></a>
+                            <h4>{{short_description}}</h4>
+                            <!-- <span><i class="fa fa-map-marker"></i> 0.2 Km</span> -->
+                            <ul >
+                                <li *ngIf="this.like_by.length">Like by</li>
+                                <li *ngFor="let user of like_by"><img class="img-like" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{user.user_profile}}" alt="icon1"></li>
+                            </ul>
+                        </div>
+						<div class="col-sm-2 boeken-icon">
+                            <div class="spot-search-dropdown">
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"></button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">Spot 1</a></li>
+                                        <li><a href="#">Spot 2</a></li>
+                                        <li><a href="#">Spot 3</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <ul class="ratings-new">
+                                <li class="active"><a href="#">{{this.spot_rating}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <form [formGroup]="spotForm" (ngSubmit)="onSubmit()" >
+                    <div class="col-sm-12 spot-popup-input">
+                       <textarea formControlName="review"  class="form-control form-input-modal" placeholder="Vertel iets over deze spot"></textarea>
+                    </div>
+                    <div>
+                        <p class="list-heading" id="suggesions">Tagged Suggesions</p>
+                        <div class="friend-suggestion">
+                            <div *ngFor="let friend of friends" >
+                                <div class="friends-list" *ngIf="friends.length" (click)="addTaglist(friend.id)">                                    
+                                    <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="friend.user_profile&&friend.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{friend.user_profile}}">
+                                    <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="!friend.user_profile" src="/assets/front-assets/images/pic1.png">
+                                    <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="friend.user_profile&&friend.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{friend.user_profile}}">
+                                    <span class="search-friend-name">{{friend.first_name}} {{friend.last_name}}</span>
+                                </div>
+                            </div> 
+                        </div>
+                        <p class="list-heading " id="tagged" *ngIf="tag_friends.length">Tagged with</p>
+                        <div *ngIf="tag_friends.length" class="friend-tag-text" id="friend-tag-text">
+                            <span *ngFor="let friend of tag_friends">{{friend.first_name}} {{friend.last_name}}<a href="javascript:void(0)" (click)="removeFromTagList(friend.id)"><i class="fa fa-times times-icon"></i></a></span>
+                        </div>
+                        <p class="list-heading" id="share_suggesions">Share Suggesions</p>
+                        <div class="friend-suggestion">
+                            <div *ngFor="let friend of another_friends" >
+                                <div class="friends-list" *ngIf="another_friends.length" (click)="addSharelist(friend.id)">
+                                    <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="friend.user_profile&&friend.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{friend.user_profile}}">
+                                    <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="!friend.user_profile" src="/assets/front-assets/images/pic1.png">
+                                    <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="friend.user_profile&&friend.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{friend.user_profile}}">
+                                    <span class="search-friend-name">{{friend.first_name}} {{friend.last_name}}</span>
+                                </div>
+                            </div>    
+                            <div *ngFor="let group of groups">
+                                <div class="friends-list" *ngIf="groups.length" (click)="addShareGrouplist(group.id)">
+                                    <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="!group.group_profile" src="/assets/front-assets/images/group_pic1.png">
+                                    <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="group.group_profile" src="{{group.group_profile}}">
+                                    <span class="search-friend-name">{{group.group_name}}</span>
+                                </div>
+                            </div>
+                        </div>   
+                        <p class="list-heading " id="shared" *ngIf="share_friends.length||share_groups.length">Share with</p>
+                        <div *ngIf="share_friends.length||share_groups.length" class="friend-tag-text" id="friend-tag-text">
+                            <span *ngFor="let friend of share_friends">{{friend.first_name}} {{friend.last_name}}<a href="javascript:void(0)" (click)="removeFromShareList(friend.id)"><i class="fa fa-times times-icon"></i></a></span>
+                            <span *ngFor="let group of share_groups">{{group.group_name}}<a href="javascript:void(0)" (click)="removeFromShareGroupList(group.id)"><i class="fa fa-times times-icon"></i></a></span>
+                        </div>
+                    </div>                             
+                    <h5 class="upload">Upload afbeelding en video</h5>
+                        <div class="popup-uploadvideo">
+                        <ul>
+                            
+                        <li><input class="hidden"  #image_video type='file' accept="image/*,video/*" (change)="onSelectFile($event)" multiple/><a href="javascript:void(0)" (click)="image_video.click()"><img src="/assets/front-assets/images/popup-img/select-icon3.png" alt="icon3"></a></li>
+                        <li style="border: 1px solid #ddd;"><input class="hidden"  #audio type='file' accept="audio/*" (change)="onAudioFile($event)" multiple/><a href="javascript:void(0)" (click)="audio.click()"><img src="/assets/front-assets/images/popup-img/select-icon4.png" alt="icon4"></a></li>
+                        <li *ngFor="let list of myaudiodata;let i = index">
+                            <audio controls><source [src]="list.url | sanitizerUrl"></audio><a href="javascript:void(0)" (click)="onRemoveAudioFile(list.id)"><i class="fa fa-close"></i></a>
+                        </li>
+                        <li *ngFor="let list of mydata;let i = index"><img class="image-video" *ngIf="list.type == 'img'" [src]="list.url" />
+                            <video class="image-video" *ngIf="list.type == 'video'" [src]="list.url" controls></video><a href="javascript:void(0)" (click)="onRemoveFile(list.id)"><i class="fa fa-close"></i></a>
+                        </li>
+                        <li *ngFor="let list of dbfiles;let i = index">
+                            <img class="image-video" *ngIf="photos_extensions.includes(list.split('.').pop())" src="https://ibigo.shadowis.nl/server-api/public/spot_images/{{list}}" />
+                            <video class="image-video" *ngIf="video_extensions.includes(list.split('.').pop())" src="https://ibigo.shadowis.nl/server-api/public/spot_videos/{{list}}" controls></video>
+                            <a href="javascript:void(0)" (click)="onRemoveFileFromDB(list)"><i class="fa fa-close"></i></a>
+                        </li>
+                         <li *ngFor="let list of afiles;let i = index"><audio controls><source src="https://ibigo.shadowis.nl/server-api/public/spot_audio/{{list}}"></audio><a href="javascript:void(0)" (click)="onRemoveAudioFileFromDB(list)"><i class="fa fa-close"></i></a>
+                        </li>
+                        </ul>
+                        </div>
+                        <button type="submit" id="spinner-btn-modal"  class="delen btn-share-modal">
+                            <i *ngIf="btnloading==true" class="fa fa-spin fa-spinner"></i>&nbsp;Delen
+                          </button>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <!-- <audio controls><source src="https://ibigo.shadowis.nl/server-api/public/spot_audio/audio1.mp3"></audio> -->
+</section>

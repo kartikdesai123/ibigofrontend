@@ -1,0 +1,114 @@
+<header class="home-header-register">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 heading-logo">
+                <a href="step-2.html"><img src="/assets/images/ibigo-light.png" alt="logo2"></a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 heading-form-main2">
+                <div class="heading-form2">
+                    <h3>Enter Basic details</h3>
+                    <!-- <p>Heb je al een account? <a class="first" routerLink="/user/login">Login</a></p> -->
+                    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">                        
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group" [ngClass]="{ 'has-error': submitted && f.mobile.errors }">
+                                    <ngx-intl-tel-input 
+                                        [cssClass]="'custom inpt-tel'" 
+                                        [preferredCountries]="preferredCountries"
+                                        [enableAutoCountrySelect]="false" 
+                                        [enablePlaceholder]="true" 
+                                        [searchCountryFlag]="true"
+                                        [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                        [selectFirstCountry]="false" 
+                                        [selectedCountryISO]="CountryISO.Netherlands"
+                                        [maxLength]="15" 
+                                        [tooltipField]="TooltipLabel.Name" 
+                                        [phoneValidation]="true" 
+                                        [separateDialCode]="true"                                     
+                                        formControlName="mobile" >
+                                    </ngx-intl-tel-input>
+                                    <div *ngIf="submitted && f.mobile.errors">
+                                        <!-- <span class="help-block" *ngIf="f.mobile.errors.required">Mobile is required</span> -->
+                                        <span class="help-block" *ngIf="f.mobile.errors.validatePhoneNumber">Please enter valid number</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group" [ngClass]="{ 'has-error': (submitted && f.email.errors) || errors.length }">
+                                    <input type="email" autocomplete="doNotAutoComplete" formControlName="email" placeholder="Email" class="form-control"  />
+                                    <div *ngIf="submitted && f.email.errors">
+                                        <span class="help-block" *ngIf="f.email.errors.required">Email is required</span>
+                                        <span class="help-block" *ngIf="f.email.errors.email">Email must be a valid email address</span>
+                                    </div>
+                                    <div *ngIf="errors.length">
+                                        <span class="help-block" *ngFor="let e of errors">{{e}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group" [ngClass]="{ 'has-error': submitted && f.password.errors }">
+                                    <input autocomplete="new-password" placeholder="Password" type="password" formControlName="password" class="form-control"/>
+                                    <div *ngIf="submitted && f.password.errors">
+                                        <span class="help-block" *ngIf="f.password.errors.required">Password is required</span>
+                                        <span class="help-block" *ngIf="f.password.errors.minlength">Password must be at least 6 characters</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group" [ngClass]="{ 'has-error': submitted && f.password_confirmation.errors }">
+                                    <input placeholder="Confirm Password" type="password" formControlName="password_confirmation" class="form-control"/>
+                                    <div *ngIf="submitted && f.password_confirmation.errors">
+                                        <span class="help-block" *ngIf="f.password_confirmation.errors.required">Confirm Password is required</span>
+                                        <span class="help-block" *ngIf="f.password_confirmation.errors.mustMatch">Passwords must match</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 form-check-main">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" formControlName="terms_condition">
+                                <label class="form-check-label" for="defaultCheck1">
+                                    Bij aanmelding, ga je akkoord met "ibigo"s <a href="#">Algemene voorwaarden</a>
+                                </label>
+                                <div *ngIf="submitted && f.terms_condition.errors" [ngClass]="{ 'has-error': submitted && f.terms_condition.errors }">
+                                    <span class="help-block" *ngIf="f.terms_condition.errors.required">Please check this </span>
+                                </div>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" formControlName="receive_email">
+                                <label class="form-check-labe2" for="defaultCheck2">
+                                    Ik wil graag commerciele email ontvangen
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group" data-type="submit">
+                            <button type="submit" class="btn-default">volgende</button>
+                        </div>
+                    </form>
+                    <!-- <div class="heading-form-new2">
+                        <a class="second" href="#">Heb je geen account?</a> <a class="third" routerLink>Creëer een nieuw account</a>
+                    </div> -->
+                    
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 nog-text">
+                <p>Nog 3 stappen, je bent er bijna</p>
+            </div>
+        </div>  
+        <div class="row">
+            <div class="col-lg-12 nog-border">
+                <span class="first"></span>
+                <span class="first"></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+</header>

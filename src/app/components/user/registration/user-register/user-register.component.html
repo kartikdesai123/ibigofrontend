@@ -1,0 +1,142 @@
+<header class="home-header-register">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 heading-logo">
+                <a href="register.html"><img src="/assets/images/ibigo-light.png" alt="logo2"></a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 heading-form-main2">
+                <div class="heading-form2">
+                    <h3>Maak uw gratis account aan</h3>
+                    <p>Heb je al een account? <a class="first" routerLink="/user/login">Login</a></p>
+                    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" autocomplete="false">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group" [ngClass]="{ 'has-error': submitted && f.first_name.errors }">
+                                    <input type="text" autocomplete="doNotAutoComplete" placeholder="First Name" formControlName="first_name" class="form-control" />
+                                    <div *ngIf="submitted && f.first_name.errors" >
+                                        <span class="help-block" *ngIf="f.first_name.errors.required">First Name is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group" [ngClass]="{ 'has-error': submitted && f.last_name.errors }">
+                                    <input type="text" autocomplete="doNotAutoComplete" placeholder="Last Name" formControlName="last_name" class="form-control" />
+                                    <div *ngIf="submitted && f.last_name.errors" >
+                                        <span class="help-block" *ngIf="f.last_name.errors.required">Last Name is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group" [ngClass]="{ 'has-error': submitted && f.birth_date.errors }">
+                                    <input type="text" bsDatepicker (bsValueChange)="dateCreated($event)" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', showWeekNumbers: false }" placeholder="Birth Date"  formControlName="birth_date" class="form-control" />
+                                    <div *ngIf="submitted && f.birth_date.errors" >
+                                        <span class="help-block" *ngIf="f.birth_date.errors.required">Birth Date is required</span>
+                                        <span class="help-block" *ngIf="f.birth_date.errors.bsDate">Invalid Date</span>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group" [ngClass]="{ 'has-error': submitted && f.mobile.errors }">
+                                    <ngx-intl-tel-input 
+                                        [cssClass]="'custom inpt-tel'" 
+                                        [preferredCountries]="preferredCountries"
+                                        [enableAutoCountrySelect]="false" 
+                                        [enablePlaceholder]="true" 
+                                        [searchCountryFlag]="true"
+                                        [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                        [selectFirstCountry]="false" 
+                                        [selectedCountryISO]="selectedCountry?selectedCountry:CountryISO.Netherlands"
+                                        [maxLength]="15" 
+                                        [tooltipField]="TooltipLabel.Name" 
+                                        [phoneValidation]="true" 
+                                        [separateDialCode]="true"
+                                        formControlName="mobile" autocomplete="false" >
+                                    </ngx-intl-tel-input>
+                                    <!-- <input type="text" placeholder="Mobile" formControlName="mobile" class="form-control" /> -->
+                                    <div *ngIf="submitted && f.mobile.errors">
+                                        <span class="help-block" *ngIf="f.mobile.errors.validatePhoneNumber">Please enter valid number</span>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group" [ngClass]="{ 'has-error': (submitted && f.email.errors) || errors.length }">
+                                    <input type="email" autocomplete="doNotAutoComplete" formControlName="email" placeholder="Email" class="form-control"  />
+                                    <div *ngIf="submitted && f.email.errors">
+                                        <span class="help-block" *ngIf="f.email.errors.required">Email is required</span>
+                                        <span class="help-block" *ngIf="f.email.errors.email">Email must be a valid email address</span>
+                                    </div>
+                                    <div *ngIf="errors.length">
+                                        <span class="help-block" *ngFor="let e of errors">{{e}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group" [ngClass]="{ 'has-error': submitted && f.password.errors }">
+                                    <input autocomplete="new-password" placeholder="Password" type="password" formControlName="password" class="form-control"/>
+                                    <div *ngIf="submitted && f.password.errors">
+                                        <span class="help-block" *ngIf="f.password.errors.required">Password is required</span>
+                                        <span class="help-block" *ngIf="f.password.errors.minlength">Password must be at least 6 characters</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group" [ngClass]="{ 'has-error': submitted && f.password_confirmation.errors }">
+                                    <input autocomplete="false" placeholder="Confirm Password" type="password" formControlName="password_confirmation" class="form-control"/>
+                                    <div *ngIf="submitted && f.password_confirmation.errors">
+                                        <span class="help-block" *ngIf="f.password_confirmation.errors.required">Confirm Password is required</span>
+                                        <span class="help-block" *ngIf="f.password_confirmation.errors.mustMatch">Passwords must match</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 form-check-main">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" formControlName="terms_condition">
+                                <label class="form-check-label" for="defaultCheck1">
+                                    Bij aanmelding, ga je akkoord met "ibigo"s <a href="#">Algemene voorwaarden</a>
+                                </label>
+                                <div *ngIf="submitted && f.terms_condition.errors" [ngClass]="{ 'has-error': submitted && f.terms_condition.errors }">
+                                    <span class="help-block" *ngIf="f.terms_condition.errors.required">Please check this </span>
+                                </div>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" formControlName="receive_email">
+                                <label class="form-check-labe2" for="defaultCheck2">
+                                    Ik wil graag commerciele email ontvangen
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group" data-type="submit">
+                            <button type="submit" class="btn-default">registregen</button>
+                        </div>
+                    </form>
+                    <div class="heading-form-new2">
+                        <a class="second" href="#">Heb je geen account?</a> <a class="third" routerLink="/business/register/plans"> Create new business account</a>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 nog-text">
+                <p>Nog 4 stappen, je bent er bijna</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 nog-border">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+</header>

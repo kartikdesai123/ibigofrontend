@@ -1,0 +1,276 @@
+<header class="home-header-password" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 logo-profile">
+                <a routerLink="/user/homepage"><img src="/assets/front-assets/images/ibigo-dark100.png" alt="logo2"></a>
+            </div>
+            <div class="col-lg-6 dropdown-profile" *ngIf="this.logged_in_user==true&&this.first_name">
+                <ul class="header-icon-bar">
+                    <li class="dropdown">
+                        <a href="#"  class="dropdown-toggle" data-toggle="dropdown" (click)="notificationDropDown()" ><div class="bell-icon"><span *ngIf="notification_cnt>0">{{notification_cnt}}</span></div></a>
+                        <ul class="dropdown-menu">
+                            <h6>Notifications</h6>
+                            <li *ngFor="let notification of all_notifications">
+                                <div class="notification-box" *ngIf="notification.notification_type==1">
+                                    <div class="notification-image">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{notification.user_profile}}">
+                                        <img *ngIf="!notification.user_profile" src="/assets/front-assets/images/pic1.png">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{notification.user_profile}}">
+                                    </div>
+                                    <div class="notification-details">
+                                        <h6><a routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  invited to you like <a routerLink="/spot/{{notification.spot_user_unique_id}}/{{notification.spot_user_slug}}">{{notification.spot_user_name}}.</a></h6>
+                                        <p>{{notification.notification_time}}</p>
+                                    </div>
+                                </div>
+                                <div class="notification-box" *ngIf="notification.notification_type==3">
+                                    <div class="notification-image">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{notification.user_profile}}">
+                                        <img *ngIf="!notification.user_profile" src="/assets/front-assets/images/pic1.png">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{notification.user_profile}}">
+                                    </div>
+                                    <div class="notification-details">
+                                        <h6><a  routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  likes your post. <span *ngIf="notification.notification_post_title">: "{{(notification.notification_post_title.length>32)? (notification.notification_post_title | slice:0:32)+'...':(notification.notification_post_title)}}"</span></h6>
+                                        <p>{{notification.notification_time}}</p>
+                                    </div>
+                                </div>
+                                <div class="notification-box" *ngIf="notification.notification_type==4">
+                                    <div class="notification-image">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{notification.user_profile}}">
+                                        <img *ngIf="!notification.user_profile" src="/assets/front-assets/images/pic1.png">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{notification.user_profile}}">
+                                    </div>
+                                    <div class="notification-details">
+                                        <h6><a routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  commented on your post.</h6>
+                                        <p>{{notification.notification_time}}</p>
+                                    </div>
+                                </div>
+                                <div class="notification-box" *ngIf="notification.notification_type==5">
+                                    <div class="notification-image">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{notification.user_profile}}">
+                                        <img *ngIf="!notification.user_profile" src="/assets/front-assets/images/pic1.png">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{notification.user_profile}}">
+                                    </div>
+                                    <div class="notification-details">
+                                        <h6><a  routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  sent you a friend request.</h6>
+                                        <p>{{notification.notification_time}}</p>
+                                    </div>
+                                </div>
+                                <div class="notification-box" *ngIf="notification.notification_type==6">
+                                    <div class="notification-image">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{notification.user_profile}}">
+                                        <img *ngIf="!notification.user_profile" src="/assets/front-assets/images/pic1.png">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{notification.user_profile}}">
+                                    </div>
+                                    <div class="notification-details">
+                                        <h6><a  routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  accepted your a friend request.</h6>
+                                        <p>{{notification.notification_time}}</p>
+                                    </div>
+                                </div>
+                                <div class="notification-box" *ngIf="notification.notification_type==8">
+                                    <div class="notification-image">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{notification.user_profile}}">
+                                        <img *ngIf="!notification.user_profile" src="/assets/front-assets/images/pic1.png">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{notification.user_profile}}">
+                                    </div>
+                                    <div class="notification-details">
+                                        <h6><a routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  invited you to join <a routerLink="/group/{{notification.group_unique_id}}/{{notification.group_slug}}">{{notification.group_name}}.</a></h6>
+                                        <p>{{notification.notification_time}}</p>
+                                    </div>
+                                </div>
+                                <div class="notification-box" *ngIf="notification.notification_type==10">
+                                    <div class="notification-image">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{notification.user_profile}}">
+                                        <img *ngIf="!notification.user_profile" src="/assets/front-assets/images/pic1.png">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{notification.user_profile}}">
+                                    </div>
+                                    <div class="notification-details">
+                                        <h6 *ngIf="notification.invited_group_id==null"><a routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  invited you to event <a routerLink="/event/{{notification.event_unique_id}}/{{notification.event_slug}}">{{notification.event_title}}.</a></h6>
+                                        <h6 *ngIf="notification.invited_group_id!=null"><a routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  invited you to event <a routerLink="/event/{{notification.event_unique_id}}/{{notification.event_slug}}">{{notification.event_title}} </a> in <a routerLink="/group/{{notification.group_unique_id}}/{{notification.group_slug}}">{{notification.group_name}}</a></h6>
+                                        <p>{{notification.notification_time}}</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li *ngIf="!all_notifications.length">
+                                <div class="col-lg-12 text-center"><span>No notifications</span></div>                                
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a routerLink="/user/info/friends"><img src="/assets/front-assets/images/icon2.png" alt="icon2"></a>
+                    </li>
+                    <li><a routerLink="/todo/go-list"><img src="/assets/front-assets/images/icon3.png" alt="icon3"></a></li>
+                </ul>
+                <div class="dropdown" >
+                    <button *ngIf="this.business_name" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><img class="img-user" src="{{this.user_profile}}" alt="icon4">{{this.business_name}}
+                        <span class="caret"></span></button>
+                    <button *ngIf="this.first_name" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><img class="img-user" src="{{this.user_profile}}" alt="icon4">{{this.first_name}} {{this.last_name}}
+                            <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a routerLink="/user/updateprofile" *ngIf="this.business_name"><img class="img-user" src="{{this.user_profile}}" alt="icon5">{{this.business_name}}</a>
+                            <a routerLink="/user/updateprofile" *ngIf="this.first_name"><img class="img-user" src="{{this.user_profile}}" alt="icon5">{{this.first_name}} {{this.last_name}}</a>
+                        </li>
+                        <li><a routerLink="/user/home/profile"><i class="fa fa-user" aria-hidden="true"></i> Profile</a></li>
+                        <li><a routerLink="/user/home/password"><i class="fa fa-key" aria-hidden="true"></i>Wachtwoord</a></li>
+                        <li><a routerLink="/user/home/interest"><i class="fa fa-heart" aria-hidden="true"></i>Interesses</a></li>
+                        <li><a routerLink="/user/home/notify"><i class="fa fa-bell" aria-hidden="true"></i>Notificaties</a></li>
+                        <li><a routerLink="/message"><i class="fa fa-comments-o" aria-hidden="true"></i>Chat</a></li>
+                        <li><a routerLink="/user/logout"><i class="fa fa-sign-in" aria-hidden="true"></i>Uitloggen</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6 dropdown-profile" *ngIf="this.logged_in_user==true&&this.business_name">
+                <ul class="header-icon-bar">
+                    <li class="dropdown" [ngClass]="(this.notificationOpen==true)?'open':''">
+                        <a href="javascript:void(0)"  class="dropdown-toggle" (click)="notificationDropDown()" ><div class="bell-icon"><span *ngIf="notification_cnt>0">{{notification_cnt}}</span></div></a>
+                        <ul class="dropdown-menu">
+                            <h6>Notifications</h6>
+                            <li *ngFor="let notification of all_notifications">
+                                <div class="notification-box" *ngIf="notification.notification_type==1">
+                                    <div class="notification-image">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{notification.user_profile}}">
+                                        <img *ngIf="!notification.user_profile" src="/assets/front-assets/images/pic1.png">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{notification.user_profile}}">
+                                    </div>
+                                    <div class="notification-details">
+                                        <h6><a routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  invited to you like <a routerLink="/spot/{{notification.spot_user_unique_id}}/{{notification.spot_user_slug}}">{{notification.spot_user_name}}.</a></h6>
+                                        <p>{{notification.notification_time}}</p>
+                                    </div>
+                                </div>
+                                <div class="notification-box" *ngIf="notification.notification_type==3">
+                                    <div class="notification-image">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{notification.user_profile}}">
+                                        <img *ngIf="!notification.user_profile" src="/assets/front-assets/images/pic1.png">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{notification.user_profile}}">
+                                    </div>
+                                    <div class="notification-details">
+                                        <h6 *ngIf="notification.user_type=='normal'"><a  routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  likes your post. <span *ngIf="notification.notification_post_title">: "{{(notification.notification_post_title.length>32)? (notification.notification_post_title | slice:0:32)+'...':(notification.notification_post_title)}}"</span></h6>
+                                        <h6 *ngIf="notification.user_type=='business'"><a  routerLink="/spot/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  likes your post. <span *ngIf="notification.notification_post_title">: "{{(notification.notification_post_title.length>32)? (notification.notification_post_title | slice:0:32)+'...':(notification.notification_post_title)}}"</span></h6>
+                                        <p>{{notification.notification_time}}</p>
+                                    </div>
+                                </div>
+                                <div class="notification-box" *ngIf="notification.notification_type==4">
+                                    <div class="notification-image">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{notification.user_profile}}">
+                                        <img *ngIf="!notification.user_profile" src="/assets/front-assets/images/pic1.png">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{notification.user_profile}}">
+                                    </div>
+                                    <div class="notification-details">
+                                        <h6 *ngIf="notification.user_type=='normal'"><a routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  commented on your post.</h6>
+                                        <h6 *ngIf="notification.user_type=='business'"><a routerLink="/spot/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  commented on your post.</h6>
+                                        <p>{{notification.notification_time}}</p>
+                                    </div>
+                                </div>
+                                <div class="notification-box" *ngIf="notification.notification_type==5">
+                                    <div class="notification-image">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{notification.user_profile}}">
+                                        <img *ngIf="!notification.user_profile" src="/assets/front-assets/images/pic1.png">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{notification.user_profile}}">
+                                    </div>
+                                    <div class="notification-details">
+                                        <h6><a  routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  sent you a friend request.</h6>
+                                        <p>{{notification.notification_time}}</p>
+                                    </div>
+                                </div>
+                                <div class="notification-box" *ngIf="notification.notification_type==6">
+                                    <div class="notification-image">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{notification.user_profile}}">
+                                        <img *ngIf="!notification.user_profile" src="/assets/front-assets/images/pic1.png">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{notification.user_profile}}">
+                                    </div>
+                                    <div class="notification-details">
+                                        <h6><a  routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  accepted your a friend request.</h6>
+                                        <p>{{notification.notification_time}}</p>
+                                    </div>
+                                </div>
+                                <div class="notification-box" *ngIf="notification.notification_type==8">
+                                    <div class="notification-image">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{notification.user_profile}}">
+                                        <img *ngIf="!notification.user_profile" src="/assets/front-assets/images/pic1.png">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{notification.user_profile}}">
+                                    </div>
+                                    <div class="notification-details">
+                                        <h6><a routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  invited you to join <a routerLink="/group/{{notification.group_unique_id}}/{{notification.group_slug}}">{{notification.group_name}}.</a></h6>
+                                        <p>{{notification.notification_time}}</p>
+                                    </div>
+                                </div>
+                                <div class="notification-box" *ngIf="notification.notification_type==10">
+                                    <div class="notification-image">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{notification.user_profile}}">
+                                        <img *ngIf="!notification.user_profile" src="/assets/front-assets/images/pic1.png">
+                                        <img *ngIf="notification.user_profile&&notification.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{notification.user_profile}}">
+                                    </div>
+                                    <div class="notification-details">
+                                        <h6><a routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a>  invited you to event <a routerLink="/event/{{notification.event_unique_id}}/{{notification.event_slug}}">{{notification.event_title}}.</a></h6>
+                                        <p>{{notification.notification_time}}</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li *ngIf="!all_notifications.length">
+                                <div class="col-lg-12 text-center"><span>No notifications</span></div>                                
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><img class="img-user" src="{{this.user_profile}}" alt="icon4">{{this.business_name}}
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a routerLink="/home/business/profile"><img class="img-user" src="{{this.user_profile}}" alt="icon5">{{this.business_name}}</a>
+                        </li>
+                        <li><a routerLink="/business/home/profile"><i class="fa fa-user" aria-hidden="true"></i> Profile</a></li>
+                        <li><a routerLink="/business/home/password"><i class="fa fa-key" aria-hidden="true"></i>Wachtwoord</a></li>
+                        <li><a routerLink="/business/home/interest"><i class="fa fa-heart" aria-hidden="true"></i>Interesses</a></li>
+                        <li><a routerLink="/business/home/notify"><i class="fa fa-bell" aria-hidden="true"></i>Notificaties</a></li>
+                        <li><a routerLink="/spot/events"><i class="fa fa-calendar" aria-hidden="true"></i>Events</a></li>
+                        <li><a routerLink="/user/logout"><i class="fa fa-sign-in" aria-hidden="true"></i>Uitloggen</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!--============== END HEADER SECTION ===============-->
+
+<!--===== KOFFIE SECTION =====-->
+<section class="koffie-section" *ngIf="hide_section==false">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 search-form">
+                <form [formGroup]="searchForm" autocomplete="off">
+                    <div class="col-lg-12 search-form-location">
+                        <div class="form-group required" data-type="text" data-required="true">
+                            <i id="input-icon" class="fa fa-search"></i>
+                            <input type="text" (keyup)="keyDown($event)" (keyup.enter)="onText()"  class="form-control" id="search-name" value="" formControlName="search_name" placeholder="Koffie">
+                        </div>
+                        <div class="results-list" *ngIf="suggestions.length>0" >
+                            <li *ngFor="let list of suggestions; let i = index" [class.active]="i == arrowkeyLocation" (click)="myclick(i)" >
+                                <span class="result">{{list.user_name}}</span>
+                            </li>
+                        </div>
+                        <!-- <div class="searchArea">
+                            <input type="text" autoComplete="off" (keydown)="keyDown($event)" placeholder={{backgroundPlaceholder.info.placeholderText}} [(ngModel)]="keystroke"
+                              (ngModelChange)="getKey($event)">
+                            
+                          </div> -->
+                    </div>
+                    <!-- <div class="col-lg-2 search-form-btn">
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle"  type="button" data-toggle="dropdown">
+                                {{this.selected_user_type | titlecase}}<span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="javascript:void(0)" (click)="onUserType('Select')">Spot</a></li>
+                                <li><a href="javascript:void(0)" (click)="onUserType('spot')">Spot</a></li>
+                                <li><a href="javascript:void(0)" (click)="onUserType('event')">Event</a></li>
+                                <li><a href="javascript:void(0)" (click)="onUserType('people')">People</a></li>
+                                <li><a href="javascript:void(0)" (click)="onUserType('group')">Group</a></li>
+                            </ul>
+                        </div>
+                    </div> -->
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<router-outlet></router-outlet>

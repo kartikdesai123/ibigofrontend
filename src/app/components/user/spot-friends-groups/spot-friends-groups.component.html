@@ -1,0 +1,449 @@
+<app-user-header></app-user-header>
+<!--============== END KOFFIE SECTION ===============-->
+
+<!--===== GROUP SECTION =====-->
+<section class="wacht-section2">
+    <div class="container">
+        <div class="wacht-text">
+            <ul class="first">
+                <li><a routerLink="/user/homepage">Home <i class="fa fa-caret-right"></i></a></li>
+                <!-- <li><a href="#">Connect <i class="fa fa-caret-right"></i></a></li> -->
+                <li><a class="active" id="active_tab_name" href="#"></a></li>
+            </ul>
+        </div>
+	    <div class="row">
+            <div class="col-lg-3 pb-3">
+                <div class="wacht-text">               
+                    <ul class="second">
+                        <li id="li_friends"><a href="#friends" (click)="changeTab('friends')" data-toggle="tab">Friends</a></li>
+                        <li id="li_groups"><a href="#groups" (click)="changeTab('groups')" data-toggle="tab">Groups</a></li>
+                        <li id="li_spots"><a href="#spots" (click)="changeTab('spots')" data-toggle="tab">Spots & Events</a></li>
+                    </ul>
+                </div>
+             </div>
+             <!--col-lg-3-->
+             <div class="col-lg-6 p-0">
+                <div class="tab-content">
+                    <div id="friends" class="tab-pane fade">
+                        <div class="col-lg-12">
+                            <div class="group-text" *ngIf="this.friend_requests.length||this.friend_list.length">
+                                <form [formGroup]="searchFriend" >
+                                    <div class="form-group required" data-type="text" data-required="true">
+                                        <i id="group-icon" class="fa fa-search"></i>
+                                        <input type="text" (keyup)="friendText($event)" class="form-control" formControlName="searchFriendText" [(ngModel)]="searchFriendText"  placeholder="Vind je vriend">
+                                    </div>
+                                </form>
+                                
+                                <ul *ngIf="this.friend_requests.length" class="invitations mb-4">
+                                    <h4 *ngIf="(friend_requests | filter: searchFriendText : fieldnamefriend_req).length > 0">Friend requests</h4>
+                                    <li *ngFor="let f of friend_requests | filter: searchFriendText : fieldnamefriend_req; let i = index">
+                                        <div>
+                                            <a routerLink="/people/{{f.request_send_by_user_unique_id}}/{{f.request_send_by_user_slug}}">
+                                                <img *ngIf="f.request_send_by_user_profile&&f.request_send_by_user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{f.request_send_by_user_profile}}">
+                                                <img *ngIf="!f.request_send_by_user_profile" src="/assets/front-assets/images/pic1.png">
+                                                <img *ngIf="f.request_send_by_user_profile&&f.request_send_by_user_profile.indexOf('https://graph.facebook.com') != -1" src="{{f.request_send_by_user_profile}}">
+                                                <!-- <img src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{f.request_send_by_user_profile}}" alt="pic2"> -->
+                                                <span>{{f.request_send_by_user_name}}</span></a>
+                                        </div>
+                                        <div class="invitation-btn">
+                                            <button (click)="confirmFriendRequest(f.request_send_by_user_id)" class="accept"><i id="accept{{f.request_send_by_user_id}}" class="fa fa-spin"></i>&nbsp;Accept</button>
+                                            <button (click)="cancelFriendRequest(f.request_send_by_user_id)" class="decline"><i id="cancel{{f.request_send_by_user_id}}" class="fa fa-spin"></i>&nbsp;Cancel</button>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <ul *ngIf="this.friend_list.length ">
+                                    <h4 *ngIf="(friend_list | filter: searchFriendText : fieldnamefriend).length > 0">Friends</h4>
+                                    <li *ngFor="let f of friend_list | filter: searchFriendText : fieldnamefriend; let i = index">
+                                        <a routerLink="/people/{{f.unique_id}}/{{f.user_slug}}">
+                                            <img *ngIf="f.user_profile&&f.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{f.user_profile}}">
+                                            <img *ngIf="!f.user_profile" src="/assets/front-assets/images/pic1.png">
+                                            <img *ngIf="f.user_profile&&f.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{f.user_profile}}">{{f.user_name}}
+                                        </a>
+                                        <a routerLink="/message/{{f.unique_id}}/{{f.user_slug}}"><i class="fa fa-commenting-o"></i></a>
+                                    </li>
+                                </ul>
+                                <h5 *ngIf="((friend_requests | filter: searchFriendText : fieldnamefriend_req).length == 0)&&((friend_list | filter: searchFriendText : fieldnamefriend).length == 0)" >No result found for "{{searchFriendText}}"</h5>
+                                <!-- <img class="last-icon" src="/assets/front-assets/images/icon14.png" alt="icon14"> -->
+                            </div>
+                            <div class="group-text text-center m-5" *ngIf="!this.friend_requests.length&&!this.friend_list.length">
+                                <i class="fa fa-users fa-2x"></i>
+                                <h4 class="mt-3">No friends</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <!--tab1-->
+                    <div id="groups" class="tab-pane fade">
+                        <div class="col-lg-12">
+                            <div class="group-text">
+                                <form [formGroup]="searchGroup" >
+                                    <div class="form-group required" data-type="text" data-required="true">
+                                        <i id="group-icon" class="fa fa-search"></i>
+                                        <input type="text" (keyup)="groupText($event)" class="form-control" formControlName="searchGroupText" [(ngModel)]="searchGroupText"  placeholder="Vind je groep">
+                                    </div>
+                                </form>
+                                <ul  *ngIf="invitation_group_list.length" class="invitations mb-4">
+                                    <h4 *ngIf="(invitation_group_list | filter: searchGroupText : fieldname_group).length > 0">Invitation from groups</h4>
+                                    <li *ngFor="let group of invitation_group_list | filter: searchGroupText : fieldname_group; let i = index">
+                                        <div>
+                                            <a routerLink="/group/{{group.group_unique_id}}/{{group.group_slug}}">
+                                            <img *ngIf="group.group_profile!=null" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{group.group_profile}}" alt="group-bg"><img style="height: 62px;width:62px;border-radius: 100%;" *ngIf="group.group_profile==null" src="/assets/front-assets/images/group-bg.png" alt="group-bg"><span>{{group.group_name}}</span></a>
+                                        </div>
+                                        <div class="invitation-btn">
+                                            <button (click)="confirmRequest(group.id)" class="accept"><i *ngIf="this.status==true" class="fa fa-spin fa-spinner"></i>&nbsp;Accept</button>
+                                            <button (click)="rejectRequest(group.id)" class="decline"><i *ngIf="this.status_decline==true" class="fa fa-spin fa-spinner"></i>&nbsp;Decline</button>
+                                        </div>
+                                            <!-- <img class="icon" src="/assets/front-assets/images/icon11.png" alt="icon9"> -->
+                                    </li>
+                                </ul>
+                                <ul *ngIf="groups.length" class="invitations">
+                                    <h4 *ngIf="(groups | filter: searchGroupText : fieldname_group).length > 0">Groups you manage</h4>
+                                    <li *ngFor="let group of groups | filter: searchGroupText : fieldname_group; let i = index">
+                                        <a routerLink="/group/{{group.group_unique_id}}/{{group.group_slug}}">
+                                            <img *ngIf="group.group_profile!=null"  src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{group.group_profile}}"  alt="group-bg"><img style="height: 62px;width:62px;border-radius: 100%;" *ngIf="group.group_profile==null" src="/assets/front-assets/images/group-bg.png" alt="group-bg"><span>{{group.group_name}}</span></a>
+                                            <!-- <img class="icon" src="/assets/front-assets/images/icon11.png" alt="icon9"> -->
+                                    </li>
+                                </ul>
+                                <ul *ngIf="your_groups.length" class="invitations">
+                                    <h4 *ngIf="(your_groups | filter: searchGroupText : fieldname_group).length > 0">Your groups</h4>
+                                    <li *ngFor="let group of your_groups | filter: searchGroupText : fieldname_group; let i = index">
+                                        <div>
+                                            <a routerLink="/group/{{group.group_unique_id}}/{{group.group_slug}}">
+                                            <img *ngIf="group.group_profile!=null"  src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{group.group_profile}}"  alt="group-bg"><img style="height: 62px;width:62px;border-radius: 100%;" *ngIf="group.group_profile==null" src="/assets/front-assets/images/group-bg.png" alt="group-bg"><span>{{group.group_name}}</span></a>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <h5 *ngIf="((your_groups | filter: searchGroupText : fieldname_group).length == 0)&&((groups | filter: searchGroupText : fieldname_group).length == 0)&&((invitation_group_list | filter: searchGroupText : fieldname_group).length == 0)" >No result found for "{{searchGroupText}}"</h5>                                
+                                
+                            </div>
+                        </div>
+                        <!--col-lg-6-->
+                        <div id="groupModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog modal-md">
+                          
+                              <!-- Modal content-->
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Create new group</h4>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <form [formGroup]="groupForm" (ngSubmit)="onGroupSubmit()">
+                                <div class="modal-body">
+                                    <!-- <div class="friend-check-form">
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                <div class="form-group required" data-type="text" data-required="true">
+                                                    <i id="check-btn" class="fa fa-search"></i>
+                                                    <input type="text" autocomplete="off" class="form-control" id="modal-name" value="" name="modal-name" placeholder="Search for friends">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1 spot-delen-btn">
+                                                <button class="btn-default" data-dismiss="modal" type="button">Done</button>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                    <div class="friend-check-form">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <p>Group Name</p>
+                                                    <input type="text" (keyup)="onText($event)" autocomplete="off" class="form-control" fromControlName="group_name" placeholder="Group Name">
+                                                    <div *ngIf="submitted && f.group_name.errors">
+                                                        <span>Groupname is required</span>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="max-height: 325px;overflow-y: scroll;margin-top: 15px;">
+                                        <p class="list-heading " id="group-tagged">INVITE PEOPLE TO GROUP</p>
+                                        <div class="friend-tag-text" id="group-friend-tag-text">
+                                            <span *ngFor="let friend of group_invite_friends">{{friend.first_name}} {{friend.last_name}}<a href="JavaScript:void(0)" (click)="removeGroupFromTagList(friend.id)"><i class="fa fa-times times-icon"></i></a></span>
+                                        </div>
+                                        <p class="list-heading" id="suggesions">SUGGESTIONS</p>
+                                        <div *ngFor="let friend of another_friends">
+                                            <div class="friends-list" (click)="addGroupTaglist(friend.id)">
+                                                <img style="height: 45px;width: 45px;border-radius: 45px;" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{friend.user_profile}}">
+                                                <span class="search-friend-name">{{friend.first_name}} {{friend.last_name}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer" *ngIf="valid_form==true">
+                                    <button  type="submit" class="btn-invite">
+                                        <i id="spinner-icon" *ngIf="this.loading==true" class="fa fa-spinner fa-spin"></i>&nbsp;Create
+                                    </button>
+                                </div>
+                                </form> 
+                              </div>
+                          
+                            </div>
+                        </div>
+                        <!--col-lg-3-->
+                    </div>
+                    <!--tab2-->
+                    <div id="spots" class="tab-pane fade">
+                        <div class="col-lg-12">
+                            <div class="group-text">
+                                <form [formGroup]="searchSpot" >
+                                    <div class="form-group required" data-type="text" data-required="true">
+                                        <i id="group-icon" class="fa fa-search"></i>
+                                        <input type="text" class="form-control" formControlName="searchText" [(ngModel)]="searchText"  placeholder="Vind je spots en evenementen">
+                                    </div>
+                                </form>
+                            </div>
+                            <h4 *ngIf="(liked_spots | filter: searchText : fieldname).length != 0&&liked_spots.length">Spots</h4>
+                            
+                            <div *ngFor="let spot of liked_spots | filter: searchText : fieldname; let i = index">
+                                <div class="col-sm-12 boeken-text-wrap" [ngClass]="(spot.business_type=='premium')?'plaat-text-wrap':''">
+                                    <div>
+                                        <div class="col-sm-4 boeken-img" style="padding-bottom: 15px;">
+                                            <img height="150px" *ngIf="spot.user_profile&&spot.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{spot.user_profile}}">
+                                                <img height="150px" *ngIf="!spot.user_profile" src="/assets/front-assets/images/pic1.png">
+                                                <img height="150px" *ngIf="spot.user_profile&&spot.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{spot.user_profile}}">
+                                                <span *ngIf="spot.business_type=='premium'">Premium</span>
+                                        </div>
+                                        <div class="col-sm-8 boeken-text">
+                                            
+                                            <a routerLink="/spot/{{spot.unique_id}}/{{spot.user_slug}}"><h2>{{spot.business_name}}</h2></a>
+                                            <h4>{{spot.short_description}}</h4>
+                                            <!-- <span><i class="fa fa-map-marker"></i> 0.2 Km</span> -->
+                                            <br>
+                                            <ul>
+                                                <li *ngIf="spot.liked_users.length">Like by</li>
+                                                <li *ngFor="let user_like of spot.liked_users">&nbsp;
+                                                    <img class="img-like" *ngIf="user_like&&user_like.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{user_like}}">
+                                                    <img class="img-like" *ngIf="!user_like" src="/assets/front-assets/images/pic1.png">
+                                                    <img class="img-like" *ngIf="user_like&&user_like.indexOf('https://graph.facebook.com') != -1" src="{{user_like}}">
+                                                </li>
+                                            </ul>
+                                            <div class="boeken-icon">
+                                                <div class="spot-music2-dropdown">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Go</button>
+                                                        <ul class="dropdown-menu">
+                                                            <li style="display: block;"><a href="javascript:void(0)" (click)="selectSpot(spot.spot_id)" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i>Invite</a></li>                                                    
+                                                            <!-- <li><a href="#"><i class="fa fa-map-marker"></i>Check in</a></li> -->
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="spot-search-dropdown">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"></button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="#">Like</a></li>
+                                                            <li><a href="#">Connect</a></li>
+                                                        <li><a href="#">Spot 3</a></li> 
+                                                        </ul>
+                                                    </div>
+                                                </div> -->
+                                                <ul class="ratings2">
+                                                    <!-- <li><a href="javascript:void(0)" (click)="selectSpot(spot.spot_id)" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i>Invite</a></li> -->
+                                                    <li class="active" *ngIf="spot.avg_rating"><a>{{spot.avg_rating}}</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h4 *ngIf="(events | filter: searchText : eventfieldname).length != 0&&events.length">Events</h4>
+                            <div *ngFor="let event of events | filter: searchText : eventfieldname; let i = index">
+                                <div class="col-sm-12 boeken-text-wrap" >
+                                    <div class="col-sm-4 boeken-img" style="padding-bottom: 15px;" >
+                                        <img height="150px" *ngIf="event.event_cover" src="https://ibigo.shadowis.nl/server-api/public/event_cover/{{event.event_cover}}" alt="img1">
+                                        <img height="150px" *ngIf="!event.event_cover" src="/assets/front-assets/images/group-bg.png" alt="img1">
+                                    </div>
+                                    <div class="col-sm-7 boeken-text pr-0">
+                                        <a routerLink="/event/{{event.event_unique_id}}/{{event.event_slug}}"><h2>{{event.event_title}}</h2></a>
+                                        <h4>{{event.event_description}}</h4>
+                                        <h4 *ngIf="event.host_group!=null">Hosted by <a routerLink="/group/{{event.group_unique_id}}/{{event.group_slug}}">{{event.group_name}}</a></h4>
+                                        <h4 *ngIf="event.host_group==null">Hosted by <a routerLink="/people/{{event.unique_id}}/{{event.user_slug}}">{{event.first_name}} {{event.last_name}}</a></h4>
+                                        <span *ngIf="(event.start_date_time | date:'longDate')==(event.end_date_time | date:'longDate')"><i class="fa fa-calendar"></i> {{event.start_date_time | date:'d MMM' }} From {{event.start_date_time | date:'shortTime' }}-{{event.end_date_time | date:'shortTime' }} </span>
+                                        <span *ngIf="(event.start_date_time | date:'longDate')!=(event.end_date_time | date:'longDate')"><i class="fa fa-calendar"></i> {{event.start_date_time | date:'d MMM' }} At {{event.start_date_time | date:'shortTime' }} - {{event.end_date_time | date:'d MMM' }} At {{event.end_date_time | date:'shortTime' }} </span>
+                                        <br>
+                                    </div>
+                                    <div class="col-sm-1 boeken-icon">
+                                        <div class="spot-search-dropdown">
+                                            <div class="dropdown">
+                                                <button class="btn btn-primary dropdown-toggle m-2" type="button" data-toggle="dropdown"></button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="javascript:void(0)" (click)="onEventEdit(event.id)" >Edit</a></li>
+                                                    <li><a href="javascript:void(0)" (click)="onEventDelete(event.id)">Delete</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <!-- <ul class="ratings">
+                                            <li><a href="#" (click)="selectSpot(spot.spot_id)" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i>Invite</a></li>
+                                            <li class="active"><a href="#">{{spot.avg_rating}}</a></li>
+                                        </ul> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <h5 *ngIf="((liked_spots | filter: searchText : fieldname).length == 0)&&((events | filter: searchText : eventfieldname).length == 0)" >No result found for "{{searchText}}"</h5>
+                        </div>
+                        <div id="myModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog modal-md">
+                              <!-- Modal content-->
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Invite Friends to {{this.spot_name}}</h4>
+                                    <button type="button" class="close" #closebutton data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- <div class="friend-check-form">
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                <div class="form-group required" data-type="text" data-required="true">
+                                                    <i id="check-btn" class="fa fa-search"></i>
+                                                    <input type="text" autocomplete="off" class="form-control" id="modal-name" value="" name="modal-name" placeholder="Search for friends">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1 spot-delen-btn">
+                                                <button class="btn-default" data-dismiss="modal" type="button">Done</button>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                    <div style="max-height: 325px;overflow-y: scroll;">
+                                        <p class="list-heading " id="tagged">INVITE PEOPLE</p>
+                                        <div class="friend-tag-text" id="friend-tag-text">
+                                            <span *ngFor="let friend of invite_friends">{{friend.first_name}} {{friend.last_name}}<a href="JavaScript:void(0)" (click)="removeFromTagList(friend.id)"><i class="fa fa-times times-icon"></i></a></span>
+                                        </div>
+                                        <p class="list-heading" id="suggesions">SUGGESTIONS</p>
+                                        <div *ngFor="let friend of friends">
+                                            <div class="friends-list" (click)="addTaglist(friend.id)">
+                                                <img style="height: 45px;width: 45px;border-radius: 45px;" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{friend.user_profile}}">
+                                                <span class="search-friend-name">{{friend.first_name}} {{friend.last_name}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer" *ngIf="this.invite_friends.length">
+                                    <button (click)="onSubmit()" type="submit" id="spinner-btn" class="btn-invite">
+                                        <i id="spinner-icon" class="fa fa-spin"></i>&nbsp;Invite
+                                      </button>
+                                </div>
+                              </div>
+                          
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <!--tab-3-->
+                </div>
+             </div>
+            <div class="col-lg-3">
+                <button *ngIf="this.tab_name=='groups'" id="group-btn"  data-toggle="modal" data-target="#groupModal" type="button" class="btn-default mt-6">maak groep</button>
+                <button *ngIf="this.tab_name=='spots'" (click)="onEventEdit('')" type="button" class="group-btn mt-6">maak event</button>
+                <button data-toggle="modal" id="event-button" data-target="#eventModal" class="hidden"></button>
+                <app-user-side-widget></app-user-side-widget>
+            </div>
+             <!--tab-content-->
+        </div>
+    </div>
+</section>
+<section class="model-section" >
+    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content modal-spot-popup2">
+                <button id="close-btn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <div class="modal-body spot-review-popup2">
+                    <span class="share"><i class="fa fa-calendar-plus-o"></i></span>
+                    <h2 class="deel"> {{(is_edit_event==false) ? 'Create' : 'Edit'}} Event</h2>
+                    <form [formGroup]="eventForm" (ngSubmit)="onEventSubmit()" >
+                        <div class="row">
+                            <div class="col-sm-12 event-popup-input">
+                                <div class="form-group" [ngClass]="{ 'has-error': event_submitted && ef.event_title.errors }">
+                                    <input type="text" formControlName="event_title"  class="form-control form-input-modal" placeholder="Event title"/>
+                                    <div *ngIf="event_submitted && ef.event_title.errors">
+                                        <span class="help-block">Event title is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-7 event-popup-input">                                
+                                <div class="form-group" [ngClass]="{ 'has-error': event_submitted && ef.start_date.errors }">
+                                    <input type="text" placeholder="Start Date" [minDate]="minDate" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', showWeekNumbers: false }"  #dp="bsDatepicker" bsDatepicker formControlName="start_date"  class="form-control form-input-modal form-input-date"/>
+                                    <div *ngIf="event_submitted && ef.start_date.errors">
+                                        <span class="help-block"  *ngIf="ef.start_date.errors.required">Start date is required</span>
+                                        <span class="help-block" *ngIf="ef.start_date.errors.bsDate">Invalid start date</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-5 event-popup-input">
+                                <div class="form-group" [ngClass]="{ 'has-error': event_submitted && ef.start_time.errors }">
+                                    <timepicker [minuteStep]="15"  [showSpinners]="true" [showMeridian]="false" formControlName="start_time"></timepicker>
+                                    <div *ngIf="event_submitted && ef.start_time.errors">
+                                        <span class="help-block">Start time is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-7 event-popup-input">                                
+                                <div class="form-group" [ngClass]="{ 'has-error': event_submitted && ef.end_date.errors }">
+                                    <input type="text" [minDate]="minDate" placeholder="End Date" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', showWeekNumbers: false }"  #dp="bsDatepicker" bsDatepicker formControlName="end_date"  class="form-control form-input-modal form-input-date"/>
+                                    <div *ngIf="event_submitted && ef.end_date.errors">
+                                        <span class="help-block">End date is required</span>
+                                        <span class="help-block" *ngIf="ef.end_date.errors.bsDate">Invalid end date</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-5 event-popup-input">
+                                <div class="form-group" [ngClass]="{ 'has-error': event_submitted && ef.end_time.errors }">
+                                    <timepicker [minuteStep]="15" [showSpinners]="true" [showMeridian]="false" formControlName="end_time"></timepicker>
+                                    <div *ngIf="event_submitted && ef.end_time.errors">
+                                        <span class="help-block" >End time is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group" *ngIf="this.error_status==true">
+                                    <span class="help-block">End date & time is greater than start date & time.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 event-popup-input">                                
+                                <div class="form-group" [ngClass]="{ 'has-error': event_submitted && ef.location.errors }">
+                                    <input type="text" formControlName="location"  class="form-control form-input-modal" placeholder="Location"/>
+                                    <div *ngIf="event_submitted && ef.location.errors">
+                                        <span class="help-block">Location is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">   
+                            <div class="col-sm-12 event-popup-input">
+                                <div class="form-group" [ngClass]="{ 'has-error': event_submitted && ef.event_description.errors }">
+                                    <textarea formControlName="event_description"  class="form-control form-input-modal" placeholder="Vertel iets over deze event"></textarea>
+                                    <div *ngIf="event_submitted && ef.event_description.errors">
+                                        <span class="help-block">Event description is required</span>
+                                    </div>
+                                </div>
+                            </div>           
+                        </div>
+                        <div class="row" *ngIf="this.groups.length">
+                            <div class="col-sm-12 form-group">
+                                <input formControlName="is_host_by_group" type="checkbox" /> Host by group                             
+                            </div>                                
+                        </div>                        
+                        <div class="row" *ngIf="this.mode==true">
+                            <div class="col-sm-12 event-popup-input">
+                                <div class="form-group">
+                                    <select formControlName="group" [(ngModel)]="selectedQuantity">                                        
+                                        <option *ngFor="let group of this.groups" [value]="group.id">{{group.group_name}}</option>                                        
+                                    </select>
+                                </div>
+                            </div>
+                        </div>                            
+                        <button type="submit" class="delen btn-share-modal">
+                            <i *ngIf="btnloading==true" class="fa fa-spin fa-spinner"></i>&nbsp;{{(is_edit_event==false) ? 'Create' : 'Update'}}
+                        </button>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <!-- <audio controls><source src="https://ibigo.shadowis.nl/server-api/public/spot_audio/audio1.mp3"></audio> -->
+</section>
+
+<!--============== END GROUP SECTION ===============-->

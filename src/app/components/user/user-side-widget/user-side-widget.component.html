@@ -1,0 +1,48 @@
+<div id="connect-id" class="connect-text">
+    <h3>Connect</h3>
+    <ul>
+        <li *ngFor="let user of recent_users">
+            <a routerLink="/people/{{user.unique_id}}/{{user.user_slug}}">
+                <img *ngIf="user.user_profile&&user.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{user.user_profile}}">
+                <img *ngIf="!user.user_profile" src="/assets/front-assets/images/pic1.png">
+                <img *ngIf="user.user_profile&&user.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{user.user_profile}}">
+                {{user.first_name}} {{user.last_name}}</a>
+        </li>        
+        <li *ngFor="let group of recent_groups">
+            <a routerLink="/group/{{group.group_unique_id}}/{{group.group_slug}}">            
+                <img *ngIf="!group.group_profile" src="/assets/front-assets/images/group_pic1.png">
+                <img *ngIf="group.group_profile" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{group.group_profile}}" alt="pic2">
+                {{group.group_name}}</a>
+        </li>
+    </ul>
+</div>
+<div class="form-calender">
+    <h3>Planning</h3>    
+    <ngx-fullcalendar (onEventMouseEnter)="eventMouseEnter($event)" (onEventClick)="eventClick($event)" (onDateClick)="dateClick($event)" defaultView="month" [events]="events" [options]="options"></ngx-fullcalendar>
+</div>
+<div class="amster-text">
+    <ul>
+        <li><span><i class="fa fa-map-marker"></i>Amsterdam</span>
+            <a href="#">Muziekfestival met familie</a>
+        </li>
+        <li><span><i class="fa fa-map-marker"></i>Amsterdam</span>
+            <a href="#">Diner met Schoolvrienden</a>
+        </li>
+        <li><span><i class="fa fa-map-marker"></i>Amsterdam</span>
+            <a href="#">Film met Schoolvrienden</a>
+        </li>
+    </ul>
+</div>
+<div class="katja-text" *ngIf="justcheckedin.length">
+    <h3>Je Vriend checkt gewoon in</h3>
+    <ul>                        
+        <li *ngFor="let post of justcheckedin">
+            <img src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{post.user_profile}}" alt="pic7">
+            <div>
+                <a routerLink="/people/{{post.unique_id}}/{{post.user_slug}}">{{post.user_name}} </a><span>op</span>
+                <a class="spot" routerLink="/spot/{{post.spot_unique_id}}/{{post.spot_slug}}">{{post.spot_name}}</a>
+                <span>{{post.checked_in_datetime}}</span>
+            </div>
+        </li>
+    </ul>
+</div>

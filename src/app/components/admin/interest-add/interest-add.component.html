@@ -1,0 +1,121 @@
+<app-header></app-header>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Fixed Layout
+        <small>Blank example to the fixed layout</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Layout</a></li>
+        <li class="active">Fixed</li>
+      </ol>
+    </section>
+    <section class="content">
+    <!-- Main content -->
+    
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-6 col-md-offset-3">
+              <!-- general form elements -->
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Add User</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form [formGroup]="interestForm" (ngSubmit)="onSubmit()">
+                  <div class="box-body">
+                    <div class="form-group"  [ngClass]="{ 'has-error': submitted && f.title.errors }">
+                      <label for="title" class="text-info" [ngClass]="{ 'control-label': submitted && f.title.errors }"><i [ngClass]="{ 'fa fa-times-circle-o': submitted && f.title.errors }"></i> Title</label><br>
+                      <input type="text" placeholder="Title" formControlName="title" class="form-control" />
+                          <div *ngIf="submitted && f.title.errors" >
+                              <span class="help-block" *ngIf="f.title.errors.required">Title is required</span>
+                          </div>
+                    </div>
+                    <div class="form-group" [ngClass]="{ 'has-error': submitted && f.fa_icon.errors }">
+                      <label for="icon" class="text-info" [ngClass]="{ 'control-label': submitted && f.fa_icon.errors }"><i [ngClass]="{ 'fa fa-times-circle-o': submitted && f.fa_icon.errors }"></i> Select Icon</label><br>
+                      <input type="text" class="form-control"  [(ngModel)]="searchText" formControlName="searchText"  placeholder="Search icon...">
+                      <div class="search-dropdown-list">
+                        <ul class="myUL" *ngIf="(fa_array | myfilter: searchText).length > 0;">
+                            <li *ngFor="let f of fa_array | myfilter: searchText; let i = index"><a href="javascript:void(0)" (click)="selectIcon(f)" >
+                                <div style="display: flex;">
+                                    <div>
+                                        <i class="fa {{f}}"></i>
+                                    </div>
+                                    <div>
+                                        <p class="fa-name">{{f}}</p>
+                                        <!-- <span>{{f}}</span> -->
+                                    </div>
+                                </div>
+                                 </a>
+                            </li>
+                        </ul>
+                        <ul class="myUL" *ngIf="(fa_array | myfilter: searchText).length==0" #noResult>
+                          <li><a href="javascript:void(0)" >
+                            <div style="text-align: center;">
+                                <div>
+                                    <p class="fa-name">No results found for "{{searchText}}"</p>
+                                </div>
+                            </div>
+                              </a>
+                          </li>
+                        </ul>
+                      </div>
+                      <label style="margin-top: 15px;" *ngIf="selectedIcon" for="icon" class="text-info" ><i ></i> Selected Icon</label>
+                      <ul *ngIf="selectedIcon" id="myselectedUL">
+                        <li>
+                          <a href="javascript:void(0)" >
+                            <div style="display: flex;">
+                                <div>
+                                    <i class="fa {{selectedIcon}}"></i>
+                                </div>
+                                <div>
+                                    <p class="fa-name">{{selectedIcon}}</p>
+                                    <!-- <span>{{f}}</span> -->
+                                </div>
+                            </div>
+                           </a>
+                        </li>
+                      </ul>
+                      <div *ngIf="submitted && f.fa_icon.errors" >
+                          <span class="help-block" *ngIf="f.fa_icon.errors.required">Icon is required</span>
+                      </div>
+                    </div>
+                    <div class="form-group" [ngClass]="{ 'has-error': submitted && f.file.errors }">
+                      <label for="file" class="text-info" [ngClass]="{ 'control-label': submitted && f.file.errors }"><i [ngClass]="{ 'fa fa-times-circle-o': submitted && f.file.errors }"></i> Image</label><br>
+                      <input 
+                          formControlName="file"
+                          id="file" 
+                          type="file" 
+                          class="form-control"
+                          (change)="onFileChange($event)">
+                          <div *ngIf="submitted && f.file.errors">
+                            <span class="help-block" *ngIf="f.file.errors.required">Image is required.</span>
+                        </div>
+                    </div>
+                    <div class="form-group" [ngClass]="{ 'has-error': submitted && f.description.errors }">
+                        <label for="description" class="text-info" [ngClass]="{ 'control-label': submitted && f.description.errors }"><i [ngClass]="{ 'fa fa-times-circle-o': submitted && f.description.errors }"></i> Description</label><br>
+                        <textarea class="form-control" formControlName="description" rows="3" placeholder="Description"></textarea>
+                        <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                            <span class="help-block" *ngIf="f.description.errors.required">Description is required</span>
+                        </div>
+                    </div>
+                    
+                  </div>
+                  <!-- /.box-body -->
+                  <div class="box-footer">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                  </div>
+                </form>
+                
+              </div>
+              <!-- /.box -->
+            </div>
+        </div>
+        <!-- /.row -->
+        
+    <!-- /.content -->
+    </section>
+  </div>

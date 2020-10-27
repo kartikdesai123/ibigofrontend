@@ -1,0 +1,60 @@
+.img-like{
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+}
+.boeken-icon {
+    position: absolute !important;
+    right: 7px !important;
+    top: 0;
+    bottom: 7px !important;
+}
+.boeken-icon ul.ratings2 {
+    margin:0 !important;
+    float: none !important;
+}
+.boeken-text-wrap {
+    padding-top: 14px !important;
+    padding-right: 0px !important;
+    margin-bottom: 15px !important;
+    padding-left: 29px !important;
+    padding-bottom: 14px !important;
+}
+.spot-music2-dropdown {
+    margin-right: 20px !important;
+}
+ul.ratings2 {
+    position: absolute;
+    bottom: -12px;
+    right: 15px !important;
+}
+@media only screen and (max-width: 991px) {
+.spot-music2-dropdown {
+    padding: 0 !important;
+    margin: 0 5px 0 0 !important;
+}
+}
+@media only screen and (max-width: 575px) {
+.boeken-text-wrap {
+    padding-right: 15px;
+}
+.plaat-img img {
+    width: 100% !important;
+    height: 200px;
+    padding-right: 15px;
+    padding-bottom: 10px;
+    object-fit: cover;
+}
+}
+.people-text h2{
+    font-family: 'Roboto', sans-serif;
+    font-size: 21px;
+    font-weight: 600;
+    color: #232981;
+}
+
+@media only screen and (min-width: 575px){
+	.filters-text h3 a {
+        display: none;
+    }
+}

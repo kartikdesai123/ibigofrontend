@@ -1,0 +1,204 @@
+<!--===== HEADER SECTION =====-->
+<app-user-header></app-user-header>
+<!--============== END KOFFIE SECTION ===============-->
+
+<!--===== GROUP SECTION =====-->
+<section class="wacht-section2">
+    <div class="container">
+        <div class="wacht-text">
+            <ul class="first">
+                <li><a routerLink="/user/homepage">Home <i class="fa fa-caret-right"></i></a></li>
+                <li><a class="active" href="#">Chat</a></li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 pb-3">
+                <div class="col-lg-12 chat-search">
+                    <h3>Recent Chat</h3>
+                    <form [formGroup]="searchRecent">
+                        <div data-type="text" data-required="true">
+                            <i id="chat-icon" class="fa fa-search"></i>
+                            <input  (keyup)="recentText($event)" type="text" class="form-control" value="" formControlName="searchText" placeholder="Search">
+                        </div>
+                    </form>                    
+                    <div class="col-lg-12 chat-text-wrap" *ngFor="let user of recent_chats | filter: searchText : fieldnamefriend; let i = index">
+                        <a routerLink="/message/{{user.unique_id}}/{{user.user_slug}}">
+                        <div class="row m-0">
+                            <div class="col-2 chat-img">
+                                <img style="border-radius: 100%;" width="37px" height="37px" *ngIf="user.user_profile&&user.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{user.user_profile}}">
+                                <img style="border-radius: 100%;" width="37px" height="37px" *ngIf="!user.user_profile" src="/assets/front-assets/images/pic1.png">
+                                <img style="border-radius: 100%;" width="37px" height="37px" *ngIf="user.user_profile&&user.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{user.user_profile}}">
+                            </div>
+                            <div class="col-8 chat-content">
+                                <h4>{{user.user_name}}</h4>
+                                <span>{{user.message}}</span>
+                            </div>
+                            <!-- <div class="col-2 chat-img2">
+                                <img src="/assets/front-assets/images/icon18.png" alt="icon18">
+                            </div> -->
+                        </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div id="chat-search-id" class="col-lg-12 chat-search">
+                    <h3>Friends</h3>
+                    <form [formGroup]="searchFriend">
+                        <div data-type="text" data-required="true">
+                            <i id="chat-icon" class="fa fa-search"></i>
+                            <input  (keyup)="friendText($event)" type="text" class="form-control" id="search-friend-chat-name" value="" formControlName="searchFriend" placeholder="Search Friends">
+                        </div>
+                    </form>
+                    <div class="col-lg-12 chat-text-wrap" *ngFor="let user of friend_chats | filter: searchFriendText : fieldnamefriend; let i = index">
+                        <a routerLink="/message/{{user.unique_id}}/{{user.user_slug}}">
+                        <div class="row m-0">
+                            <div class="col-2 chat-img">
+                                <img style="border-radius: 100%;" width="37px" height="37px" *ngIf="user.user_profile&&user.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{user.user_profile}}">
+                                <img style="border-radius: 100%;" width="37px" height="37px" *ngIf="!user.user_profile" src="/assets/front-assets/images/pic1.png">
+                                <img style="border-radius: 100%;" width="37px" height="37px" *ngIf="user.user_profile&&user.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{user.user_profile}}">
+                            </div>
+                            <div class="col-8 chat-content">
+                                <h4>{{user.user_name}}</h4>
+                                <span *ngIf="user.message">{{user.message}}</span>
+                            </div>
+                            <!-- <div class="col-2 chat-img2">
+                                <img src="/assets/front-assets/images/icon18.png" alt="icon18">
+                            </div> -->
+                        </div>
+                        </a>
+                    </div>                    
+                </div>
+
+                <!-- <div id="chat-search-id" class="col-lg-12 chat-search">
+                    <h3>Group</h3>
+                        <div class="form-group required" data-type="text" data-required="true">
+                            <i id="chat-icon" class="fa fa-search"></i>
+                            <input type="text" class="form-control" id="chat-name" value="" name="search_name" placeholder="Search Group">
+    
+                    </div>
+                    <div class="col-lg-12 chat-text-wrap">
+                        <div class="col-lg-2 chat-img">
+                            <img src="/assets/front-assets/images/pic12.png" width="37px" height="37px" alt="pic12">
+                        </div>
+                        <div class="col-lg-8 chat-content">
+                            <h4>Sinan Ros</h4>
+                            <span>Hi</span>
+                        </div>
+                        <div class="col-lg-2 chat-img2">
+                            <img src="/assets/front-assets/images/icon18.png" alt="icon18">
+                        </div>
+                    </div>
+                    <div class="col-lg-12 chat-text-wrap">
+                        <div class="col-lg-2 chat-img">
+                            <img src="/assets/front-assets/images/pic14.png" width="37px" height="37px" alt="pic14">
+                        </div>
+                        <div class="col-lg-10 chat-content">
+                            <h4>Arno Papen</h4>
+                            <span>Hellow</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 chat-text-wrap">
+                        <div class="col-lg-2 chat-img">
+                            <img src="/assets/front-assets/images/pic15.png" width="37px" height="37px" alt="pic15">
+                        </div>
+                        <div class="col-lg-10 chat-content">
+                            <h4>Femmy Blankestjn</h4>
+                            <span>Ok</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 chat-text-wrap">
+                        <div class="col-lg-2 chat-img">
+                            <img src="/assets/front-assets/images/pic16.png" width="37px" height="37px" alt="pic16">
+                        </div>
+                        <div class="col-lg-8 chat-content">
+                            <h4>Ralph Overeem</h4>
+                            <span>Bye</span>
+                        </div>
+                        <div class="col-lg-2 chat-img2">
+                            <img src="/assets/front-assets/images/icon18.png" alt="icon18">
+                        </div>
+                    </div>
+                    <div class="col-lg-12 chat-text-wrap">
+                        <div class="col-lg-2 chat-img">
+                            <img src="/assets/front-assets/images/pic9.png" width="37px" height="37px" alt="pic9">
+                        </div>
+                        <div class="col-lg-10 chat-content">
+                            <h4>Murad Boerhof</h4>
+                            <span>Nice</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 chat-text-wrap">
+                        <div class="col-lg-2 chat-img">
+                            <img src="/assets/front-assets/images/pic11.png" width="37px" height="37px" alt="pic11">
+                        </div>
+                        <div class="col-lg-10 chat-content">
+                            <h4>Guiseppe van Waes</h4>
+                            <span>Hi</span>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+            <!--col-lg-3-->
+            <div class="col-lg-6 pb-3">
+                <div class="chat-history" *ngIf="(another_user | json) != '{}'">
+                    <ul>
+                        <li>
+                            <img *ngIf="another_user?.user_profile&&another_user?.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{another_user?.user_profile}}">
+                            <img *ngIf="!another_user?.user_profile" src="/assets/front-assets/images/pic1.png">
+                            <img *ngIf="another_user?.user_profile&&another_user?.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{another_user?.user_profile}}">
+                            <!-- <img src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{another_user?.user_profile}}" alt="pic2"> -->
+                            <div>
+                                <a href="#">{{another_user?.first_name}} {{another_user?.last_name}}</a>
+                                <span *ngIf="this.user_status==1">online</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="chat-history-content" #scrollMe>
+                        <div *ngFor="let message of messages | keyvalue">
+                            <span class="chatdate">{{message.key | date:'d LLLL y'}}</span>
+                            <div *ngFor="let m of message.value"  [ngClass]="(m.from_user_id!=logged_in_user_id)?'chat-history-left':'chat-history-right'" >
+                                <div>
+                                    <!-- <h3 *ngIf="m.from_user_id!=logged_in_user_id">{{m.from_user_name}}</h3> -->
+                                    <p>{{m.message}}</p>
+                                </div>
+                                <span>{{m.message_date_time |  date:'shortTime'}}</span>
+                            </div>
+                            <!-- <div class="chat-history-right" *ngIf="m.from_user_id==logged_in_user_id">
+                                <div>
+                                    <p>{{m.message}}</p>
+                                </div>
+                                <span>{{m.message_date_time | date:'shortTime'}}</span>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="chat-type">
+                        <form class="form" [formGroup]="chatForm" (ngSubmit)="onClick()" autocomplete="off">
+
+                            <div class="form-group m-0">
+                                <div class="col-lg-12 chat-type-input">
+                                    <input type="text" formControlName="message" class="form-control" id="name1" placeholder="Type Here">
+                                </div>
+                            </div>
+                            <div class="form-group chat-btn-group">
+                                <button id="btn1" type="submit" class="btn btn-default">bbb</button>
+                                <button id="btn2" type="submit" class="btn btn-default">Btn2</button>
+                                <button id="btn3" type="submit" class="btn btn-default">Btn3</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div *ngIf="(another_user|json) == '{}'" style="height: 500px;display: flex;align-items: center;text-align: center;justify-content: center;">
+                    <div>
+                        <i style="display: block;color: #262b86;" class="fa fa-comments-o fa-3x"></i>
+                        <span style="font-family: 'Montserrat', sans-serif;">Start chat</span>
+                    </div>
+                </div>
+            </div>
+            <!--col-lg-6-->
+            <div class="col-lg-3">
+                <app-user-side-widget></app-user-side-widget>
+            </div>
+            <!--col-lg-3-->
+        </div>
+    </div>
+</section>

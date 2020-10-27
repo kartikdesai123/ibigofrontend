@@ -1,0 +1,99 @@
+<app-header></app-header>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Data Tables
+        <small>advanced tables</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Tables</a></li>
+        <li class="active">Data tables</li>
+      </ol>
+    </section>
+    <section class="content">
+        <div class="container">
+           <div class="row">
+              <div class="col-lg-12 spot-profile-group">
+                 <div class="cover-div">
+                     <img *ngIf="this.group?.group_profile!=null" alt="group-bg2" class="cover-bg  responsive" id="cover-background" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{this.group?.group_profile}}">
+                     <img *ngIf="this.group?.group_profile==null" alt="group-bg2" class="cover-bg  responsive" src="/assets/front-assets/images/group-bg.png">
+                </div>
+                 <button class="uploadbtn hidden" id="imageupload" type="submit"> Upload </button>
+                 <div class="col-lg-5 spot-profile2-content">
+                    <div class="spot-pic-content2" id="spot-pic-content2">
+                       <h3>{{this.group?.group_name}}</h3>
+                       <span>{{this.group_members?.length}} Members</span>
+                    </div>
+                 </div>                 
+              </div>
+           </div>
+           <div class="row">
+              <div class="col-lg-12">
+               <div class="spot-pic-nav">
+                 <div class="col-lg-12 spot-profile-nav2">
+                    <ul>
+                       <!-- <li><a href="#"><i aria-hidden="true" class="fa fa-thumbs-up"></i>{{this.reviews_count}}<br><span>Review</span></a></li>
+                       <li><a href="#"><i aria-hidden="true" class="fa fa-users"></i>{{this.group_members.length}}<br><span>Members</span></a></li> -->
+                    </ul>
+                 </div>
+               </div>
+              </div>
+           </div>
+           <!---->
+           <div class="modal fade" id="myLikedModal" role="dialog">
+              <div class="modal-dialog modal-md">
+                 <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Liked By</h4>
+                       <button class="close" data-dismiss="modal" type="button">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                       <div style="max-height: 325px;overflow-y: scroll;">
+                          <!---->
+                          <div *ngFor="let u of this.group_members">
+                             <div class="friends-list">
+                                 <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="u.user_profile&&u.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{u.user_profile}}">
+                                 <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="!u.user_profile" src="/assets/front-assets/images/pic1.png">
+                                 <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="u.user_profile&&u.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{u.user_profile}}">
+                                <span class="search-friend-name">{{u.first_name}} {{u.last_name}}</span></div>
+                          </div>
+                       </div>
+                    </div>
+                    <!---->
+                 </div>
+              </div>
+           </div>
+           <div class="row">
+             <div class="col-lg-12 ">
+               <div class="spot-profile2-nav" style="margin-top: 0;">
+                <div class="col-lg-12 spot-friends-spot" *ngIf="group_members?.length">
+                   <div class="col-lg-9 spot-friends-nav2"><a href="#">Door Vrienden geliked</a></div>
+                   <div class="col-lg-3 spot-friends-nav3"><a data-target="#myLikedModal" data-toggle="modal" href="javascript:void(0)">Alles zien</a></div>
+                   <ul>
+                      <!---->
+                      <li *ngFor="let u of this.group_members"><a href="#">
+                        <img *ngIf="u.user_profile&&u.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{u.user_profile}}">
+                        <img *ngIf="!u.user_profile" src="/assets/front-assets/images/pic1.png">
+                        <img *ngIf="u.user_profile&&u.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{u.user_profile}}">{{u.first_name}}</a></li>
+                      <!---->
+                   </ul>
+                </div>
+                <div class="col-lg-12 spot-friends-spot" *ngIf="users_requests?.length">
+                   <div class="col-lg-7 spot-friends-nav2"><a href="javascript:void(0)">Review</a></div>
+                   <div class="col-lg-5 spot-friends-nav3"><a href="javascript:void(0)">Bekijk alle reviews</a></div>
+                   <ul>
+                      <!---->
+                      <li *ngFor="let u of this.users_requests"><a href="#">
+                        <img *ngIf="u.user_profile&&u.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{u.user_profile}}">
+                        <img *ngIf="!u.user_profile" src="/assets/front-assets/images/pic1.png">
+                        <img *ngIf="u.user_profile&&u.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{u.user_profile}}">{{u.first_name}}</a><span>{{u.rating}}</span></li>
+                      <!---->
+                   </ul>
+                </div>
+              </div>
+            </div>
+           </div>
+        </div>
+     </section>

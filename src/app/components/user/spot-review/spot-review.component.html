@@ -1,0 +1,268 @@
+<!--===== HEADER SECTION =====-->
+<app-user-header></app-user-header>
+<!--============== END HEADER SECTION ===============-->
+<div class="loading" *ngIf="this.loading==true">Loading&#8230;</div>
+<!--===== KOFFIE SECTION =====-->
+<!--============== END KOFFIE SECTION ===============-->
+
+<!--===== GROUP SECTION =====-->
+<section class="group-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 spot-profile-group">
+                
+                    
+                    <div class="cover-div">
+                        <img class="cover-bg  responsive" id="cover-background" [src]="imgURL" alt="group-bg2">
+                    </div>
+                        <button id="imageupload" type="submit" class="uploadbtn hidden"> Upload </button>
+                
+                <div class="col-lg-2 spot-profile2-pic">
+                    <img class="profile-img"  src="{{this.spot_profile}}" alt="pic29">
+                </div>
+                <div class="col-lg-5 spot-profile2-content">
+                    <div id="spot-pic-content2" class="spot-pic-content2">
+                        <h3>{{this.spot_name}}</h3>
+                        <span>{{this.full_address}}</span>
+                    </div>
+                </div>
+                <div class="col-lg-5 spot-profile2-rating">
+                    <div class="spot-pic-rating">
+                        <span>{{this.avg_rating}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-row">
+            <div class="col-lg-12 spot-pic-nav">
+                <div class="col-lg-6 spot-profile-nav2">
+                    <ul>
+                        <li><a routerLink="/spot-reviews/{{this.unique_spot_id}}/{{this.spot_slug}}"><i class="fa fa-thumbs-up" aria-hidden="true"></i>{{this.reviews_count}}<br><span>Review</span></a></li>
+                        <li><a href="javascript:void(0)"><i class="fa fa-users" aria-hidden="true"></i>{{this.is_connected_count}}<br><span>Connected</span></a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-6 spot-pic-nav3">
+                    <ul>
+                        
+                        <!-- <li *ngIf="this.first_name"><a class="active" href="javascript:void(0)" (click)="onLikeOrConnect('like-spot',this.spot_id)"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span *ngIf="is_liked==0||is_liked==null">Leuk vinden</span><span *ngIf="is_liked==1">Liked</span></a></li>
+                        <li><a class="active" href="javascript:void(0)" ><i class="fa fa-user" aria-hidden="true"></i>Nodig vrienden uit</a></li>
+                        <li *ngIf="this.first_name"><a class="active" href="javascript:void(0)" (click)="onLikeOrConnect('connect-spot',this.spot_id)"><i class="fa fa-link" aria-hidden="true"></i><span *ngIf="is_connected==0||is_connected==null">Connect</span><span *ngIf="is_connected==1">Connected</span></a></li> -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-md">
+          
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Invite Friends to {{this.spot_name}}</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <!-- <div class="friend-check-form">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="form-group required" data-type="text" data-required="true">
+                                    <i id="check-btn" class="fa fa-search"></i>
+                                    <input type="text" autocomplete="off" class="form-control" id="modal-name" value="" name="modal-name" placeholder="Search for friends">
+                                </div>
+                            </div>
+                            <div class="col-md-1 spot-delen-btn">
+                                <button class="btn-default" data-dismiss="modal" type="button">Done</button>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div style="max-height: 325px;overflow-y: scroll;">
+                        <p class="list-heading " id="tagged">INVITE PEOPLE</p>
+                        <div class="friend-tag-text" id="friend-tag-text">
+                            <span *ngFor="let friend of invite_friends">{{friend.first_name}} {{friend.last_name}}<a href="JavaScript:void(0)" (click)="removeFromTagList(friend.id)"><i class="fa fa-times times-icon"></i></a></span>
+                        </div>
+                        <p class="list-heading" id="suggesions">SUGGESTIONS</p>
+                        <div *ngFor="let friend of friends">
+                            <div class="friends-list" (click)="addTaglist(friend.id)">
+                                <img style="height: 45px;width: 45px;border-radius: 45px;" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{friend.user_profile}}">
+                                <span class="search-friend-name">{{friend.first_name}} {{friend.last_name}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" *ngIf="this.invite_friends.length">
+                    <button (click)="onSubmit()" type="submit" id="spinner-btn" class="btn-invite">
+                        <i id="spinner-icon" class="fa fa-spin"></i>&nbsp;Invite
+                      </button>
+                </div>
+              </div>
+          
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="rating-wrap" *ngFor="let review of reviews">
+                    <div class="spot-text3-dropdown" *ngIf="review.user_id==logged_in_user_id">
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="javascript:void(0)" data-toggle="modal" data-target="#myReviewModal">Edit</a></li>
+                                <li><a href="javascript:void(0)" (click)="deleteReview()">Delete</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="rating-user-img">
+                        <img src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{review.user_profile}}" alt="img5">
+                    </div>
+                    <div class="post-gallery" id="post-gallery{{this.review_id}}">
+                        <span class="post-gallery-close" (click)="closeImageVideo(this.review_id)"><i class="fa fa-times"></i></span>
+                        <div id="carousel-example-generic{{this.review_id}}" class="carousel slide carousel-example-generic" data-ride="carousel">
+                            <div class="carousel-inner" role="listbox" >
+                                    <div *ngFor="let pv of photos_videos ;let i = index"  class="item" [ngClass]="(i==this.photo_index)?'active':''"  >
+                                        <img *ngIf="pv.includes('png','jpeg','jpg','tiff','pjp','pjpeg','jfif','tif','gif','svg','bmp','svgz','webp','ico','xbm','dib')" src="https://ibigo.shadowis.nl/server-api/public/spot_review_images/{{pv}}" alt="img3" >
+                                        <video *ngIf="pv.includes('mp4','ogm','wmv','mpg','webm','ogv','mov','asx','mpeg','m4v','avi')" controls>
+                                            <source  src="https://ibigo.shadowis.nl/server-api/public/spot_review_videos/{{pv}}" type="video/mp4">
+                                        </video>
+                                    </div>
+                             </div>
+                            <a class="left carousel-control" href="#carousel-example-generic{{this.review_id}}" role="button" data-slide="prev">
+                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            </a>
+                            <a class="right carousel-control" href="#carousel-example-generic{{this.review_id}}" role="button" data-slide="next">
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="rating-user-detail">
+                        <h3><a routerLink="/people/{{review.unique_id}}/{{review.user_slug}}">{{review.first_name}} {{review.last_name}}</a></h3>
+                        <ul class="rating-date" >
+                            <li class="rating-box" *ngIf="review.rating">
+                                <span>{{review.rating}}/5 <i class="fa fa-star"></i></span>
+                            </li>
+                            <li>
+                                <span>{{review.review_date_time}}</span>
+                            </li>
+                        </ul>
+                        <p *ngIf="review.review">{{review.review}}</p>
+                    </div>
+                    <div class="col-lg-12 spot-gallery-img" *ngIf="review.review_photos_videos.length>0">
+                        <ul>
+                            <li *ngFor="let pv of review.review_photos_videos ;let i = index" (click)="openImageVideo(this.review.id,this.pv)">
+                                <div class="last-post" *ngIf="i<=10">
+                                    <span *ngIf="this.review.review_photos_videos.length >= 12"><a *ngIf="i==10" class="plus-post" ><span class="pp-plus">+ {{review.review_photos_videos.length-11}}</span></a></span>
+                                    <img class="img-responsive" *ngIf="pv.includes('png','jpeg','jpg','tiff','pjp','pjpeg','jfif','tif','gif','svg','bmp','svgz','webp','ico','xbm','dib')" src="https://ibigo.shadowis.nl/server-api/public/spot_review_images/{{pv}}" />
+                                    <video class="video-responsive" *ngIf="pv.includes('mp4','ogm','wmv','mpg','webm','ogv','mov','asx','mpeg','m4v','avi')" src="https://ibigo.shadowis.nl/server-api/public/spot_review_videos/{{pv}}" controls></video>
+                                </div>
+                                
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-12 spot-heart" *ngIf="can_reply==true||review.replies.length>0">
+                        <div class="col-lg-12 spot-heart3">
+                            <a href="javascript:void(0)" (click)="clickEvent(this.review.id)" class="comment-btn"><img src="/assets/front-assets/images/icons/icon6.png" alt="icon6"><span *ngIf="review.replies.length>1">{{review.replies.length}} replies</span><span *ngIf="review.replies.length==1">{{review.replies.length}} reply</span></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 post-comment" id="post-comment{{review.id}}"><!-- active -->
+                        <div class="comment-box">
+                            <div class="all-comment">
+                                <ul>
+                                    <li class="active1" *ngFor="let reply of review.replies">
+                                        <span class="comment-profile"><img src="{{this.spot_profile}}" alt="pic27"></span>
+                                        <div class="comment-wrap">
+                                            
+                                            <div class="comment-detail" id="comment-detail{{this.reply.id}}"> <!-- active -->
+                                                <a routerLink="/spot/{{this.unique_spot_id}}/{{this.spot_slug}}" class="comment-name">{{this.spot_name}} . <span>{{reply.review_date_time | date:'longDate' }} {{reply.review_date_time | date:'shortTime' }}</span></a>
+                                                <span class="comment-text">{{reply.review}}</span>
+                                                <form [formGroup]="commentEditForm" (ngSubmit)="onCommentEditSubmit(this.reply.id)">
+                                                    <input formControlName="comment" class="comment-input-inner" id="comment-input{{this.reply.id}}" autocomplete="off" type="text" name="comment" placeholder="Update a comment...">
+                                                    <div class="hidden cancel-btn" id="cancel-btn{{this.reply.id}}">
+                                                        <span>Press ESC to </span><span class="only-cancel" (click)="onCancel(this.reply.id)" >cancel</span>
+                                                    </div>
+                                                </form>
+                                                <!-- <span class="cancel-edit-comment">cancel</span> -->
+                                                <span class="comment-menu-icon" *ngIf="can_reply==true" id="comment-menu-icon{{this.reply.id}}"><i class="fa fa-ellipsis-h" (click)="onOpenModal(this.reply.id)"></i></span>
+                                                <ul class="comment-box-option">
+                                                    <li><a href="javascript:void(0)" (click)="editComment(this.reply.id,this.reply.review)" class="comment-edit">Edit</a></li>
+                                                    <li><a href="javascript:void(0)" (click)="deleteComment(this.reply.id)"  class="comment-delete">Delete</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="write-comment" *ngIf="can_reply==true&&review.replies.length<1">
+                                <form [formGroup]="commentForm" (ngSubmit)="onCommentSubmit(this.review.id)" class="comment-form">
+                                    <div class="comment-input">
+                                        <span class="comment-profile"><img src="{{this.user_profile}}" alt="pic27"></span>
+                                        <input formControlName="comment" autocomplete="off" type="text" name="comment" placeholder="Write a comment...">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rating-wrap" *ngIf="!reviews.length">
+                   <div class="col-lg-12 text-center">
+                        <p>No reviews</p>
+                   </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="model-section">
+    <div class="modal fade" id="myReviewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content modal-spot-popup">
+                <button id="close-btn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <div class="modal-body spot-review-popup">
+                    <span><i class="fa fa-star"></i></span>
+                    <h2>Beoordeling Spot</h2>
+                    <p>{{this.business_name}}</p>
+                    <form [formGroup]="reviewForm" (ngSubmit)="onReviewSubmit()">
+                    <img src="{{this.spot_profile}}" alt="img1">
+                    <div class="col-lg-12 spot-popup-input2">
+                       <textarea formControlName="review" id="form-input1" class="form-control" placeholder="Vertal je ervaring"></textarea>
+                    </div>
+                    <hr>
+                    
+                    <h4>Beoordeel uw ervaring!</h4>
+                    <div class="rate-box">
+                        <fieldset class="rate" >
+                            <input type="radio" id="rating10" formControlName="rating"  [value]="'5.0'" /><label id="rating_lable10" for="rating10" title="5"></label>
+                            <input type="radio" id="rating9" formControlName="rating"  [value]="'4.5'" /><label id="rating_lable9" class="half" for="rating9" title="4.5"></label>
+                            <input type="radio" id="rating8" formControlName="rating"  [value]="'4.0'" /><label id="rating_lable8" for="rating8" title="4"></label>
+                            <input type="radio" id="rating7" formControlName="rating"  [value]="'3.5'" /><label id="rating_lable7" class="half" for="rating7" title="3.5"></label>
+                            <input type="radio" id="rating6" formControlName="rating"  [value]="'3.0'" /><label id="rating_lable6" for="rating6" title="3"></label>
+                            <input type="radio" id="rating5" formControlName="rating"  [value]="'2.5'" /><label id="rating_lable5" class="half" for="rating5" title="2.5"></label>
+                            <input type="radio" id="rating4" formControlName="rating"  [value]="'2.0'" /><label id="rating_lable4" for="rating4" title="2"></label>
+                            <input type="radio" id="rating3" formControlName="rating"  [value]="'1.5'" /><label id="rating_lable3" class="half" for="rating3" title="1.5"></label>
+                            <input type="radio" id="rating2" formControlName="rating"  [value]="'1.0'" /><label id="rating_lable2" for="rating2" title="1"></label>
+                            <input type="radio" id="rating1" formControlName="rating"  [value]="'0.5'" /><label id="rating_lable1" class="half" for="rating1" title="0.5"></label>
+                        </fieldset>
+                    </div>
+                      
+                    <h5 class="upload">Upload afbeelding en video</h5>
+                    <div class="popup-uploadvideo">
+                    <ul>
+                        
+                    <li><input class="hidden"  #image_video type='file' accept="image/*,video/*" (change)="onSelectFile($event)" multiple/><a href="JavaScript:void(0)" (click)="image_video.click()"><img src="/assets/front-assets/images/popup-img/select-icon3.png" alt="icon3"></a></li>
+                    <!-- <li><a href="#"><img src="/assets/front-assets/images/popup-img/select-icon4.png" alt="icon4"></a></li> -->
+                    <li *ngFor="let list of mydata;let i = index"><img class="image-video" *ngIf="list.type == 'img'" [src]="list.url" />
+                        <video class="image-video" *ngIf="list.type == 'video'" [src]="list.url" controls></video><a href="JavaScript:void(0)" (click)="onRemoveFile(list.id)"><i class="fa fa-close"></i></a>
+                    </li>
+                    <li *ngFor="let list of dbfiles;let i = index"><img class="image-video" *ngIf="list.includes('png','jpeg','jpg','tiff','pjp','pjpeg','jfif','tif','gif','svg','bmp','svgz','webp','ico','xbm','dib')" src="https://ibigo.shadowis.nl/server-api/public/spot_review_images/{{list}}" />
+                        <video class="image-video" *ngIf="list.includes('mp4','ogm','wmv','mpg','webm','ogv','mov','asx','mpeg','m4v','avi')" src="https://ibigo.shadowis.nl/server-api/public/spot_review_videos/{{list}}" controls></video><a href="JavaScript:void(0)" (click)="onRemoveFileFromDB(list)"><i class="fa fa-close"></i></a>
+                    </li>   
+                    </ul>
+                    </div>
+                    <button type="submit" id="review-btn"  class="delen btn-share-modal">
+                        <i id="review-icon" class="fa fa-spin"></i>&nbsp;Delen
+                      </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+   </section>
+<!--============== END GROUP SECTION ===============-->
+

@@ -1,0 +1,107 @@
+button#group-btn-planning {
+    background: #bb8d51;
+    width: 100%;
+    display: block;
+    margin: 0px auto;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    text-transform: uppercase;
+    padding: 14px;
+    margin-bottom: 17px;
+}
+.list-text > ul li img{
+    object-fit: cover;
+    width: 64px;
+    height: 64px;
+    border-radius: 100%;
+}
+
+/* .list-text > ul li a span{
+    margin-left: 15px;
+} */
+
+.list-text li {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.list-text li div {
+    margin-left: 15px;
+}
+.list-text div span{
+    font-family: 'Montserrat', sans-serif;
+}
+.spot-heart{        
+    display: block;
+    margin-left: auto;
+    line-height: 64px;
+    font-size: 25px !important;
+    cursor: pointer;
+    -webkit-text-stroke-color: #ed2228;
+    color: #ed2228;
+    -webkit-text-stroke-width: medium;    
+}
+.spot-heart:hover{
+    -webkit-text-stroke-color: #ddd;
+    color: #fff;
+    -webkit-text-stroke-width: medium;    
+}
+
+.fa-spot-heart{
+    display: block;
+    margin-left: auto;
+    line-height: 64px;
+    font-size: 25px !important;
+    cursor: pointer;
+    -webkit-text-stroke-color: #ddd;
+    color: #fff;
+    -webkit-text-stroke-width: medium;
+}
+.fa-spot-heart:hover{
+    -webkit-text-stroke-color: #ed2228;
+    color: #ed2228;
+    -webkit-text-stroke-width: medium;    
+}
+.friend-check-form input{
+    padding-left: 35px;
+}
+.friend-check-another-form input {
+    background: #fff;
+    height: 44px;
+    border: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 0px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #000;
+    box-shadow: inset 0 0px 0px rgba(0,0,0,.075);
+}
+
+.event-popup-input select{
+    display: block;
+    outline-width: 0;
+    padding: 10px;
+    margin-bottom: 15px;
+    width: 100%;
+    height: 44px !important;
+    border: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: url(../../../../assets/front-assets/images/popup-img/select-icon1.png) right center no-repeat;
+    background-position: right 15px center;
+    background-color: #ffffff;
+    color: #040404;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 19px !important;
+    appearance: none;
+    -webkit-appearance: none;
+}

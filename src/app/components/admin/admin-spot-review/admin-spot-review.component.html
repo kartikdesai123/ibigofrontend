@@ -1,0 +1,90 @@
+<app-header></app-header>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Data Tables
+        <small>advanced tables</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Tables</a></li>
+        <li class="active">Data tables</li>
+      </ol>
+    </section>
+    <section class="content">
+        <div class="container">
+           <div class="row">
+              <div class="col-lg-12 spot-profile-group">
+                 <div class="cover-div"><img alt="group-bg2" class="cover-bg  responsive" id="cover-background" src="{{this.imgURL}}"></div>
+                 <button class="uploadbtn hidden" id="imageupload" type="submit"> Upload </button>
+                 <div class="col-lg-2 spot-profile2-pic"><img alt="pic29" class="profile-img" src="{{this.spot_profile}}"></div>
+                 <div class="col-lg-5 spot-profile2-content">
+                    <div class="spot-pic-content2" id="spot-pic-content2">
+                       <h3>{{this.business_name}}</h3>
+                       <span>{{this.full_address}}</span>
+                    </div>
+                 </div>
+                 <div class="col-lg-5 spot-profile2-rating">
+                    <div class="spot-pic-rating"><span style="cursor: pointer;">{{this.avg_rating}}</span><button class="hidden" data-target="#myReviewModal" data-toggle="modal" id="reviewModal"></button></div>
+                 </div>
+              </div>
+           </div>
+           <div class="row">
+              <div class="col-lg-12">
+               <div class="spot-pic-nav">
+                 <div class="col-lg-12 spot-profile-nav2">
+                    <ul>
+                       <li><a href="#"><i aria-hidden="true" class="fa fa-thumbs-up"></i>{{this.reviews_count}}<br><span>Review</span></a></li>
+                       <li><a href="#"><i aria-hidden="true" class="fa fa-users"></i>{{this.is_connected_count}}<br><span>Connected</span></a></li>
+                    </ul>
+                 </div>
+               </div>
+              </div>
+           </div>
+           <!---->
+           <div class="row">
+                <div class="col-sm-12">
+                    <div class="rating-wrap col-lg-12" *ngFor="let review of reviews">
+                        <span class="rating-delete" (click)="delete(review.id)"><i class="fa fa-trash"></i></span>
+                        <!-- <div class="spot-text3-dropdown2">
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"></button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Spot 1</a></li>
+                                    <li><a href="#">Spot 2</a></li>
+                                    <li><a href="#">Spot 3</a></li>
+                                </ul>
+                            </div>
+                        </div> -->
+                        <div class="rating-user-img">
+                            <img src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{review.user_profile}}" alt="img5">
+                        </div>
+                        <div class="rating-user-detail">
+                            <h3>{{review.first_name}} {{review.last_name}}</h3>
+                            <ul class="rating-date">
+                                <li class="rating-box" *ngIf="review.rating">
+                                    <span>{{review.rating}}/5&nbsp;<i class="fa fa-star"></i>&nbsp;</span>
+                                </li>
+                                <li>
+                                    <span>{{review.review_date_time}}</span>
+                                </li>
+                            </ul>
+                            <p>{{review.review}}</p>
+                        </div>
+                        <div class="col-lg-12 spot-gallery-img" *ngIf="review.review_photos_videos.length>0">
+                            <ul>
+                                <li *ngFor="let pv of review.review_photos_videos ;let i = index">
+                                    <div class="last-post" >
+                                        <img class="img-responsive" *ngIf="pv.includes('png','jpeg','jpg','tiff','pjp','pjpeg','jfif','tif','gif','svg','bmp','svgz','webp','ico','xbm','dib')" src="https://ibigo.shadowis.nl/server-api/public/spot_review_images/{{pv}}" />
+                                        <video class="video-responsive" *ngIf="pv.includes('mp4','ogm','wmv','mpg','webm','ogv','mov','asx','mpeg','m4v','avi')" src="https://ibigo.shadowis.nl/server-api/public/spot_review_videos/{{pv}}" controls></video>
+                                    </div>
+                                    
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </section>

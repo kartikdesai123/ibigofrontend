@@ -1,0 +1,339 @@
+<app-user-header></app-user-header>
+<section class="wacht-section2">
+    <div class="container">
+        <div class="wacht-text">
+            <ul class="first">
+                <li><a routerLink="/user/homepage">Home <i class="fa fa-caret-right"></i></a></li>
+                <!-- <li><a href="#">To Do List <i class="fa fa-caret-right"></i></a></li> -->
+                <li><a id="active_tab_name" href="#"></a></li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 pb-3">
+                <div class="wacht-text">
+                    <ul class="second">
+                        <li id="li_planning"><a href="#planning" (click)="changeTab('planning')" data-toggle="tab">Planning</a></li>
+                        <li id="li_go-list"><a href="#go-list" (click)="changeTab('go-list')" data-toggle="tab">Go List</a></li>
+                        <li><a href="#">Kalender</a></li>
+                    </ul>
+                </div>
+                <div id="form-calender" class="form-calender">
+                    <table class="table-condensed table-bordered">
+                        <thead>
+                            <tr>
+                                <th colspan="12">
+                                    <span class="btn-group">
+                                        <a class="btn"><i class="fa fa-angle-left"></i></a>
+                                        <a class="btn">November 2019</a>
+                                        <a class="btn"><i class="fa fa-angle-right"></i></a>
+                                    </span>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>S</th>
+                                <th>M</th>
+                                <th>T</th>
+                                <th>W</th>
+                                <th>T</th>
+                                <th>F</th>
+                                <th>S</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="muted"></td>
+                                <td class="muted"></td>
+                                <td class="muted"></td>
+                                <td></td>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td class="overlay">5</td>
+                                <td>6</td>
+                                <td>7</td>
+                                <td>8</td>
+                                <td>9</td>
+                                <td>10</td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td>12</td>
+                                <td class="btn-primary"><strong>13</strong></td>
+                                <td>14</td>
+                                <td class="btn-primary"><strong>15</strong></td>
+                                <td>16</td>
+                                <td>17</td>
+                            </tr>
+                            <tr>
+                                <td>18</td>
+                                <td>19</td>
+                                <td>20</td>
+                                <td>21</td>
+                                <td>22</td>
+                                <td>23</td>
+                                <td>24</td>
+                            </tr>
+                            <tr>
+                                <td>25</td>
+                                <td>26</td>
+                                <td>27</td>
+                                <td>28</td>
+                                <td>29</td>
+                                <td class="muted">30</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--col-lg-3-->
+            <div class="col-lg-6 p-0">
+                <div class="tab-content">
+                    <div id="go-list" class="tab-pane fade">
+                        <div class="col-lg-12">
+                            <div class="list-text">
+                                <ul>
+                                    <li *ngFor="let spot of users_goto_list">                                        
+                                        <img src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{spot.user_profile}}" alt="pic24">
+                                        <div>
+                                            <a routerLink="/spot/{{spot.unique_id}}/{{spot.user_slug}}">{{spot.business_name}}</a>
+                                            <span><i class="fa fa-map-marker"></i>{{spot.full_address}}</span>
+                                        </div>
+                                        <i (click)="onGotoLike(spot.id)" class="fa fa-heart" [ngClass]="(this.spot.is_liked==1)?'spot-heart':'fa-spot-heart'"></i>
+                                    </li>
+                                </ul>
+                                <div *ngIf="!users_goto_list.length" class="text-center">
+                                    <i style="display: block;color: #262b86;" class="fa fa-list-alt  fa-2x"></i>
+                                    <span>Empty go list</span>
+                                </div>
+                                <!-- <img class="last-icon" src="/assets/front-assets/images/icon14.png" alt="icon14"> -->
+                            </div>
+                            <div id="myModal" class="modal fade" role="dialog">
+                                <div class="modal-dialog modal-md">
+                                  <!-- Modal content-->
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Add spot to go to list</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="friend-check-form">
+                                            <!-- <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group required" data-type="text" data-required="true">
+                                                        <i id="check-btn" class="fa fa-search"></i>
+                                                        <input type="text" autocomplete="off" class="form-control" id="modal-name" value="" name="modal-name" placeholder="Search spot">
+                                                    </div>
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                        <div >
+                                            <p class="list-heading" *ngIf="goto_spot_list.length">Added Spot</p>
+                                            <div class="friend-tag-text" *ngIf="goto_spot_list.length">
+                                                <span *ngFor="let friend of goto_spot_list">{{friend.business_name}}<a href="JavaScript:void(0)" (click)="removeFromSpotList(friend.spot_id)"><i class="fa fa-times times-icon"></i></a></span>
+                                            </div>
+                                            
+                                        </div>
+                                        <div style="max-height: 325px;overflow-y: scroll;">
+                                            <p class="list-heading" *ngIf="liked_spots.length" >Liked/Connected Spots</p>
+                                            <div *ngFor="let friend of liked_spots">
+                                                <div class="friends-list" (click)="addSpotlist(friend.spot_id)">
+                                                    <img style="height: 45px;width: 45px;border-radius: 45px;" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{friend.user_profile}}">
+                                                    <span class="search-friend-name">{{friend.business_name}}</span>
+                                                </div>
+                                            </div>
+                                            <p class="list-heading" *ngIf="other_spots.length" >Suggesions</p>
+                                            <div *ngFor="let friend of other_spots">
+                                                <div class="friends-list" (click)="addSpotlist(friend.spot_id)">
+                                                    <img style="height: 45px;width: 45px;border-radius: 45px;" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{friend.user_profile}}">
+                                                    <span class="search-friend-name">{{friend.business_name}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer" *ngIf="this.goto_spot_list.length">
+                                        <button (click)="onAddGoto()" type="submit" id="spinner-btn" class="btn-invite">
+                                            <i id="spinner-icon" class="fa fa-spin"></i>&nbsp;Add
+                                          </button>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                    <!--tab-1-->
+                    <div id="planning" class="tab-pane fade">
+                        <div class="col-lg-12">
+                            <div class="agenda-list-main">
+                                <div id="agenda-list" class="list-text">
+                                    <h5 *ngIf="today_plannings.length">Vandaag</h5>
+                                    <ul>
+                                        <li *ngFor="let planning of today_plannings">
+                                            <span *ngIf="planning.spot_id">
+                                                <img *ngIf="planning.user_profile" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{planning.user_profile}}">
+                                                <img *ngIf="!planning.user_profile" src="/assets/front-assets/images/pic1.png">
+                                            </span>
+                                            <span *ngIf="planning.event_id">
+                                                <img *ngIf="planning.event_cover" src="https://ibigo.shadowis.nl/server-api/public/event_cover/{{planning.event_cover}}">
+                                                <img *ngIf="!planning.event_cover" src="/assets/front-assets/images/group-bg.png">
+                                            </span>                                            
+                                            <div *ngIf="planning.spot_id">
+                                                <a routerLink="/spot/{{planning.unique_id}}/{{planning.user_slug}}">{{planning.business_name}}</a>
+                                                <span><i class="fa fa-map-marker"></i>{{planning.full_address}}</span>
+                                                <span class="list-span"><i class="fa fa-calendar"></i>{{planning.planning_date | date:'mediumDate'}}</span>
+                                            </div>
+                                            <div *ngIf="planning.event_id">
+                                                <a routerLink="/event/{{planning.event_unique_id}}/{{planning.event_slug}}">{{planning.event_title}}</a>
+                                                <span><i class="fa fa-map-marker"></i>{{planning.location}}</span>
+                                                <span class="list-span"><i class="fa fa-calendar"></i>{{planning.planning_date | date:'mediumDate'}}</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <h5 *ngIf="nextweek_plannings.length">Volgende week</h5>
+                                    <ul>
+                                        <li *ngFor="let planning of nextweek_plannings">
+                                            <span *ngIf="planning.spot_id">
+                                                <img *ngIf="planning.user_profile" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{planning.user_profile}}">
+                                                <img *ngIf="!planning.user_profile" src="/assets/front-assets/images/pic1.png">
+                                            </span>
+                                            <span *ngIf="planning.event_id">
+                                                <img *ngIf="planning.event_cover" src="https://ibigo.shadowis.nl/server-api/public/event_cover/{{planning.event_cover}}">
+                                                <img *ngIf="!planning.event_cover" src="/assets/front-assets/images/group-bg.png">
+                                            </span>                                            
+                                            <div *ngIf="planning.spot_id">
+                                                <a routerLink="/spot/{{planning.unique_id}}/{{planning.user_slug}}">{{planning.business_name}}</a>
+                                                <span><i class="fa fa-map-marker"></i>{{planning.full_address}}</span>
+                                                <span class="list-span"><i class="fa fa-calendar"></i>{{planning.planning_date | date:'mediumDate'}}</span>
+                                            </div>
+                                            <div *ngIf="planning.event_id">
+                                                <a routerLink="/event/{{planning.event_unique_id}}/{{planning.event_slug}}">{{planning.event_title}}</a>
+                                                <span><i class="fa fa-map-marker"></i>{{planning.location}}</span>
+                                                <span class="list-span"><i class="fa fa-calendar"></i>{{planning.planning_date | date:'mediumDate'}}</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <h5 *ngIf="thismonth_plannings.length">Deze maand</h5>
+                                    <ul>
+                                        <li *ngFor="let planning of thismonth_plannings">
+                                            <span *ngIf="planning.spot_id">
+                                                <img *ngIf="planning.user_profile" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{planning.user_profile}}">
+                                                <img *ngIf="!planning.user_profile" src="/assets/front-assets/images/pic1.png">
+                                            </span>
+                                            <span *ngIf="planning.event_id">
+                                                <img *ngIf="planning.event_cover" src="https://ibigo.shadowis.nl/server-api/public/event_cover/{{planning.event_cover}}">
+                                                <img *ngIf="!planning.event_cover" src="/assets/front-assets/images/group-bg.png">
+                                            </span>                                            
+                                            <div *ngIf="planning.spot_id">
+                                                <a routerLink="/spot/{{planning.unique_id}}/{{planning.user_slug}}">{{planning.business_name}}</a>
+                                                <span><i class="fa fa-map-marker"></i>{{planning.full_address}}</span>
+                                                <span class="list-span"><i class="fa fa-calendar"></i>{{planning.planning_date | date:'mediumDate'}}</span>
+                                            </div>
+                                            <div *ngIf="planning.event_id">
+                                                <a routerLink="/event/{{planning.event_unique_id}}/{{planning.event_slug}}">{{planning.event_title}}</a>
+                                                <span><i class="fa fa-map-marker"></i>{{planning.location}}</span>
+                                                <span class="list-span"><i class="fa fa-calendar"></i>{{planning.planning_date | date:'mediumDate'}}</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="text-center" *ngIf="!thismonth_plannings.length&&!today_plannings.length&&!nextweek_plannings.length">
+                                        <i style="display: block;color: #262b86;" class="fa fa-calendar fa-2x"></i>
+                                        <span>No plans</span>
+                                    </div>
+                                    <!-- <img class="last-icon" src="/assets/front-assets/images/icon14.png" alt="icon14"> -->
+                                </div>
+                            </div>
+                            <div id="planningModal" class="modal fade" role="dialog">
+                                <div class="modal-dialog modal-md">
+                                  <!-- Modal content-->
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Add Planning</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <form [formGroup]="planningForm" (ngSubmit)="onAddPlanning()">
+                                    <div class="modal-body">
+                                        <div class="friend-check-another-form">
+                                            <div class="row" *ngIf="events.length">
+                                                <div class="col-sm-12 form-group">
+                                                    <input formControlName="is_an_event" style="height: auto;" type="checkbox" /> Add event to plan?
+                                                </div>                                
+                                            </div>
+                                            <div class="row" *ngIf="this.mode==true">
+                                                <div class="col-sm-12 event-popup-input">
+                                                    <div class="form-group">
+                                                        <select formControlName="event" [(ngModel)]="selectedQuantity">
+                                                            <option *ngFor="let event of this.events" [value]="event.id">{{event.event_title}}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>              
+                                            <div class="row" *ngIf="this.mode==false">
+                                                <div class="col-md-12">
+                                                    <div class="form-group" [ngClass]="{ 'has-error': submitted && f.planning_description.errors }">
+                                                        <!-- <i id="check-btn" class="fa fa-search"></i> -->
+                                                        <input type="text" autocomplete="off" class="form-control" id="modal-name" formControlName="planning_description" placeholder="What is plan?">
+                                                        <div *ngIf="submitted && f.planning_description.errors" >
+                                                            <span class="help-block" *ngIf="f.planning_description.errors.required">Planning description is required</span>
+                                                        </div>
+                                                    </div> 
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="this.mode==false">
+                                                <div class="col-md-12">
+                                                    <div class="form-group" [ngClass]="{ 'has-error': submitted && f.planning_date.errors }">
+                                                        <!-- <i id="check-btn" class="fa fa-search"></i> -->
+                                                        <input type="text" [minDate]="minDate"  #dp="bsDatepicker" bsDatepicker formControlName="planning_date"  [bsConfig]="{ dateInputFormat: 'DD, MMMM YYYY', showWeekNumbers: false }" placeholder="When is plan?" class="form-control" />
+                                                        <div *ngIf="submitted && f.planning_date.errors" >
+                                                            <span class="help-block" *ngIf="f.planning_date.errors.required">Planning date is required</span>
+                                                            <span class="help-block" *ngIf="f.planning_date.errors.bsDate">Invalid Date</span>
+                                                        </div>                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="max-height: 325px;overflow-y: scroll;" *ngIf="this.mode==false">
+                                            <p class="list-heading" *ngIf="selectedSpot.length">Selected Spot</p>
+                                            <div *ngIf="selectedSpot.length">
+                                                <div class="friends-list">
+                                                    <img style="height: 45px;width: 45px;border-radius: 45px;" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{selectedSpot[0].user_profile}}">
+                                                    <span class="search-friend-name">{{selectedSpot[0].business_name}}<a href="JavaScript:void(0)" (click)="removeSelectedSpot(selectedSpot[0].spot_id)"><i class="fa fa-times times-icon"></i></a></span>
+                                                </div>                                                
+                                            </div>
+                                            <p class="list-heading" *ngIf="planning_spots.length" >Liked/Connected Spots</p>
+                                            <div *ngFor="let friend of planning_spots">
+                                                <div class="friends-list" (click)="addSpotForPlan(friend.spot_id)">
+                                                    <img style="height: 45px;width: 45px;border-radius: 45px;" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{friend.user_profile}}">
+                                                    <span class="search-friend-name">{{friend.business_name}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer" *ngIf="selectedSpot.length||this.mode==true" >
+                                        <button type="submit" id="spinner-btn" class="btn-invite">
+                                            <i id="spinner-icon" class="fa fa-spin"></i>&nbsp;Add
+                                          </button>
+                                    </div>
+                                    </form>
+                                  </div>
+                              
+                                </div>
+                            </div>
+                        </div>
+                      
+                    </div>
+                    <!--tab2-->
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <button *ngIf="this.tab_name=='planning'" data-toggle="modal" data-target="#planningModal" id="group-btn-planning" type="button" class="btn-default">Add new plan </button>
+                <button *ngIf="this.tab_name=='go-list'"  data-toggle="modal" data-target="#myModal" id="group-btn" type="button" class="btn-default">Add Go Planning </button>
+                <!-- <button *ngIf="this.tab_name=='go-list'" id="go-btn" type="button" class="btn-default">Deel je Go-planning </button> -->
+                <app-user-side-widget></app-user-side-widget>
+            </div>
+            <!--tab-content-->
+        </div>
+        <!--col-lg-6-->
+    </div>
+</section>

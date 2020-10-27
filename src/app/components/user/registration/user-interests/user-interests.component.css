@@ -1,0 +1,25 @@
+.check
+{
+    opacity:0.5;
+	color:#996;	
+}
+.img-interest:hover
+{
+    opacity:0.5;
+	color:#996;	
+}
+.mybtn{
+    background: #262b86;
+    width: 60%;
+    display: block;
+    margin: 0px auto;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 21px;
+    font-weight: 400;
+    text-transform: uppercase;
+    padding: 14px;
+    margin-top: 20px;
+}

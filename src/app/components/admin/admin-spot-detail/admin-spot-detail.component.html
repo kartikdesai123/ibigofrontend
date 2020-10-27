@@ -1,0 +1,229 @@
+<app-header></app-header>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Data Tables
+        <small>advanced tables</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Tables</a></li>
+        <li class="active">Data tables</li>
+      </ol>
+    </section>
+    <section class="content">
+        <div class="container">
+           <div class="row">
+              <div class="col-lg-12 spot-profile-group">
+                 <div class="cover-div"><img alt="group-bg2" class="cover-bg  responsive" id="cover-background" src="{{this.imgURL}}"></div>
+                 <button class="uploadbtn hidden" id="imageupload" type="submit"> Upload </button>
+                 <div class="col-lg-2 spot-profile2-pic"><img alt="pic29" class="profile-img" src="{{this.spot_profile}}"></div>
+                 <div class="col-lg-5 spot-profile2-content">
+                    <div class="spot-pic-content2" id="spot-pic-content2">
+                       <h3>{{this.business_name}}</h3>
+                       <span>{{this.full_address}}</span>
+                    </div>
+                 </div>
+                 <div class="col-lg-5 spot-profile2-rating">
+                    <div class="spot-pic-rating"><span style="cursor: pointer;">{{this.avg_rating}}</span><button class="hidden" data-target="#myReviewModal" data-toggle="modal" id="reviewModal"></button></div>
+                 </div>
+              </div>
+           </div>
+           <div class="row">
+              <div class="col-lg-12">
+               <div class="spot-pic-nav">
+                 <div class="col-lg-12 spot-profile-nav2">
+                    <ul>
+                       <li><a href="#"><i aria-hidden="true" class="fa fa-thumbs-up"></i>{{this.reviews_count}}<br><span>Review</span></a></li>
+                       <li><a href="#"><i aria-hidden="true" class="fa fa-users"></i>{{this.is_connected_count}}<br><span>Connected</span></a></li>
+                    </ul>
+                 </div>
+               </div>
+              </div>
+           </div>
+           <!---->
+           <div class="modal fade" id="myLikedModal" role="dialog">
+              <div class="modal-dialog modal-md">
+                 <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Liked By</h4>
+                       <button class="close" data-dismiss="modal" type="button">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                       <div style="max-height: 325px;overflow-y: scroll;">
+                          <!---->
+                          <div *ngFor="let u of this.liked_users">
+                             <div class="friends-list">
+                                 <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="u.user_profile&&u.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{u.user_profile}}">
+                                 <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="!u.user_profile" src="/assets/front-assets/images/pic1.png">
+                                 <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="u.user_profile&&u.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{u.user_profile}}">
+                                <span class="search-friend-name">{{u.first_name}} {{u.last_name}}</span></div>
+                          </div>
+                       </div>
+                    </div>
+                    <!---->
+                 </div>
+              </div>
+           </div>
+           <div class="row">
+              <div class="col-lg-12 ">
+               <div class="spot-profile2-nav">
+                 <div class="col-lg-6 spot-about-text">
+                    <h3>About Me</h3>
+                    <p>{{this.user_about}}</p>
+                 </div>
+                 <div class="col-lg-6 spot-address-text">
+                    <h3>Full Address</h3>
+                    <p>{{this.full_address}}</p>
+                 </div>
+               </div>
+              </div>
+           </div>
+           <div class="row">
+             <div class="col-lg-12 ">
+               <div class="spot-profile2-nav" style="margin-top: 0;">
+                <div class="col-lg-6 spot-friends-spot">
+                   <div class="col-lg-9 spot-friends-nav2"><a href="#">Door Vrienden geliked</a></div>
+                   <div class="col-lg-3 spot-friends-nav3"><a data-target="#myLikedModal" data-toggle="modal" href="javascript:void(0)">Alles zien</a></div>
+                   <ul>
+                      <!---->
+                      <li *ngFor="let u of this.liked_users"><a href="#">
+                        <img *ngIf="u.user_profile&&u.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{u.user_profile}}">
+                        <img *ngIf="!u.user_profile" src="/assets/front-assets/images/pic1.png">
+                        <img *ngIf="u.user_profile&&u.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{u.user_profile}}">{{u.first_name}}</a></li>
+                      <!---->
+                   </ul>
+                </div>
+                <div class="col-lg-6 spot-friends-spot2">
+                   <div class="col-lg-7 spot-friends-nav2"><a href="javascript:void(0)" routerLink="/admin/admin-spot-review/{{this.unique_spot_id}}/{{this.spot_slug}}">Review</a></div>
+                   <div class="col-lg-5 spot-friends-nav3"><a href="javascript:void(0)" routerLink="/admin/admin-spot-review/{{this.unique_spot_id}}/{{this.spot_slug}}">Bekijk alle reviews</a></div>
+                   <ul>
+                      <!---->
+                      <li *ngFor="let u of this.rating_users"><a href="#">
+                        <img *ngIf="u.user_profile&&u.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{u.user_profile}}">
+                        <img *ngIf="!u.user_profile" src="/assets/front-assets/images/pic1.png">
+                        <img *ngIf="u.user_profile&&u.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{u.user_profile}}">{{u.first_name}}</a><span>{{u.rating}}</span></li>
+                      <!---->
+                   </ul>
+                </div>
+              </div>
+            </div>
+           </div>
+           <div class="row" style="padding: 25px 15px;">
+              <div class="spot-text1-profile2">
+                 <div class="spot-profile2-content">
+                    <div class="spot-profile3-content">
+                       <ul>
+                          <li class="active"><a data-toggle="tab" href="#foto" aria-expanded="true"><i aria-hidden="true" class="fa fa-area-chart"></i>Foto's</a></li>
+                          <li class=""><a data-toggle="tab" href="#videos" aria-expanded="false"><i aria-hidden="true" class="fa fa-youtube-play"></i>Videos</a></li>
+                          <button class="btn pull-right m-2 btn-primary"  data-toggle="modal" data-target="#myReviewModal"><i class="fa fa-plus"></i> Photos/Videos</button>
+                       </ul>
+                    </div>
+                 </div>
+                 <div class="tab-content">
+                    <div class="tab-pane fade active in" id="foto">
+                       <div class="col-lg-12 spot-gallery-img">
+                          <ul>
+                             <!---->
+                             <li *ngFor="let p of this.spot_photos" ><img *ngIf="photos_extensions.includes(p.split('.').pop())" alt="img5" class="img-responsive" src="https://ibigo.shadowis.nl/server-api/public/business_images/{{p}}"></li>
+                             <li *ngFor="let p of four_square_api_photos"><img src="{{p.prefix+p.height+'x'+p.width+p.suffix}}" alt="img5" class="img-responsive"></li>
+                             <!---->
+                             <span *ngIf="!spot_photos.length&&!four_square_api_photos.length">No foto's</span>
+                          </ul>
+                          <!-- <img alt="profile2-loading-icon" class="profile2-last-icon" src="./profile2-loading-icon.png"> -->
+                       </div>
+                       
+                    </div>
+                    <div class="tab-pane fade" id="videos">
+                       <div class="col-lg-12 spot-gallery-img">
+                          <ul>
+                           <li *ngFor="let v of spot_videos">
+                              <video width="100%" height="100%" controls>
+                                  <source src="https://ibigo.shadowis.nl/server-api/public/business_videos/{{v}}" type="video/mp4">
+                              </video>
+                          </li>
+                          <span *ngIf="!spot_videos.length">No videos</span>
+                          </ul>
+                          <!---->
+                       </div>
+                    </div>
+                 </div>
+              </div>
+           </div>
+           <div class="row" style="padding: 0px 15px;">
+            <div class="spot-text1-profile2">
+               <div class="spot-profile2-content">
+                  <div class="spot-profile3-content">
+                     <ul>
+                        <li class="active"><a data-toggle="tab" href="#userfoto" aria-expanded="true"><i aria-hidden="true" class="fa fa-area-chart"></i>Foto's By User</a></li>
+                        <li class=""><a data-toggle="tab" href="#uservideos" aria-expanded="false"><i aria-hidden="true" class="fa fa-youtube-play"></i>Videos By User</a></li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="tab-content">
+                  <div class="tab-pane fade active in" id="userfoto">
+                     <div class="col-lg-12 spot-gallery-img">
+                        <ul>
+                           <!---->
+                           <li *ngFor="let p of this.spot_photos_by_user"><img *ngIf="photos_extensions.includes(p.split('.').pop())" alt="img5" class="img-responsive" src="https://ibigo.shadowis.nl/server-api/public/spot_photos_by_user/{{p}}"></li>
+                           
+                           <!---->
+                           <span *ngIf="!spot_photos_by_user.length">No foto's</span>
+                        </ul>
+                        <!-- <img alt="profile2-loading-icon" class="profile2-last-icon" src="./profile2-loading-icon.png"> -->
+                     </div>
+                  </div>
+                  <div class="tab-pane fade" id="uservideos">
+                     <div class="col-lg-12 spot-gallery-img">
+                        <ul>
+                         <li *ngFor="let v of spot_videos_by_user">
+                            <video width="100%" height="100%" controls>
+                                <source src="https://ibigo.shadowis.nl/server-api/public/spot_videos_by_user/{{v}}" type="video/mp4">
+                            </video>
+                        </li>
+                        <span *ngIf="!spot_videos_by_user.length">No videos</span>
+                        </ul>
+                        <!---->
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+        </div>
+        <div class="modal fade" id="myReviewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+         <div class="modal-dialog">
+             <div class="modal-content modal-spot-popup">
+                 <button id="close-btn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                 <div class="modal-body spot-review-popup">
+                     <h2>Upload afbeelding en video</h2>
+                     <form [formGroup]="reviewForm" (ngSubmit)="onReviewSubmit()">
+                     
+                     <div class="popup-uploadvideo">
+                         <ul>
+                             
+                         <li><input class="hidden"  #image_video type='file' accept="image/*,video/*" (change)="onSelectFile($event)" multiple/><a href="JavaScript:void(0)" (click)="image_video.click()"><img src="/assets/front-assets/images/popup-img/select-icon3.png" alt="icon3"></a></li>
+                         <!-- <li><a href="#"><img src="/assets/front-assets/images/popup-img/select-icon4.png" alt="icon4"></a></li> -->
+                         <li *ngFor="let list of mydata;let i = index"><img class="image-video" *ngIf="list.type == 'img'" [src]="list.url" />
+                             <video [ngClass]="{'has-border':list.duration>30}" class="image-video" *ngIf="list.type == 'video'" [src]="list.url | sanitizerUrl" controls></video><a href="JavaScript:void(0)" (click)="onRemoveFile(list.id)"><i class="fa fa-close"></i></a>
+                         </li>
+                         <li *ngFor="let list of dbfiles;let i = index">
+                             <img class="image-video"  *ngIf="photos_extensions.includes(list.split('.').pop())" src="https://ibigo.shadowis.nl/server-api/public/business_images/{{list}}" />
+                             <video class="image-video" *ngIf="video_extensions.includes(list.split('.').pop())" src="https://ibigo.shadowis.nl/server-api/public/business_videos/{{list}}" controls></video><a href="JavaScript:void(0)" (click)="onRemoveFileFromDB(list)"><i class="fa fa-close"></i></a>
+                         </li>     
+                         </ul>
+                     </div>
+                     <h6 *ngIf="video_array_size.length" class="video-validation-h6">You can not upload video more than 30 sec.</h6>
+                     <h6 *ngIf="photos_cnt>this.max_images" class="video-validation-h6">You can not upload more than {{this.max_images}} images.</h6>
+                     <h6 *ngIf="videos_cnt>this.max_videos" class="video-validation-h6">You can not upload more than {{this.max_videos}} video.</h6>
+                     <div class="text-center">
+                     <button type="submit" id="review-btn" *ngIf="upload_btn==true"  class="btn btn-primary">
+                         <i id="review-icon" class="fa fa-spin"></i>&nbsp;Upload
+                       </button>
+                     </div>
+                     </form>
+                 </div>
+             </div>
+         </div>
+     </div>
+     </section>

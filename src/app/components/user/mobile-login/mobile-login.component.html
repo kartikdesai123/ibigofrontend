@@ -1,0 +1,62 @@
+<header class="home-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8 heading-text">
+                <h1>Lorem ipsum dolor sit amet consectetur adipiscing</h1>
+            </div>
+            <div class="col-lg-4 heading-form-main">
+                <div id="login-form" class="heading-form">
+                    <a href><img src="/assets/images/ibigo-dark100.png" alt="logo1"></a> 
+                    <h3>Log in op jouw account</h3>
+                    <p><a class="first" href="#" routerLink="/user/login" >Login</a> met gebruikersnaam en wachtwoord</p>
+                    
+                    <form class="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()"  autocomplete="off">
+                        <div class="form-group required" data-type="text" data-required="true" [ngClass]="{ 'has-error': submitted && f.mobile.errors }">
+                            <ngx-intl-tel-input 
+                                [cssClass]="'custom inpt-tel'" 
+                                [preferredCountries]="preferredCountries"
+                                [enableAutoCountrySelect]="false" 
+                                [enablePlaceholder]="true" 
+                                [searchCountryFlag]="true"
+                                [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                [selectFirstCountry]="false" 
+                                [selectedCountryISO]="CountryISO.Netherlands"
+                                [maxLength]="15" 
+                                [tooltipField]="TooltipLabel.Name" 
+                                [phoneValidation]="true" 
+                                [separateDialCode]="true"
+                                name="mobile" formControlName="mobile" >
+                            </ngx-intl-tel-input>
+                            <div *ngIf="submitted && f.mobile.errors">
+                                <div class="help-block" *ngIf="f.mobile.errors.required">Mobile is required</div>
+                                <div class="help-block" *ngIf="f.mobile.errors.validatePhoneNumber">Please enter valid number</div>
+                            </div>
+                        </div>
+                        <div *ngIf="this.status==true" class="form-group required" data-type="text" data-required="true"  [ngClass]="{ 'has-error': submitted && f.otp.errors }">
+                            <input placeholder="OTP-nummer" type="text" formControlName="otp" class="form-control"  >
+                            <div *ngIf="submitted && f.otp.errors" >
+                                <div class="help-block" *ngIf="f.otp.errors.required">OTP is required.</div> 
+                                <div class="help-block" *ngIf="f.otp.errors.pattern">Enter only number.</div>
+                                <div class="help-block" *ngIf="f.otp.errors?.minlength">OTP must be 6 digits.</div>
+                                <div class="help-block" *ngIf="f.otp.errors?.maxlength">OTP must be 6 digits.</div>
+                            </div>
+                        </div>
+                        <div class="form-group" data-type="submit">
+                            <button type="submit" class="btn-default"><i *ngIf="this.login_loading==true;" class="fa fa-spin fa fa-spinner"></i>&nbsp;{{buttontext}}</button>
+                        </div>
+                        <div *ngIf="this.status==true" class="heading-form-new">
+                            <a class="third" href="javascript:void()" (click)="sendOTP()">Resend OTP</a>
+                        </div>
+                    </form>
+                        <div class="heading-form-new">
+                            <a class="second" href="#">Heb je geen account?</a> <a class="third" routerLink="/user/register">Creëer een nieuw account</a>
+                            <!-- <span>Or</span> -->
+                        </div>
+                            
+                        <!-- <a class="fourth" routerLink="/user/forgot-password">Wachtwoord vergeten?</a> -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

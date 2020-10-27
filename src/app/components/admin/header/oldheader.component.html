@@ -1,0 +1,118 @@
+<body class="hold-transition skin-blue fixed sidebar-mini">
+<div class="wrapper">
+
+  <header class="main-header">
+    <!-- Logo -->
+    <a href="#" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>A</b>LT</span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><img style="height: 30px;" src="/assets/images/logo2.png"></span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <!-- Messages: style can be found in dropdown.less-->
+          
+          <!-- User Account: style can be found in dropdown.less -->
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <span class="hidden-xs">{{this.user}}</span>
+            </a>
+            <ul class="dropdown-menu" style="width: unset;">
+              <!-- User image -->
+              
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-right">
+                  <a routerLink="/admin/change-password" class="text-info">Change Password</a>
+                </div>
+                <div class="pull-right">
+                  <a routerLink="/admin/logout" class="text-info">Sign out</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+          <!-- Control Sidebar Toggle Button -->
+          
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+   <aside class="main-sidebar">
+   	 <section class="sidebar">
+
+      <!-- Sidebar user panel -->
+      <!-- <div class="user-panel">
+        <div class="pull-left image">
+          <div  class="img-circle" ></div>
+        </div>
+        <div class="pull-left info">
+          <p>Alexander Pierce</p>
+          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+        </div>
+      </div> -->
+      <!-- search form -->
+     <!--  <form action="#" method="get" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Search...">
+              <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+        </div>
+      </form> -->
+      <!-- /.search form -->
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">MAIN NAVIGATION</li>
+        <li>
+          <a routerLink="/admin">
+            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+            
+          </a>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-pie-chart"></i>
+            <span>User Interests</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a routerLink="/admin/show-interests"><i class="fa fa-circle-o"></i> Intresets</a></li>
+            <li><a routerLink="/admin/add-interests"><i class="fa fa-circle-o"></i> Add Interest</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-user"></i>
+            <span>Users</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a routerLink="/admin/show-users"><i class="fa fa-circle-o"></i> View Users</a></li>
+            <li><a routerLink="/admin/add-user"><i class="fa fa-circle-o"></i> Add User</a></li>
+          </ul>
+        </li>
+        
+      </ul>
+    </section>
+   </aside>
+
+    <router-outlet></router-outlet>
+</div>
+</body>

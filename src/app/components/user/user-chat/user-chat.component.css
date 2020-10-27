@@ -1,0 +1,19 @@
+.chat-history ul li img{
+    height: 62px;
+    width: 62px;
+    border-radius: 100%;
+    margin: 0 15px;
+}
+
+.chat-history-content div span.chatdate {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    border-radius: 5px;
+    background: #262b86;
+    color: #fff;
+    display: block;
+    margin: 10px auto 10px;
+    max-width: 150px;
+    width: 100%;
+    text-align: center;
+}

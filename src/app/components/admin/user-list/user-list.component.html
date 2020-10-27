@@ -1,0 +1,55 @@
+<app-header></app-header>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Data Tables
+        <small>advanced tables</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Tables</a></li>
+        <li class="active">Data tables</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                      <h3 class="box-title">Users</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Birth Date</th>
+                                    <th>Gender</th>
+                                    <th>Mobile</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let user of users;index as i">
+                                    <td>{{i+1}}</td>
+                                    <td><img *ngIf="user.user_profile&&user.user_profile.indexOf('https://graph.facebook.com')==-1" height="50" width="50" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{user.user_profile}}"><img *ngIf="!user.user_profile" height="50" width="50" src="/assets/front-assets/images/pic1.png"><img *ngIf="user.user_profile&&user.user_profile.indexOf('https://graph.facebook.com') != -1" height="50" width="50" src="{{user.user_profile}}">&nbsp;&nbsp;{{user.first_name}} {{user.last_name}}</td>
+                                    <td>{{user.email}}</td>
+                                    <td>{{user.birth_date | date:'mediumDate'}}</td>
+                                    <td>{{user.gender}}</td>
+                                    <td>{{user.mobile}}</td>
+                                    <td><a class="btn-info btn btn-circle btn-flat" routerLink="/admin/admin-people-detail/{{user.unique_id}}/{{user.user_slug}}"><i class="fa fa-eye"></i></a>&nbsp;<a class="btn-warning btn btn-circle btn-flat" routerLink="/admin/edit-user/{{user.id}}"><i class="fa fa-pencil"></i></a>&nbsp;
+                                    <a class="btn-danger btn btn-circle btn-flat" (click)="delete(user.id)"><i class="fa fa-trash"></i></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>

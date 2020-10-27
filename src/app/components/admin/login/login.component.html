@@ -1,0 +1,61 @@
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <br>
+            <br>
+      <div class="login-logo">
+        <img src="/assets/images/logo1.png">
+      </div>
+      <!-- /.login-logo -->
+      <div class="login-box-body">
+        <p class="login-box-msg">Sign in to start your session</p>
+    
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="form-group has-feedback"  [ngClass]="{ 'has-error': submitted && f.email.errors }">
+            <input type="email" formControlName="email" placeholder="Email" class="form-control"  />
+            <span class="glyphicon glyphicon-envelope form-control-feedback " ></span>
+            <div *ngIf="submitted && f.email.errors">
+                <span class="help-block" *ngIf="f.email.errors.required">Email is required</span>
+                <span class="help-block" *ngIf="f.email.errors.email">Email must be a valid email address</span>
+            </div>
+            
+          </div>
+          <div class="form-group has-feedback" [ngClass]="{ 'has-error': submitted && f.password.errors }">
+            <input type="password" formControlName="password" placeholder="Password" class="form-control" />
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            <div *ngIf="submitted && f.password.errors">
+                <span class="help-block" *ngIf="f.password.errors.required">Password is required</span>
+                <span class="help-block" *ngIf="f.password.errors.minlength">Password must be at least 6 characters</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-8">
+              <div class="checkbox icheck">
+                <label>
+                  <!-- <input type="checkbox"> Remember Me -->
+                </label>
+              </div>
+            </div>
+            <!-- /.col -->
+            <div class="col-xs-4">
+              <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+            </div>
+            <!-- /.col -->
+          </div>
+        </form>
+    
+        <div class="social-auth-links text-center">
+          <p></p>
+            
+        </div>
+        <!-- /.social-auth-links -->
+    
+        <a routerLink="/admin/forgot-password">I forgot my password</a><br>
+        <!-- <a href="register.html" class="text-center">Register a new membership</a> -->
+    
+      </div>
+      <br>
+            <br>
+            <br>
+      <!-- /.login-box-body -->
+    </div>
+</body>

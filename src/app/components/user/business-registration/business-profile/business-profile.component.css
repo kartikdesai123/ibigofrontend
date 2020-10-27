@@ -1,0 +1,7 @@
+.img-profile{
+    width: 235px;height: 235px;border-radius: 118px;
+}
+.img-profile:hover{
+    opacity:0.8;
+	color:#996;	
+}

@@ -1,0 +1,165 @@
+<!--===== HEADER SECTION =====-->
+<app-user-header></app-user-header>
+<!--============== END KOFFIE SECTION ===============-->
+<div class="loading" *ngIf="this.loading==true">Loading&#8230;</div>
+<!--===== GROUP SECTION =====-->
+<section class="group-section">
+    <div class="container">
+        <div class="row my-row">
+            <div class="col-lg-12 spot-profile-group p-0">
+                <div class="cover-div">
+                    <img class="cover-bg  responsive" id="cover-background" [src]="imgURL" alt="group-bg2">
+                </div>
+                <div class="col-lg-2 spot-profile2-pic">
+                    <img class="profile-img"  src="{{this.people_profile}}" alt="pic29">
+                </div>
+                <div class="col-lg-9 spot-profile2-content">
+                    <div class="spot-pic-content2">
+                        <h3>{{this.people_first_name}} {{this.people_last_name}}</h3>
+                        <span>{{this.people_age}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-row">
+            <div class="col-lg-12 spot-pic-nav">
+                <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-md">   
+                      <!-- Modal content-->
+                      <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Friends</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div style="max-height: 325px;overflow-y: scroll;">
+                                
+                                <div *ngFor="let friend of friends" routerLink="/people/{{friend.unique_id}}/{{friend.user_slug}}">
+                                    <div class="friends-list">
+                                        <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="friend.user_profile&&friend.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{friend.user_profile}}">
+                                        <img *ngIf="!friend.user_profile"style="height: 45px;width: 45px;border-radius: 45px;" src="/assets/front-assets/images/pic1.png">
+                                        <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="friend.user_profile&&friend.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{friend.user_profile}}">
+                                        
+                                        <span class="search-friend-name">{{friend.first_name}} {{friend.last_name}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                  
+                    </div>
+                </div>
+                <div class="col-lg-8 spot-profile-nav2">
+                    <ul>
+                        <li><a href="javascript:void(0)" data-toggle="modal" data-target="#myModal"><i class="fa fa-user" aria-hidden="true"></i>{{this.friends_count}}<br><span>Vrienden</span></a></li>
+                        <li><a routerLink="/user-reviews/{{this.unique_id}}/{{this.user_slug}}"><i class="fa fa-thumbs-up" aria-hidden="true"></i>{{this.review_count}}<br><span>Review</span></a></li>
+                        <!-- <li><a href="#"><i class="fa fa-users" aria-hidden="true"></i>142<br><span>Volgers</span></a></li> -->
+                        <!-- <li><a href="#"><i class="fa fa-users" aria-hidden="true"></i>1.2k<br><span>Volgend</span></a></li> -->
+                    </ul>
+                </div>
+                <div class="col-lg-4 spot-pic-nav3">
+                    <ul>
+                        <li  *ngIf="user_type=='normal'"><a class="active" routerLink="/message/{{this.unique_id}}/{{this.user_slug}}"><i class="fa fa-comment-o"></i>Chat</a></li>
+                        <li *ngIf="user_type=='normal'" title="Click to unfriend"><a class="active" *ngIf="relation_status==1" (click)="cancelRequest(people_id,'unfriend')" href="javascript:void(0)"><i [ngClass]="(this.send_request==true)?'fa-spin fa-spinner':'fa-check'" class="fa" aria-hidden="true"></i>Friends</a></li>
+                        <li *ngIf="user_type=='normal'"><a class="active" *ngIf="relation_status==0&&action_user_id!=people_id" (click)="cancelRequest(people_id,'cancel')" href="javascript:void(0)"><i [ngClass]="(this.send_request==true)?'fa-spin fa-spinner':'fa-user-times'" class="fa" aria-hidden="true"></i>Cancel Request</a></li>
+                        <li *ngIf="user_type=='normal'">
+                            <div class="dropdown"><a class="active dropdown-toggle"  data-toggle="dropdown" *ngIf="relation_status==0&&action_user_id==people_id" href="#"><i [ngClass]="(this.send_request==true)?'fa-spin fa-spinner':'fa-check-square-o'" class="fa" aria-hidden="true"></i>Respond</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:void(0)" (click)="confirmRequest(people_id)">Confirm</a></li>
+                                    <li><a href="javascript:void(0)" (click)="rejectRequest(people_id)">Delete Request</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                            
+                        <li *ngIf="user_type=='normal'||logged_in_user==false"><a class="active" *ngIf="relation_status==4||relation_status==2||logged_in_user==false" href="javascript:void(0)" (click)="sendRequest(people_id)"><i class="fa" [ngClass]="(this.send_request==true)?'fa-spin fa-spinner':'fa-user-plus'" aria-hidden="true"></i>Add Friend</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row my-row">
+            <div class="col-lg-12 spot-profile2-nav">
+                <div class="col-lg-6 spot-about-text">
+                    <h3>About Me</h3>
+                    <p>{{this.people_about}}</p>
+                </div>
+                <div class="col-lg-6 spot-interest-text" >
+                    <h3>Interesses</h3>
+                    <span *ngFor="let interest of people_interest_details">
+                        <span class="interest-text">{{this.interest.title}}</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row my-row">
+            <div class="col-lg-12 spot-favourite-wrap">
+                <div class="col-lg-6 spot-favourite-text">
+                    <span class="active">Favoriete Plek</span><span class="overlay">Alles zien</span>
+                    <ul>
+                        <li *ngFor="let lp of liked_places">
+                            <a routerLink="/spot/{{lp.unique_id}}/{{lp.user_slug}}"><img height="118px" width="118px" *ngIf="lp.user_profile&&lp.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{lp.user_profile}}">
+                                <img height="118px" width="118px" *ngIf="!lp.user_profile" src="/assets/front-assets/images/pic1.png">
+                                <img height="118px" width="118px"  *ngIf="lp.user_profile&&lp.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{lp.user_profile}}">{{lp.business_name}}</a>
+                        </li>
+                        <li *ngIf="!liked_places.length" style="display: table;margin: 0 auto;">
+                            <a style="margin-top: 30px;margin-bottom: 36px;">No likes</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-6 spot-favourite-text">
+                    <span class="active">Spot Reviewd</span><span class="overlay" style="cursor:pointer" routerLink="/user-reviews/{{this.unique_id}}/{{this.user_slug}}">Alles bekijken Review</span>
+                    <ul>
+                        <li *ngFor="let lp of review_places">
+                            <a routerLink="/spot/{{lp.unique_id}}/{{lp.user_slug}}"><img height="118px" width="118px" *ngIf="lp.user_profile&&lp.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{lp.user_profile}}">
+                                <img height="118px" width="118px" *ngIf="!lp.user_profile" src="/assets/front-assets/images/pic1.png">
+                                <img height="118px" width="118px"  *ngIf="lp.user_profile&&lp.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{lp.user_profile}}">{{lp.business_name}}</a><span>{{lp.rating}}</span>
+                        </li>
+                        <li *ngIf="!review_places.length" style="display: table;margin: 0 auto;">
+                            <a style="margin-top: 30px;margin-bottom: 36px;">No reviews</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row my-row">
+            <div class="col-lg-12 spot-text1-profile2">
+                <div class="col-lg-12 spot-profile2-content">
+                    <div class="col-lg-12 spot-profile3-content">
+                        <ul>
+                            <li class="active"><a data-toggle="tab" href="#foto"><i class="fa fa-area-chart" aria-hidden="true"></i>Foto's</a></li>
+                            <li><a data-toggle="tab" href="#videos"><i class="fa fa-youtube-play" aria-hidden="true"></i>Videos</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tab-content">
+                    <div id="foto" class="tab-pane fade in active">
+                        <div class="col-lg-12 spot-gallery-img">
+                            <ul>
+                                <li *ngFor="let p of spot_photos_by_user"><img *ngIf="p.includes('png','jpeg','jpg','tiff','pjp','pjpeg','jfif','tif','gif','svg','bmp','svgz','webp','ico','xbm','dib')" src="https://ibigo.shadowis.nl/server-api/public/spot_photos_by_user/{{p}}" alt="img5" class="img-responsive"></li>
+                                <span *ngIf="!spot_photos_by_user.length">No foto's</span>
+                            </ul>
+                            <img *ngIf="spot_photos_by_user.length" class="profile2-last-icon" src="/assets/front-assets/images/profile2/profile2-loading-icon.png" alt="profile2-loading-icon">
+                        </div>
+                    </div>
+                    <!--tab1-->
+                    <div id="videos" class="tab-pane fade">
+                        <div class="col-lg-12 spot-gallery-img">
+                            <ul>
+                                <li *ngFor="let v of spot_videos_by_user">
+                                    <video width="100%" height="100%" controls>
+                                        <source *ngIf="v.includes('mp4','ogm','wmv','mpg','webm','ogv','mov','asx','mpeg','m4v','avi')" src="https://ibigo.shadowis.nl/server-api/public/spot_videos_by_user/{{v}}" type="video/mp4">
+                                    </video>
+                                </li>
+                                <span *ngIf="!spot_videos_by_user.length">No videos</span>
+                            </ul>
+                            <img *ngIf="spot_videos_by_user.length" class="profile2-last-icon" src="/assets/front-assets/images/profile2/profile2-loading-icon.png" alt="profile2-loading-icon">
+                        </div>
+                    </div>
+                    <!--tab-2-->
+                </div>
+                <!--tab-content-->
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--============== END GROUP SECTION ===============-->

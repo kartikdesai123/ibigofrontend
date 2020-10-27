@@ -1,0 +1,232 @@
+<!--===== HEADER SECTION =====-->
+<app-user-header></app-user-header>
+<!--============== END KOFFIE SECTION ===============-->
+
+<!--===== GROUP SECTION =====-->
+<section class="wacht-section2">
+    <div class="container">
+        <div class="wacht-text">
+            <ul class="first">
+                <li><a routerLink="/user/homepage">Home <i class="fa fa-caret-right"></i></a></li>
+                <!-- <li><a href="#">Netherlands <i class="fa fa-caret-right"></i></a></li> -->
+                <li><a>Search <i class="fa fa-caret-right" *ngIf="this.searchText!='no data'&&this.searchText!=''&&this.searchText!=' '"></i></a></li>
+                <li *ngIf="this.searchText!='no data'&&(this.searchText!=''&&this.searchText!=' ')"><a>Matching <strong>"{{this.searchText}}"</strong></a></li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="plaat-text">
+                    <h3 *ngIf="this.searchText!='no data'&&this.searchText!=''&&this.searchText!=' '">Search results for "{{this.searchText}}"</h3>
+                </div>
+            </div>
+            <!--col-lg-12-->
+        </div>
+        <div class="row">
+            <div class="col-lg-3 pb-4">
+                <div class="filters-text">
+                    <h3>Filters<a (click)="hideFilter()" style="float: right;margin-right: 10px;"><i *ngIf="hide_filter==true" class="fa fa-plus"></i><i *ngIf="hide_filter==false" class="fa fa-minus"></i></a></h3>
+                    <div class="filters-text-new" [hidden]="hide_filter==true">
+                        <h4 *ngIf="selected_user_type=='spot'">Waar</h4>
+                        <form [formGroup]="searchForm">
+                            <div class="form-group required" *ngIf="selected_user_type=='spot'" data-type="text" data-required="true">
+                                <input type="text" (keyup.enter)="onText($event)" class="form-control" formControlName="search_address" autocomplete="off" placeholder="Search City"><i id="filter-icon" class="fa fa-search"></i>
+                            </div>
+                        </form>
+                        <!-- <ul>
+                            <li><a href="#"><strong>Category</strong></a></li>
+                            <li><a href="#">Events<span class="overlay">1254</span></a></li>
+                            <li class="active"><a href="#">Spots<span>7845</span></a></li>
+                        </ul> -->
+                        <ul>
+                            <!-- <a href="javascript:void(0)" (click)="onSelectUserType('')"><span>Reset</span></a> -->
+                            <li><strong>Wie</strong></li>
+                            <li [ngClass]="(selected_user_type=='spot'||selected_user_type=='spot_event')?'active':''" ><a  href="javascript:void(0)" (click)="onSelectUserType('spot')" >Spot<span class="overlay">{{this.counts['spot_count']}}</span></a></li>
+                            <li [ngClass]="(selected_user_type=='people'||selected_user_type=='people_group')?'active':''" ><a  href="javascript:void(0)" (click)="onSelectUserType('people')">People<span class="overlay">{{this.counts['people_list']}}</span></a></li>
+                            <li [ngClass]="(selected_user_type=='group'||selected_user_type=='people_group')?'active':''" ><a  href="javascript:void(0)" (click)="onSelectUserType('group')">Group<span class="overlay">{{this.counts['group_list']}}</span></a></li>
+                            <li [ngClass]="(selected_user_type=='event'||selected_user_type=='spot_event')?'active':''" ><a  href="javascript:void(0)" (click)="onSelectUserType('event')">Event<span class="overlay">{{this.counts['event_list']}}</span></a></li>
+                            <!-- <li class="active"><a  href="javascript:void(0)" (click)="onSelectUserType('group')">Group<span>464</span></a></li> -->
+                            <!-- <li *ngIf="logged_in_user==true" [ngClass]="(selected_user_type=='friend')?'active':''" ><a  href="javascript:void(0)" (click)="onSelectUserType('friend')">Friends<span class="overlay">{{this.counts['friend_count']}}</span></a></li> -->
+                        </ul>                        
+                            <div *ngIf="selected_user_type=='event'">
+                                <ul>
+                                    <li><a href="#"><strong>Wanneer</strong></a></li>
+                                    <li [ngClass]="(selected_duration=='today')?'active':''"><a href="javascript:void(0)" (click)="onSelectDuration('today')">Today<span class="overlay">{{today | date:'d MMM'}}</span></a></li>
+                                    <li [ngClass]="(selected_duration=='this_month')?'active':''"><a href="javascript:void(0)" (click)="onSelectDuration('this_month')">This Month<span class="overlay">{{today | date:'MMMM'}}</span></a></li>
+                                    <li [ngClass]="(selected_duration=='next_month')?'active':''"><a href="javascript:void(0)" (click)="onSelectDuration('next_month')">Next Month<span class="overlay">{{next_month | date:'MMMM'}}</span></a></li>
+                                    <!-- <li><a href="#">Geen specifieke datum</a></li> -->
+                                </ul>
+                                <input type="text"                                
+                                    (bsValueChange)="onValueChange($event)"
+                                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', showWeekNumbers: false }" 
+                                    placeholder="Geen specifieke datum"
+                                    class="form-control"                                    
+                                    bsDaterangepicker>
+                            </div>                        
+                        <ul>
+                            <li><strong>Wat</strong><a href="javascript:void(0)" (click)="onChangeInterest('')"><span>Reset</span></a></li>
+                            <li *ngFor="let interest of interests" [ngClass]="(interest.id==selected_interest)?'active':''"  ><a href="javascript:void(0)" (click)="onChangeInterest(this.interest.id)">{{this.interest.title}}<span [ngClass]="(interest.id==selected_interest)?'':'overlay'">{{interest.count}}</span></a></li>                            
+                            <!-- <li><a href="#">Partij<span class="overlay">654</span></a></li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--col-lg-3-->
+            <div class="col-lg-6"  *ngIf="this.cnt==1">
+                <div *ngFor="let spot of spots; let i = index">
+                    <!-- <h4 *ngIf="i==0">Spot</h4> -->
+                    <div class="group-text"  [ngClass]="(spot.business_type=='premium')?'plaat-premium':''">
+                    </div>
+                    <div class="col-lg-12 boeken-text-wrap" [ngClass]="(spot.business_type=='premium')?'plaat-text-wrap':''">
+                        <div class="row">
+                            <div class="col-sm-4 plaat-img">
+                                <img height="150px" *ngIf="spot.user_profile&&spot.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{spot.user_profile}}">
+                                <img height="150px" *ngIf="!spot.user_profile" src="/assets/front-assets/images/pic1.png">
+                                <img height="150px" *ngIf="spot.user_profile&&spot.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{spot.user_profile}}">
+                                <span *ngIf="spot.business_type=='premium'">Premium</span>
+                            </div>
+                            <div class="col-sm-8 boeken-text">
+                                <!-- <h3>Spot</h3> -->
+                                <a routerLink="/spot/{{this.spot.unique_id}}/{{this.spot.user_slug}}"><h2>{{spot.business_name}}</h2></a>
+                                <h4>{{spot.full_address}}</h4>
+                                <h4>{{spot.short_description}}</h4>
+                                <!-- <span><i class="fa fa-map-marker"></i> 0.2 Km</span> -->
+                                <ul>
+                                    <li *ngIf="spot.liked_users.length">Like By</li>
+                                    <li *ngFor="let lu of spot.liked_users"><img class="img-like" *ngIf="lu&&lu.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{lu}}">
+                                        <img class="img-like" *ngIf="!lu" src="/assets/front-assets/images/pic1.png">
+                                        <img class="img-like" *ngIf="lu&&lu.indexOf('https://graph.facebook.com') != -1" src="{{lu}}"></li>
+                                </ul>
+                                <div class="boeken-icon">
+                                    <div class="spot-music2-dropdown" *ngIf="logged_in_user_type=='normal'">
+                                        <div class="dropdown">
+                                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Go</button>
+                                            <ul class="dropdown-menu">
+                                                <li style="display: block;"><a href="javascript:void(0)" (click)="addToGoList(spot.user_id)"><i class="fa fa-plus"></i>To Do</a></li>                                                    
+                                                <!-- <li><a href="#"><i class="fa fa-map-marker"></i>Check in</a></li> -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="spot-search-dropdown">
+                                        <div class="dropdown">
+                                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"></button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#">Like</a></li>
+                                                <li><a href="#">Connect</a></li>
+                                            <li><a href="#">Spot 3</a></li> 
+                                            </ul>
+                                        </div>
+                                    </div> -->
+                                    <ul class="ratings2">
+                                        <li class="active" *ngIf="spot.avg_rating"><a>{{spot.avg_rating}}</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div *ngFor="let event of events; let i = index">
+                    <!-- <h4 *ngIf="i==0">Event</h4> -->
+                    <div class="group-text">
+                    </div>
+                    <div class="col-lg-12 boeken-text-wrap">
+                        <div class="row">
+                            <div class="col-sm-4 plaat-img">
+                                <img height="150px" *ngIf="event.event_cover" src="https://ibigo.shadowis.nl/server-api/public/event_cover/{{event.event_cover}}" alt="img1">
+                                <img height="150px" *ngIf="!event.event_cover" src="/assets/front-assets/images/group-bg.png" alt="img1">
+                            </div>
+                            <div class="col-sm-8 boeken-text">
+                                <!-- <h3>Spot</h3> -->
+                                <a routerLink="/event/{{event.event_unique_id}}/{{event.event_slug}}"><h2>{{event.event_title}}</h2></a>
+                                <h4>{{event.event_description}}</h4>
+                                <h4 *ngIf="event.host_group!=null">Hosted by <a routerLink="/group/{{event.group_unique_id}}/{{event.group_slug}}">{{event.group_name}}</a></h4>
+                                <h4 *ngIf="event.host_group==null&&event.user_type=='normal'">Hosted by <a routerLink="/people/{{event.unique_id}}/{{event.user_slug}}">{{event.first_name}} {{event.last_name}}</a></h4>
+                                <h4 *ngIf="event.host_group==null&&event.user_type=='business'">Hosted by <a routerLink="/spot/{{event.unique_id}}/{{event.user_slug}}">{{event.business_name}}</a></h4>
+                                <span *ngIf="(event.start_date_time | date:'longDate')==(event.end_date_time | date:'longDate')"><i class="fa fa-calendar"></i> {{event.start_date_time | date:'d MMM' }} From {{event.start_date_time | date:'shortTime' }}-{{event.end_date_time | date:'shortTime' }} </span>
+                                <span *ngIf="(event.start_date_time | date:'longDate')!=(event.end_date_time | date:'longDate')"><i class="fa fa-calendar"></i> {{event.start_date_time | date:'d MMM' }} At {{event.start_date_time | date:'shortTime' }} - {{event.end_date_time | date:'d MMM' }} At {{event.end_date_time | date:'shortTime' }} </span>
+                                <div class="boeken-icon">
+                                    <div class="spot-music2-dropdown" *ngIf="logged_in_user_type=='normal'">
+                                        <div class="dropdown">
+                                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Go</button>
+                                            <ul class="dropdown-menu">
+                                                <li style="display: block;"><a href="javascript:void(0)" (click)="addToPlanning(event.id)"><i class="fa fa-plus"></i>Add to planning</a></li>                                                    
+                                                <li style="display: block;"><a href="javascript:void(0)" (click)="shareEvent(event.id)"><i class="fa fa-share"></i>Share</a></li>
+                                                <!-- <li><a href="#"><i class="fa fa-map-marker"></i>Check in</a></li> -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div *ngFor="let people of peoples ; let i = index">
+                    <!-- <h4 *ngIf="peoples.length>0&&i==0">People</h4> -->
+                    <div class="col-lg-12 boeken-text-wrap">
+                        <div class="row">
+                            <div class="col-sm-2 plaat-img">
+                                <img height="75px" *ngIf="people.user_profile&&people.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{people.user_profile}}">
+                                <img height="75px" *ngIf="!people.user_profile" src="/assets/front-assets/images/search_pic1.png">
+                                <img height="75px" *ngIf="people.user_profile&&people.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{people.user_profile}}">
+                                <!-- <span *ngIf="spot.business_type=='premium'">Premium</span> -->
+                            </div>
+                            <div class="col-sm-10 pl-0 people-text">
+                                <!-- <h3>Spot</h3> -->
+                                <a routerLink="/people/{{this.people.unique_id}}/{{this.people.user_slug}}"><h2>{{people.user_name}}</h2></a>
+                                <!-- <h4>{{spot.short_description}}</h4> -->
+                                <!-- <span><i class="fa fa-map-marker"></i> 0.2 Km</span> -->
+                                <!-- <ul>
+                                    <li *ngIf="spot.liked_users.length">Like By</li>
+                                    <li *ngFor="let lu of spot.liked_users"><img class="img-like" *ngIf="lu&&lu.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{lu}}">
+                                        <img class="img-like" *ngIf="!lu" src="/assets/front-assets/images/pic1.png">
+                                        <img class="img-like" *ngIf="lu&&lu.indexOf('https://graph.facebook.com') != -1" src="{{lu}}"></li> -->
+                                <!-- </ul> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngFor="let group of groups ; let i = index">
+                    <!-- <h4 *ngIf="groups.length>0&&i==0">Group</h4> -->
+                    <div class="col-lg-12 boeken-text-wrap">
+                        <div class="row">
+                            <div class="col-sm-2 plaat-img">
+                                <img height="75px" *ngIf="group.user_profile&&group.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{group.user_profile}}">
+                                <img height="75px" *ngIf="!group.user_profile" src="/assets/front-assets/images/group_pic1.png">
+                                <img height="75px" *ngIf="group.user_profile&&group.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{group.user_profile}}">
+                                <!-- <span *ngIf="spot.business_type=='premium'">Premium</span> -->
+                            </div>
+                            <div class="col-sm-10 pl-0 people-text">
+                                <!-- <h3>Spot</h3> -->
+                                <a routerLink="/group/{{this.group.unique_id}}/{{this.group.user_slug}}"><h2>{{group.user_name}}</h2></a>
+                                <!-- <h4>{{spot.short_description}}</h4> -->
+                                <!-- <span><i class="fa fa-map-marker"></i> 0.2 Km</span> -->
+                                <!-- <ul>
+                                    <li *ngIf="spot.liked_users.length">Like By</li>
+                                    <li *ngFor="let lu of spot.liked_users"><img class="img-like" *ngIf="lu&&lu.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{lu}}">
+                                        <img class="img-like" *ngIf="!lu" src="/assets/front-assets/images/pic1.png">
+                                        <img class="img-like" *ngIf="lu&&lu.indexOf('https://graph.facebook.com') != -1" src="{{lu}}"></li> -->
+                                <!-- </ul> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <!-- <img class="last-icon" src="/assets/front-assets/images/icon14.png" alt="icon14"> -->
+            </div>
+            <div class="col-lg-6" *ngIf="this.cnt==0">
+                <span>We didn't find any results</span>
+            </div>
+            <div class="col-lg-6"  *ngIf="this.cnt!=1&&this.cnt!=0">
+                <span>We didn't find any results</span>
+            </div>
+            <!--col-lg-6-->
+            <div class="col-lg-3">
+                <!-- <button id="plaat-btn" type="button" class="btn-default">connect met spot</button> -->
+                <app-user-side-widget></app-user-side-widget>
+            </div>
+            <!--col-lg-3-->
+        </div>
+    </div>
+</section>

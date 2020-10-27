@@ -1,0 +1,93 @@
+agm-map {
+    height: 200px;
+}
+.form-check-main{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+
+.heading-form2 textarea {
+    background: #fff;
+    border: none;
+	border:1px solid #ddd;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight:600;
+    color: #000;
+    border-radius:3px;
+    padding-left:20px;
+    padding-top:20px;
+}
+
+.myradio-btn{
+    height: unset !important;
+}
+
+
+.spot-img{
+    background-color: #ABA69E;
+    width: 50px;
+    height: 50px;
+}
+.spot-div{
+    margin-bottom: 15px;
+}
+
+* {
+    box-sizing: border-box;
+  }
+  
+  #myInput {
+    background-position: 10px 12px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+  }
+  
+  #myUL {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  #myUL li a {
+    border: 1px solid #ddd;
+    margin-top: -1px; /* Prevent double borders */
+    background-color: #fff;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+    display: block
+  }
+  
+  #myUL li a:hover:not(.header) {
+    background-color: #eee;
+  }
+
+
+
+  .spot-name{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #040404;
+    margin-left: 15px;
+    display: block;
+  }
+
+  .spot-address{
+    display: block;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #9a9a9a;
+    margin-left: 15px;
+  }
+
+
+  

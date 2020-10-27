@@ -1,0 +1,182 @@
+<app-user-header></app-user-header>
+<!--============== END KOFFIE SECTION ===============-->
+
+<!--===== GROUP SECTION =====-->
+<section class="wacht-section2">
+    <div class="container">
+        <div class="wacht-text">
+            <ul class="first">
+                <li><a routerLink="/user/homepage">Home <i class="fa fa-caret-right"></i></a></li>
+                <!-- <li><a href="#">Connect <i class="fa fa-caret-right"></i></a></li> -->
+                <li><a class="active">Events</a></li>
+            </ul>
+        </div>
+	    <div class="row">
+            <div class="col-lg-3 pb-3">
+                <div class="wacht-text">               
+                    <ul class="second">
+                        <li class="active"><a href="#spots" data-toggle="tab">Events</a></li>
+                    </ul>
+                </div>
+             </div>
+             <!--col-lg-3-->
+             <div class="col-lg-6 p-0">
+                <div class="tab-content">
+                    <div id="spots" class="tab-pane fade in active">
+                        <div class="col-lg-12">
+                            <div class="group-text" *ngIf="events.length">
+                                <form [formGroup]="searchSpot" >
+                                    <div class="form-group required" data-type="text" data-required="true">
+                                        <i id="group-icon" class="fa fa-search"></i>
+                                        <input type="text" class="form-control" formControlName="searchText" [(ngModel)]="searchText"  placeholder="Vind je spots en evenementen">
+                                    </div>
+                                </form>
+                            </div>                            
+                            <h4 *ngIf="(events | filter: searchText : eventfieldname).length != 0&&events.length">Events</h4>
+                            <div *ngFor="let event of events | filter: searchText : eventfieldname; let i = index">
+                                <div class="col-lg-12 boeken-text-wrap" style="padding-bottom: 15px;" >
+                                    <div class="col-lg-4 boeken-img">
+                                        <img height="150px" *ngIf="event.event_cover" src="https://ibigo.shadowis.nl/server-api/public/event_cover/{{event.event_cover}}" alt="img1">
+                                        <img height="150px" *ngIf="!event.event_cover" src="/assets/front-assets/images/group-bg.png" alt="img1">
+                                    </div>
+                                    <div class="col-lg-7 boeken-text pr-0">
+                                        <a routerLink="/event/{{event.event_unique_id}}/{{event.event_slug}}"><h2>{{event.event_title}}</h2></a>
+                                        <h4>{{event.event_description}}</h4>
+                                        <h4 *ngIf="event.host_group!=null">Hosted by <a routerLink="/group/{{event.group_unique_id}}/{{event.group_slug}}">{{event.group_name}}</a></h4>
+                                        <h4 *ngIf="event.host_group==null&&event.user_type=='business'">Hosted by <a routerLink="/spot/{{event.unique_id}}/{{event.user_slug}}">{{event.business_name}}</a></h4>
+                                        <h4 *ngIf="event.host_group==null&&event.user_type=='normal'">Hosted by <a routerLink="/people/{{event.unique_id}}/{{event.user_slug}}">{{event.first_name}} {{event.last_name}}</a></h4>
+                                        <span *ngIf="(event.start_date_time | date:'longDate')==(event.end_date_time | date:'longDate')"><i class="fa fa-calendar"></i> {{event.start_date_time | date:'d MMM' }} From {{event.start_date_time | date:'shortTime' }}-{{event.end_date_time | date:'shortTime' }} </span>
+                                        <span *ngIf="(event.start_date_time | date:'longDate')!=(event.end_date_time | date:'longDate')"><i class="fa fa-calendar"></i> {{event.start_date_time | date:'d MMM' }} At {{event.start_date_time | date:'shortTime' }} - {{event.end_date_time | date:'d MMM' }} At {{event.end_date_time | date:'shortTime' }} </span>
+                                        <br>
+                                    </div>
+                                    <div class="col-lg-1 boeken-icon">
+                                        <div class="spot-search-dropdown new-spot-drop">
+                                            <div class="dropdown">
+                                                <button class="btn btn-primary dropdown-toggle m-2" type="button" data-toggle="dropdown"></button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="javascript:void(0)" (click)="onEventEdit(event.id)" >Edit</a></li>
+                                                    <li><a href="javascript:void(0)" (click)="onEventDelete(event.id)">Delete</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <!-- <ul class="ratings">
+                                            <li><a href="#" (click)="selectSpot(spot.spot_id)" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i>Invite</a></li>
+                                            <li class="active"><a href="#">{{spot.avg_rating}}</a></li>
+                                        </ul> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="!events.length" class="text-center m-5">
+                                <i class="fa fa-calendar fa-2x" style="color:#262b86"></i>
+                                <p class="mt-3">No events planned</p>
+                            </div>
+                            <h5 *ngIf="((events | filter: searchText : eventfieldname).length == 0)&&events.length" >No result found for "{{searchText}}"</h5>
+                        </div>                       
+                    </div>
+                    <!--tab-3-->
+                </div>
+             </div>
+            <div class="col-lg-3">
+                <button (click)="onEventEdit('')" type="button" class="group-btn mt-6">maak event</button>
+                <button data-toggle="modal" id="event-button" data-target="#eventModal" class="hidden"></button>
+                <app-user-side-widget></app-user-side-widget>
+            </div>
+             <!--tab-content-->
+        </div>
+    </div>
+</section>
+<section class="model-section" >
+    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content modal-spot-popup2">
+                <button id="close-btn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <div class="modal-body spot-review-popup2">
+                    <span class="share"><i class="fa fa-calendar-plus-o"></i></span>
+                    <h2 class="deel"> {{(is_edit_event==false) ? 'Create' : 'Edit'}} Event</h2>
+                    <form [formGroup]="eventForm" (ngSubmit)="onEventSubmit()" >
+                        <div class="row">
+                            <div class="col-sm-12 event-popup-input">
+                                <div class="form-group" [ngClass]="{ 'has-error': event_submitted && ef.event_title.errors }">
+                                    <input type="text" formControlName="event_title"  class="form-control form-input-modal" placeholder="Event title"/>
+                                    <div *ngIf="event_submitted && ef.event_title.errors">
+                                        <span class="help-block">Event title is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-7 event-popup-input">                                
+                                <div class="form-group" [ngClass]="{ 'has-error': event_submitted && ef.start_date.errors }">
+                                    <input type="text" placeholder="Start Date" [minDate]="minDate" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', showWeekNumbers: false }"  #dp="bsDatepicker" bsDatepicker formControlName="start_date"  class="form-control form-input-modal"/>
+                                    <div *ngIf="event_submitted && ef.start_date.errors">
+                                        <span class="help-block"  *ngIf="ef.start_date.errors.required">Start date is required</span>
+                                        <span class="help-block" *ngIf="ef.start_date.errors.bsDate">Invalid start date</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-5 event-popup-input">
+                                <div class="form-group" [ngClass]="{ 'has-error': event_submitted && ef.start_time.errors }">
+                                    <timepicker [minuteStep]="15"  [showSpinners]="false" formControlName="start_time"></timepicker>
+                                    <div *ngIf="event_submitted && ef.start_time.errors">
+                                        <span class="help-block">Start time is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-7 event-popup-input">                                
+                                <div class="form-group" [ngClass]="{ 'has-error': event_submitted && ef.end_date.errors }">
+                                    <input type="text" [minDate]="minDate" placeholder="End Date" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', showWeekNumbers: false }"  #dp="bsDatepicker" bsDatepicker formControlName="end_date"  class="form-control form-input-modal"/>
+                                    <div *ngIf="event_submitted && ef.end_date.errors">
+                                        <span class="help-block">End date is required</span>
+                                        <span class="help-block" *ngIf="ef.end_date.errors.bsDate">Invalid end date</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-5 event-popup-input">
+                                <div class="form-group" [ngClass]="{ 'has-error': event_submitted && ef.end_time.errors }">
+                                    <timepicker [minuteStep]="15" [showSpinners]="false" formControlName="end_time"></timepicker>
+                                    <div *ngIf="event_submitted && ef.end_time.errors">
+                                        <span class="help-block" >End time is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group" *ngIf="this.error_status==true">
+                                    <span class="help-block">End date & time is greater than start date & time.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 event-popup-input">                                
+                                <div class="form-group" [ngClass]="{ 'has-error': event_submitted && ef.location.errors }">
+                                    <input type="text" formControlName="location"  class="form-control form-input-modal" placeholder="Location"/>
+                                    <div *ngIf="event_submitted && ef.location.errors">
+                                        <span class="help-block">Location is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">   
+                            <div class="col-sm-12 event-popup-input">
+                                <div class="form-group" [ngClass]="{ 'has-error': event_submitted && ef.event_description.errors }">
+                                    <textarea formControlName="event_description"  class="form-control form-input-modal" placeholder="Vertel iets over deze event"></textarea>
+                                    <div *ngIf="event_submitted && ef.event_description.errors">
+                                        <span class="help-block">Event description is required</span>
+                                    </div>
+                                </div>
+                            </div>           
+                        </div>                            
+                        <button type="submit" class="delen btn-share-modal">
+                            <i *ngIf="btnloading==true" class="fa fa-spin fa-spinner"></i>&nbsp;{{(is_edit_event==false) ? 'Create' : 'Update'}}
+                        </button>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <!-- <audio controls><source src="https://ibigo.shadowis.nl/server-api/public/spot_audio/audio1.mp3"></audio> -->
+</section>
+
+<!--============== END GROUP SECTION ===============-->

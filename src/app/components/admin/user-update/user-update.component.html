@@ -1,0 +1,221 @@
+<app-header></app-header>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Fixed Layout
+        <small>Blank example to the fixed layout</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Layout</a></li>
+        <li class="active">Fixed</li>
+      </ol>
+    </section>
+    <section class="content">
+    <!-- Main content -->
+    
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-8 col-md-offset-2">
+              <!-- general form elements -->
+              <div class="box box-warning">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Update User</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form [formGroup]="userUpdateForm" (ngSubmit)="onSubmit()">
+                  <div class="box-body">
+                    <div class="row">
+                      <div class="col-md-12 img-cover">
+                        <img class="img-responsive" *ngIf="user.user_cover" src="https://ibigo.shadowis.nl/server-api/public/user_cover/{{user.user_cover}}">
+                        <img class="img-responsive" *ngIf="!user.user_cover" src="/assets/front-assets/images/group-bg2.png">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 mb-4 text-center img-profile">
+                        <img *ngIf="user.user_profile&&user.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{user.user_profile}}">
+                        <img *ngIf="!user.user_profile" src="/assets/front-assets/images/pic1.png">
+                        <img *ngIf="user.user_profile&&user.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{user.user_profile}}">
+                      </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group"  [ngClass]="{ 'has-error': submitted && f.first_name.errors }">
+                              <label for="first_name" class="text-info" [ngClass]="{ 'control-label': submitted && f.first_name.errors }"><i [ngClass]="{ 'fa fa-times-circle-o': submitted && f.first_name.errors }"></i> First Name</label><br>
+                              <input type="text"  placeholder="First Name" formControlName="first_name" class="form-control" />
+                                  <div *ngIf="submitted && f.first_name.errors" >
+                                      <span class="help-block" *ngIf="f.first_name.errors.required">First Name is required</span>
+                                  </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group"  [ngClass]="{ 'has-error': submitted && f.last_name.errors }">
+                              <label for="last_name" class="text-info" [ngClass]="{ 'control-label': submitted && f.last_name.errors }"><i [ngClass]="{ 'fa fa-times-circle-o': submitted && f.last_name.errors }"></i> Last Name</label><br>
+                              <input type="text"  placeholder="Last Name" formControlName="last_name" class="form-control" />
+                                  <div *ngIf="submitted && f.last_name.errors" >
+                                      <span class="help-block" *ngIf="f.last_name.errors.required">Last Name is required</span>
+                                  </div>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group" >
+                            <div class="form-group" [ngClass]="{ 'has-error': submitted && f.gender.errors }"><label class="text-info" ><i [ngClass]="{ 'fa fa-times-circle-o': submitted && f.gender.errors }"></i> Gender</label></div>
+                              <div class="radio">
+                                <label>
+                                    <input type="radio" formControlName="gender" [value]="'male'"/>
+                                  Man
+                                </label>
+                              </div>
+                              <div class="radio">
+                                <label>
+                                  <input type="radio" formControlName="gender" [value]="'female'"/>
+                                  Vrouw
+                                </label>
+                              </div>
+                              <div class="radio">
+                                <label>
+                                    <input type="radio" formControlName="gender" [value]="'nonbinary'"/>
+                                  Non-binary
+                                </label>
+                              </div>
+                              <div *ngIf="submitted && f.gender.errors" [ngClass]="{ 'has-error': submitted && f.gender.errors }" >
+                                <span class="help-block" *ngIf="f.gender.errors.required">Gender is required</span>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group"  [ngClass]="{ 'has-error': submitted && f.email.errors }">
+                                <label for="email" class="text-info" [ngClass]="{ 'control-label': submitted && f.email.errors }"><i [ngClass]="{ 'fa fa-times-circle-o': submitted && f.email.errors }"></i> Email</label><br>
+                                <input type="email" formControlName="email" placeholder="Email" class="form-control"  />
+                                <div *ngIf="submitted && f.email.errors">
+                                    <span class="help-block" *ngIf="f.email.errors.required">Email is required</span>
+                                    <span class="help-block" *ngIf="f.email.errors.email">Email must be a valid email address</span>
+                                </div>
+                            
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group"  [ngClass]="{ 'has-error': submitted && f.mobile.errors }">
+                              <label for="mobile"  class="text-info" [ngClass]="{ 'control-label': submitted && f.mobile.errors }"><i [ngClass]="{ 'fa fa-times-circle-o': submitted && f.mobile.errors }"></i> Mobile</label><br>
+                              <ngx-intl-tel-input 
+                                            [cssClass]="'custom inpt-tel-admin'" 
+                                            [preferredCountries]="preferredCountries"
+                                            [enableAutoCountrySelect]="false" 
+                                            [enablePlaceholder]="true" 
+                                            [searchCountryFlag]="true"
+                                            [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                            [selectFirstCountry]="false" 
+                                            [selectedCountryISO]="selectedCountry?selectedCountry:CountryISO.Netherlands"
+                                            [maxLength]="15" 
+                                            [tooltipField]="TooltipLabel.Name" 
+                                            [phoneValidation]="true" 
+                                            [separateDialCode]="true"
+                                            name="mobile" formControlName="mobile" >
+                                        </ngx-intl-tel-input>
+                                  <div *ngIf="submitted && f.mobile.errors" >
+                                      <span class="help-block" *ngIf="f.mobile.errors.required">Mobile is required</span>
+                                      <span class="help-block" *ngIf="f.mobile.errors.validatePhoneNumber">Please enter valid number</span>
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                            <label for="file" class="text-info"> User Profile</label><br>
+                            <input 
+                                formControlName="file"
+                                id="file" 
+                                type="file" 
+                                class="form-control"
+                                (change)="onFileChange($event)">
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group" [ngClass]="{ 'has-error': submitted && f.cover.errors }">
+                          <label for="cover" class="text-info" [ngClass]="{ 'control-label': submitted && f.cover.errors }"><i [ngClass]="{ 'fa fa-times-circle-o': submitted && f.cover.errors }"></i> User Cover</label><br>
+                          <input 
+                              formControlName="cover"
+                              id="cover" 
+                              type="file" 
+                              class="form-control"
+                              (change)="onCoverChange($event)">
+                          <div *ngIf="submitted && f.cover.invalid">
+                              <span class="help-block" *ngIf="f.cover.errors.required">Cover is required.</span>
+                          </div>
+                        </div>
+                      </div>
+                        <div class="col-md-4">
+                            <div class="form-group" [ngClass]="{ 'has-error': submitted && f.birth_date.errors }">
+                              <label for="datepicker" class="text-info">Birthdate</label>
+                      
+                              <div class="input-group date">
+                                <div class="input-group-addon">
+                                  <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" autocomplete="false" bsDatepicker (bsValueChange)="dateCreated($event)" [bsConfig]="{ dateInputFormat: 'DD-MM-YY', showWeekNumbers: false }"  formControlName="birth_date" class="form-control pull-right">
+                              </div>
+                              <div *ngIf="submitted && f.birth_date.errors" >
+                                <span class="help-block" *ngIf="f.birth_date.errors.required">Birthdate is required</span>
+                                <span class="help-block" *ngIf="f.birth_date.errors.bsDate">Invalid Date</span>
+                                </div>
+                              <!-- /.input group -->
+                            </div>
+                        </div>
+                      </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group"  [ngClass]="{ 'has-error': submitted && f.password.errors }">
+                                <label for="password" class="text-info" [ngClass]="{ 'control-label': submitted && f.password.errors }"><i [ngClass]="{ 'fa fa-times-circle-o': submitted && f.password.errors }"></i> Password</label><br>
+                                <input placeholder="Password" type="password" formControlName="password" class="form-control" />
+                                    <div *ngIf="submitted && f.password.errors" >
+                                        <span class="help-block" *ngIf="f.password.errors.minlength">Password must be at least 6 characters</span>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" [ngClass]="{ 'has-error': submitted && f.password_confirmation.errors }">
+                                <label for="password_confirmation" class="text-info" [ngClass]="{ 'control-label': submitted && f.password_confirmation.errors }"><i [ngClass]="{ 'fa fa-times-circle-o': submitted && f.password_confirmation.errors }"></i> Confirm Password</label><br>
+                                <input placeholder="Confirm Password" type="password" formControlName="password_confirmation" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password_confirmation.errors }" />
+                                <div *ngIf="submitted && f.password_confirmation.errors" class="invalid-feedback">
+                                    <span class="help-block" *ngIf="f.password_confirmation.errors.mustMatch">Passwords must match</span>
+                                </div>
+                            </div>
+                        </div>	
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="text-info">Select Interests</label>
+                        </div>
+                        <div style="padding:15px;" >
+                            <div class="col-md-2" *ngFor="let interest of interests">
+                                <div class="form-group">
+                                    <label style="cursor: pointer;" (click)="onAddInterest(this.interest.id)">
+                                        <img class="img-check" [ngClass]="(this.myarray.includes(this.interest.id))?'check':''" width="100%;" src="https://ibigo.shadowis.nl/server-api/public/interest_images/{{this.interest.image}}">
+                                        
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                  <!-- /.box-body -->
+                  <div class="box-footer">
+                    <button type="submit" class="btn btn-warning">Update</button>
+                  </div>
+                </form>
+              </div>
+              <!-- /.box -->
+            </div>
+        </div>
+        <!-- /.row -->
+        
+    <!-- /.content -->
+    </section>
+  </div>

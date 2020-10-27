@@ -1,0 +1,43 @@
+<header class="home-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-8 heading-text">
+                    <h1>Lorem ipsum dolor sit amet consectetur adipiscing</h1>
+                </div>
+                <div class="col-lg-4 heading-form-main">
+                    <div id="login-form" class="heading-form">
+                        <a routerLink="/user/login"><img src="/assets/images/ibigo-dark100.png" alt="logo1"></a> 
+                        <h3>Log in op jouw account</h3>
+                        <p><a class="first" href="#" routerLink="/user/login/mobile" >Login</a> met mobiel nummer</p>
+                        <form class="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                            <div class="form-group required" data-type="text" data-required="true" [ngClass]="{ 'has-error': submitted && f.email.errors }">
+                                <input placeholder="Email" type="text" formControlName="email" class="form-control" >
+                                <div *ngIf="submitted && f.email.errors">
+                                    <div class="help-block" *ngIf="f.email.errors.required">Email is required</div>
+                                    <div class="help-block" *ngIf="f.email.errors.email">Email must be a valid email address</div>
+                                </div>
+                            </div>
+                            <div class="form-group required" data-type="text" data-required="true"  [ngClass]="{ 'has-error': submitted && f.password.errors }">
+                                <input placeholder="Password" type="password" formControlName="password" class="form-control" >
+                                <div *ngIf="submitted && f.password.errors" >
+                                    <div class="help-block" *ngIf="f.password.errors.required">Password is required</div>
+                                    <div class="help-block" *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+                                </div>
+                                    
+                            </div>
+                            <div class="form-group" data-type="submit">
+                                <button type="submit" class="btn-default"><i *ngIf="this.login_loading==true;" class="fa fa-spin fa fa-spinner"></i>&nbsp;Inloggen</button>
+                            </div>
+                            <div class="heading-form-new">
+                                <a class="second" href="#">Heb je geen account?</a> <a class="third" routerLink="/user/register">Creëer een nieuw account</a>
+                                <span>Or</span>
+                            </div>
+                                <button id="btn" type="button" (click)="socialSignIn('facebook')" class="btn-default"><i class="fa fa-facebook"></i>Inloggen met facebook</button>
+                            <a class="fourth" routerLink="/user/forgot-password">Wachtwoord vergeten?</a>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>

@@ -1,0 +1,329 @@
+<!--===== HEADER SECTION =====-->
+<app-user-header></app-user-header>
+<!--============== END HEADER SECTION ===============-->
+<!--============== END KOFFIE SECTION ===============-->
+
+<!--===== Wacht SECTION =====-->
+<section class="wacht-section">
+    <div class="container">
+        <div class="wacht-text">
+            <ul class="first">
+                <li><a routerLink="/user/homepage">Home <i class="fa fa-caret-right"></i></a></li>
+                <!-- <li><a href="#">Profile <i class="fa fa-caret-right"></i></a></li> -->
+                <li><a class="active" id="active_tab_name" href="#"></a></li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 pb-3">
+                <div class="wacht-text">                    
+                    <ul class="second">
+                        <li id="li_profile"><a href="#profile" (click)="changeTab('profile')" data-toggle="tab">My Profile</a></li>
+                        <li id="li_password" ><a href="#password" (click)="changeTab('password')" data-toggle="tab">Wachtwoord</a></li>
+                        <li id="li_interest"><a href="#interest" (click)="changeTab('interest')" data-toggle="tab">Interesses</a></li>
+                        <li id="li_notify"><a href="#notify" (click)="changeTab('notify')" data-toggle="tab">Notificaties</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!--col-lg-3-->
+            <div class="col-lg-6 pb-3">
+                <div class="tab-content">
+                    <div id="interest" class="tab-pane">
+                        <div class="col-lg-12 p-0">
+                            <div class="notificate-text">
+                                <h3>Interesses</h3>
+                                <ul class="interests" >
+                                    <li *ngFor="let interest of interests"  [class.active]="this.user_interests.includes(this.interest.id)">{{this.interest.title}}
+                                    <div class="pretty p-icon p-smooth">
+                                        <input type="checkbox" checked *ngIf="this.user_interests.includes(this.interest.id)" (change)="checkValue(this.interest.id)" />
+                                        <input type="checkbox" *ngIf="!this.user_interests.includes(this.interest.id)" (change)="checkValue(this.interest.id)" />
+                                        <div class="state p-success">
+                                            <i class="icon fa fa-check"></i>
+                                            <label></label>
+                                        </div>
+                                    </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="password" class="tab-pane">
+                        <div class="col-lg-12 wijzig-form">
+                            <h3>Wijzig wachtwoord</h3>
+                            <form [formGroup]="changePasswordForm" (ngSubmit)="onSubmit()" autocomplete="off">
+                                <div class="col-lg-12 wijzig-form-input">
+                                    <label>Oud Wachtwoord</label>
+                                    <div class="form-group required" data-type="text" data-required="true" [ngClass]="{ 'has-error': change_submitted && f.oldpassword.errors }">
+                                        <input type="password" placeholder="************" formControlName="oldpassword" class="form-control" >
+                                        <div *ngIf="change_submitted && f.oldpassword.errors" >
+                                            <div class="help-block" *ngIf="f.oldpassword.errors.required">Old Password is required</div>
+                                            <div class="help-block" *ngIf="f.oldpassword.errors.minlength">Old Password must be at least 6 characters</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 wijzig-form-input">
+                                    <label>Nieuw Wachtwoord</label>
+                                    <div class="form-group required" data-type="text" data-required="true" [ngClass]="{ 'has-error': change_submitted && f.password.errors }">
+                                        <input  type="password" placeholder="************" formControlName="password" class="form-control" >
+                                        <div *ngIf="change_submitted && f.password.errors" >
+                                            <div class="help-block" *ngIf="f.password.errors.required">Password is required</div>
+                                            <div class="help-block" *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 wijzig-form-input">
+                                    <label>Bevesting Wachtwoord</label>
+                                    <div class="form-group required" data-type="text" data-required="true"  [ngClass]="{ 'has-error': change_submitted && f.password.errors }">
+                                        <input placeholder="************" type="password" formControlName="password_confirmation" class="form-control" >
+                                        <div *ngIf="change_submitted && f.password_confirmation.errors" >
+                                            <div class="help-block" *ngIf="f.password_confirmation.errors.required">Confirm Password is required</div>
+                                            <div class="help-block" *ngIf="f.password_confirmation.errors.mustMatch">Passwords must match</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 wijzig-form-btn">
+                                    <div class="form-group" data-type="submit">
+                                        <button type="submit" class="btn-default">Bevestigen</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>                        
+                    </div>
+                    <div id="profile" class="tab-pane">
+                        <div class="col-lg-12 wijzig-form">
+                            <h3>Wijzig Profile<a class="pull-right more-link" routerLink="/home/business/profile">Bekijk Profiel</a></h3>
+                            <form [formGroup]="profileForm" (ngSubmit)="onProfileSubmit()" autocomplete="off" >
+                                <div class="col-lg-12 wijzig-form-input" style="margin-top: 55px;">
+                                    <div class="form-group required" data-type="text" class="text-center" data-required="true">
+                                        <div class="edit-profile">
+                                            <input class="hidden" #file type="file" accept='image/*' (change)="preview(file.files)" />
+                                            <img class="img-profile"  [src]="imgURL?imgURL:this.user_profile" >
+                                            <span class="profile-change" (click)="file.click()" ><i class="fa fa-pencil"></i></span>
+                                        </div>    
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-lg-12 wijzig-form-input">
+                                    <label>Business Name</label>
+                                    <div class="form-group required" data-type="text" data-required="true" [ngClass]="{ 'has-error': submitted && pf.business_name.errors }">
+                                        <input type="text" placeholder="Business Name" formControlName="business_name" class="form-control" />
+                                        <div *ngIf="submitted && pf.business_name.errors" >
+                                            <div class="help-block" *ngIf="pf.business_name.errors.required">Business Name is required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 wijzig-form-input">
+                                    <label>Mobile</label>
+                                    <div class="form-group required"  data-required="true"  [ngClass]="{ 'has-error': submitted && pf.mobile.errors }">
+                                        <ngx-intl-tel-input 
+                                            [cssClass]="'custom inpt-tel-profile'" 
+                                            [preferredCountries]="preferredCountries"
+                                            [enableAutoCountrySelect]="false" 
+                                            [enablePlaceholder]="true" 
+                                            [searchCountryFlag]="true"
+                                            [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                            [selectFirstCountry]="false" 
+                                            [selectedCountryISO]="selectedCountry?selectedCountry:CountryISO.Netherlands"
+                                            [maxLength]="15" 
+                                            [tooltipField]="TooltipLabel.Name" 
+                                            [phoneValidation]="true" 
+                                            [separateDialCode]="true"
+                                            name="mobile" formControlName="mobile" autocomplete="off">
+                                        </ngx-intl-tel-input>
+                                        <div *ngIf="submitted && pf.mobile.errors" >
+                                            <div class="help-block" *ngIf="pf.mobile.errors.required">Mobile is required</div>
+                                            <div class="help-block" *ngIf="pf.mobile.errors.validatePhoneNumber">Please enter valid number</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 wijzig-form-input">
+                                    <label>Business Mobile</label>
+                                    <div class="form-group required"  data-required="true"  [ngClass]="{ 'has-error': submitted && pf.phone_number.errors }">
+                                        <input type="text" placeholder="Business Mobile" formControlName="phone_number" class="form-control" />
+                                        <div *ngIf="submitted && pf.phone_number.errors" >
+                                            <div class="help-block" *ngIf="pf.phone_number.errors.required">Mobile is required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 wijzig-form-input">
+                                    <label>Short Description</label>
+                                    <div class="form-group required" data-type="text" data-required="true" [ngClass]="{ 'has-error': submitted && pf.short_description.errors }">
+                                        <textarea formControlName="short_description" placeholder="Short description..." rows="2" class="form-control text-area-control"></textarea>
+                                        <div *ngIf="submitted && pf.short_description.errors" >
+                                            <div class="help-block" *ngIf="pf.short_description.errors.required">Short Description is required</div>
+                                            <div class="help-block" *ngIf="pf.short_description.errors?.maxlength">Short Description can be max 80 characters long.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 wijzig-form-input">
+                                    <label>Long Description</label>
+                                    <div class="form-group required" data-type="text" data-required="true" [ngClass]="{ 'has-error': submitted && pf.user_about.errors }">
+                                        <textarea formControlName="user_about" placeholder="Tell about your self..." rows="5" class="form-control text-area-control"></textarea>
+                                        <div *ngIf="submitted && pf.user_about.errors" >
+                                            <div class="help-block" *ngIf="pf.user_about.errors.required">Description is required</div>
+                                            <div class="help-block" *ngIf="pf.user_about.errors?.maxlength">Description can be max 255 characters long for basic account.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 wijzig-form-input">
+                                    <label>Full Address</label>
+                                    <div class="form-group required" data-type="text" data-required="true" [ngClass]="{ 'has-error': submitted && pf.full_address.errors }">
+                                        <textarea formControlName="full_address" placeholder="Full Address" rows="5" class="form-control text-area-control"></textarea>
+                                        <div *ngIf="submitted && pf.full_address.errors" >
+                                            <div class="help-block" *ngIf="pf.full_address.errors.required">Address is required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 wijzig-form-input" *ngIf="this.business_type=='premium'">
+                                    <label>Parking Details</label>
+                                    <div class="form-group required" data-type="text" data-required="true" [ngClass]="{ 'has-error': submitted && pf.parking_details.errors }">
+                                        <textarea formControlName="parking_details" placeholder="Parking Details" rows="5" class="form-control text-area-control"></textarea>
+                                        <div *ngIf="submitted && pf.parking_details.errors" >
+                                            <div class="help-block" *ngIf="pf.parking_details.errors.required">Parking Details is required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 wijzig-form-btn">
+                                    <div class="form-group" data-type="submit">
+                                        <button type="submit" class="btn-default">Bevestigen</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!--tab-2-->
+                    <div id="notify" class="tab-pane">
+                        <div class="col-lg-12 p-0">
+                            <div class="notificate-text">
+                                <h3>Notificaties</h3>
+                                <ul>
+                                    <li *ngFor="let notification of all_notifications" [ngClass]="notification.is_read == 0 ? 'notificate-read-text': 'notificate-read-text'" >
+                                        <div *ngIf="notification.notification_type==3" >
+                                            <p *ngIf="notification.user_type=='normal'"><a routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a> likes your post. <span style="font-size: 16px;font-family: 'Roboto', sans-serif;font-size: 16px;font-weight: 400;color: #040404;display: inline-block;" *ngIf="notification.notification_post_title">: "{{(notification.notification_post_title.length>32)? (notification.notification_post_title | slice:0:32)+'...':(notification.notification_post_title)}}".</span></p>
+                                            <p *ngIf="notification.user_type=='business'"><a routerLink="/spot/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a> likes your post. <span style="font-size: 16px;font-family: 'Roboto', sans-serif;font-size: 16px;font-weight: 400;color: #040404;display: inline-block;" *ngIf="notification.notification_post_title">: "{{(notification.notification_post_title.length>32)? (notification.notification_post_title | slice:0:32)+'...':(notification.notification_post_title)}}".</span></p>
+                                            <span>{{notification.notification_time}}.</span>
+                                        </div>
+                                        <div *ngIf="notification.notification_type==4" >
+                                            <p *ngIf="notification.user_type=='normal'"><a routerLink="/people/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a> commented on your post </p>
+                                            <p *ngIf="notification.user_type=='business'"><a routerLink="/spot/{{notification.unique_id}}/{{notification.user_slug}}">{{notification.notification_from_user_name}}</a> commented on your post </p>
+                                            <span>{{notification.notification_time}}.</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <ul *ngIf="!all_notifications.length" >
+                                    <li class="notificate-read-text"><span>No notifications</span></li>
+                                </ul>
+                            </div>
+                        </div>                        
+                    </div>
+                    <!--tab-3-->
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div id="connect-id" class="connect-text">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li>
+                            <a href="#"><img src="/assets/front-assets/images/pic2.png" alt="pic2">Sinan Ros</a><span>5</span></li>
+                        <li>
+                            <a href="#"><img src="/assets/front-assets/images/pic3.png" alt="pic3">School groep</a><span>3</span></li>
+                        <li>
+                            <a href="#"><img src="/assets/front-assets/images/pic4.png" alt="pic4">College groep</a>
+                        </li>
+                        <li>
+                            <a href="#"><img src="/assets/front-assets/images/pic5.png" alt="pic5">The Village Coffee & </a>
+                        </li>
+                        <li>
+                            <a href="#"><img src="/assets/front-assets/images/pic6.png" alt="pic6">Munchen City Group</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="form-calender">
+                    <h3>Planning</h3>
+                    <table class="table-condensed table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th colspan="12">
+                                    <span class="btn-group">
+                                        <a class="btn"><i class="fa fa-angle-left"></i></a>
+                                        <a class="btn">November 2019</a>
+                                        <a class="btn"><i class="fa fa-angle-right"></i></a>
+                                    </span>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>S</th>
+                                <th>M</th>
+                                <th>T</th>
+                                <th>W</th>
+                                <th>T</th>
+                                <th>F</th>
+                                <th>S</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="muted"></td>
+                                <td class="muted"></td>
+                                <td class="muted"></td>
+                                <td></td>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td class="overlay">5</td>
+                                <td>6</td>
+                                <td>7</td>
+                                <td>8</td>
+                                <td>9</td>
+                                <td>10</td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td>12</td>
+                                <td class="btn-primary"><strong>13</strong></td>
+                                <td>14</td>
+                                <td class="btn-primary"><strong>15</strong></td>
+                                <td>16</td>
+                                <td>17</td>
+                            </tr>
+                            <tr>
+                                <td>18</td>
+                                <td>19</td>
+                                <td>20</td>
+                                <td>21</td>
+                                <td>22</td>
+                                <td>23</td>
+                                <td>24</td>
+                            </tr>
+                            <tr>
+                                <td>25</td>
+                                <td>26</td>
+                                <td>27</td>
+                                <td>28</td>
+                                <td>29</td>
+                                <td class="muted">30</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="amster-text">
+                    <ul>
+                        <li><span><i class="fa fa-map-marker"></i>Amsterdam</span>
+                            <a href="#">Muziekfestival met familie</a>
+                        </li>
+                        <li><span><i class="fa fa-map-marker"></i>Amsterdam</span>
+                            <a href="#">Diner met Schoolvrienden</a>
+                        </li>
+                        <li><span><i class="fa fa-map-marker"></i>Amsterdam</span>
+                            <a href="#">Film met Schoolvrienden</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--tab-content-->
+        </div>
+    </div>
+</section>
+<!--============== END Wacht SECTION ===============-->

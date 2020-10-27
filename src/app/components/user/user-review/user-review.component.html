@@ -1,0 +1,124 @@
+<!--===== HEADER SECTION =====-->
+<app-user-header></app-user-header>
+<!--============== END HEADER SECTION ===============-->
+<div class="loading" *ngIf="this.loading==true">Loading&#8230;</div>
+<!--===== KOFFIE SECTION =====-->
+<!--============== END KOFFIE SECTION ===============-->
+
+<!--===== GROUP SECTION =====-->
+<section class="group-section">
+    <div class="container">
+        <div class="row my-row">
+            <div class="col-lg-12 spot-profile-group p-0">
+                <div class="cover-div">
+                    <img class="cover-bg  responsive" id="cover-background" [src]="imgURL" alt="group-bg2">
+                </div>
+                <div class="col-lg-2 spot-profile2-pic">
+                    <img class="profile-img"  src="{{this.people_profile}}" alt="pic29">
+                </div>
+                <div class="col-lg-9 spot-profile2-content">
+                    <div class="spot-pic-content2">
+                        <h3>{{this.people_first_name}} {{this.people_last_name}}</h3>
+                        <span>{{this.people_age}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-row">
+            <div class="col-lg-12 spot-pic-nav">
+                <div class="col-lg-8 spot-profile-nav2">
+                    <ul>
+                        <li><a href="javascript:void(0)"><i class="fa fa-user" aria-hidden="true"></i>{{this.friends_count}}<br><span>Vrienden</span></a></li>
+                        <li><a routerLink="/user-reviews/{{this.unique_id}}/{{this.user_slug}}"><i class="fa fa-thumbs-up" aria-hidden="true"></i>{{this.review_count}}<br><span>Review</span></a></li>
+                        <!-- <li><a href="#"><i class="fa fa-users" aria-hidden="true"></i>142<br><span>Volgers</span></a></li> -->
+                        <!-- <li><a href="#"><i class="fa fa-users" aria-hidden="true"></i>1.2k<br><span>Volgend</span></a></li> -->
+                    </ul>
+                </div>
+                <div class="col-lg-4 spot-pic-nav3">
+                    <ul>
+                        <!-- <li ><a class="active" href="#"><i class="fa fa-comment-o"></i>Message</a></li>
+                        <li *ngIf="user_type=='normal'" title="Click to unfriend"><a class="active" *ngIf="relation_status==1" (click)="cancelRequest(people_id,'unfriend')" href="javascript:void(0)"><i [ngClass]="(this.send_request==true)?'fa-spin fa-spinner':'fa-check'" class="fa" aria-hidden="true"></i>Friends</a></li>
+                        <li *ngIf="user_type=='normal'"><a class="active" *ngIf="relation_status==0&&action_user_id!=people_id" (click)="cancelRequest(people_id,'cancel')" href="javascript:void(0)"><i [ngClass]="(this.send_request==true)?'fa-spin fa-spinner':'fa-user-times'" class="fa" aria-hidden="true"></i>Cancel Request</a></li>
+                        <li *ngIf="user_type=='normal'">
+                            <div class="dropdown"><a class="active dropdown-toggle"  data-toggle="dropdown" *ngIf="relation_status==0&&action_user_id==people_id" href="#"><i [ngClass]="(this.send_request==true)?'fa-spin fa-spinner':'fa-check-square-o'" class="fa" aria-hidden="true"></i>Respond</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:void(0)" (click)="confirmRequest(people_id)">Confirm</a></li>
+                                    <li><a href="javascript:void(0)" (click)="rejectRequest(people_id)">Delete Request</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                            
+                        <li *ngIf="user_type=='normal'||logged_in_user==false"><a class="active" *ngIf="relation_status==4||relation_status==2||logged_in_user==false" href="javascript:void(0)" (click)="sendRequest(people_id)"><i class="fa" [ngClass]="(this.send_request==true)?'fa-spin fa-spinner':'fa-user-plus'" aria-hidden="true"></i>Add Friend</a></li> -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="rating-wrap" *ngFor="let review of reviews">
+                    
+                    <div class="rating-user-img">
+                        <img src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{review.user_profile}}" alt="img5">
+                    </div>
+                    <div class="rating-user-detail">
+                        <h3><a routerLink="/people/{{review.unique_id}}/{{review.user_slug}}">{{review.first_name}} {{review.last_name}}</a>&nbsp;<i class="fa fa-caret-right" aria-hidden="true"></i>&nbsp;<a routerLink="/spot/{{review.spot_unique_id}}/{{review.spot_slug}}">{{review.spot_name}}</a></h3>
+                        <ul class="rating-date" >
+                            <li class="rating-box" *ngIf="review.rating">
+                                <span>{{review.rating}}/5 <i class="fa fa-star"></i></span>
+                            </li>
+                            <li>
+                                <span>{{review.review_date_time}}</span>
+                            </li>
+                        </ul>
+                        <p *ngIf="review.review">{{review.review}}</p>
+                    </div>
+                    <div class="col-lg-12 spot-gallery-img" *ngIf="review.review_photos_videos.length>0">
+                        <ul>
+                            <li *ngFor="let pv of review.review_photos_videos ;let i = index" >
+                                <div class="last-post" *ngIf="i<=10">
+                                    <span *ngIf="this.review.review_photos_videos.length >= 12"><a *ngIf="i==10" class="plus-post" ><span class="pp-plus">+ {{review.review_photos_videos.length-11}}</span></a></span>
+                                    <img class="img-responsive" *ngIf="pv.includes('png','jpeg','jpg','tiff','pjp','pjpeg','jfif','tif','gif','svg','bmp','svgz','webp','ico','xbm','dib')" src="https://ibigo.shadowis.nl/server-api/public/spot_review_images/{{pv}}" />
+                                    <video class="video-responsive" *ngIf="pv.includes('mp4','ogm','wmv','mpg','webm','ogv','mov','asx','mpeg','m4v','avi')" src="https://ibigo.shadowis.nl/server-api/public/spot_review_videos/{{pv}}" controls></video>
+                                </div>
+                                
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-12 spot-heart" *ngIf="review.replies.length>0">
+                        <div class="col-lg-12 spot-heart3">
+                            <a href="javascript:void(0)" (click)="clickEvent(this.review.id)" class="comment-btn"><img src="/assets/front-assets/images/icons/icon6.png" alt="icon6"><span *ngIf="review.replies.length>1">{{review.replies.length}} replies</span><span *ngIf="review.replies.length==1">{{review.replies.length}} reply</span></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 post-comment" id="post-comment{{review.id}}"><!-- active -->
+                        <div class="comment-box">
+                            <div class="all-comment">
+                                <ul>
+                                    <li class="active1" *ngFor="let reply of review.replies">
+                                        <span class="comment-profile"><img src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{this.review.spot_profile}}" alt="pic27"></span>
+                                        <div class="comment-wrap">
+                                            
+                                            <div class="comment-detail" id="comment-detail{{this.reply.id}}"> <!-- active -->
+                                                <a routerLink="/spot/{{review.spot_unique_id}}/{{review.spot_slug}}" class="comment-name">{{this.review.spot_name}} . <span>{{reply.review_date_time | date:'longDate' }} {{reply.review_date_time | date:'shortTime' }}</span></a>
+                                                <span class="comment-text">{{reply.review}}</span>
+                                                
+                                                
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rating-wrap" *ngIf="!reviews.length">
+                    <div class="col-lg-12 text-center">
+                         <p>No reviews</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--============== END GROUP SECTION ===============-->
+

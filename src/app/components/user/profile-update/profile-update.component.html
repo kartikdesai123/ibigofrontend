@@ -1,0 +1,142 @@
+<!--===== HEADER SECTION =====-->
+<app-user-header></app-user-header>
+<!--============== END KOFFIE SECTION ===============-->
+<div class="loading" *ngIf="this.loading==true">Loading&#8230;</div>
+<!--===== GROUP SECTION =====-->
+<section class="group-section">
+    <div class="container">
+        <div class="row my-row">
+            <div class="col-lg-12 spot-profile-group p-0">
+                <form [formGroup]="profileForm" (ngSubmit)="onProfileSubmit()" >
+                    <span class="upload-image" (click)="file.click()"><i class="fa fa-pencil"></i></span>
+                    <input class="hidden" #file type="file" accept='image/*' (change)="preview(file.files)" />
+                    <div class="cover-div">
+                        <img class="cover-bg  responsive" id="cover-background" [src]="imgURL" alt="group-bg2">
+                    </div>
+                        <button id="imageupload" type="submit" class="uploadbtn hidden"> Upload </button>
+                </form>
+                <div class="col-lg-2 spot-profile2-pic">
+                    <img class="profile-img"  src="{{this.user_profile}}" alt="pic29">
+                </div>
+                <div class="col-lg-9 spot-profile2-content">
+                    <div class="spot-pic-content2">
+                        <h3>{{this.first_name}} {{this.last_name}}</h3>
+                        <span>{{this.age}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-row">
+            <div class="col-lg-12 spot-pic-nav">
+                <div class="col-lg-8 spot-profile-nav2">
+                    <ul>
+                        <li><a routerLink="/user/info/friends"><i class="fa fa-user" aria-hidden="true"></i>{{this.friends_count}}<br><span>Vrienden</span></a></li>
+                        <li><a routerLink="/user-reviews/{{this.unique_id}}/{{this.user_slug}}"><i class="fa fa-thumbs-up" aria-hidden="true"></i>{{this.review_count}}<br><span>Review</span></a></li>
+                        <!-- <li><a href="#"><i class="fa fa-users" aria-hidden="true"></i>142<br><span>Volgers</span></a></li> -->
+                        <!-- <li><a href="#"><i class="fa fa-users" aria-hidden="true"></i>1.2k<br><span>Volgend</span></a></li> -->
+                    </ul>
+                </div>
+                <div class="col-lg-4 spot-pic-nav3">
+                    <ul>
+                        <!-- <li><a class="active" href="#"><i class="fa fa-comment-o"></i>Bericht</a></li> -->
+                        <!-- <li><a class="active" href="#"><i class="fa fa-user" aria-hidden="true"></i>Vriend toevoegen</a></li> -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row my-row">
+            <div class="col-lg-12 spot-profile2-nav">
+                <div class="col-lg-6 spot-about-text">
+                    <h3>About Me</h3>
+                    <p>{{this.user_about}}</p>
+                </div>
+                <div class="col-lg-6 spot-interest-text" >
+                    <h3>Interesses</h3>
+                    <span *ngFor="let interest of interest_details">
+                        <span class="interest-text">{{this.interest.title}}</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row my-row">
+            <div class="col-lg-12 spot-favourite-wrap">
+                <div class="col-lg-6 spot-favourite-text">
+                    <span class="active">Favoriete Plek</span><span class="overlay">Alles zien</span>
+                    <ul>
+                        <li *ngFor="let lp of liked_places">
+                            <a routerLink="/spot/{{lp.unique_id}}/{{lp.user_slug}}"><img height="118px" width="118px" *ngIf="lp.user_profile&&lp.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{lp.user_profile}}">
+                                <img height="118px" width="118px" *ngIf="!lp.user_profile" src="/assets/front-assets/images/pic1.png">
+                                <img height="118px" width="118px"  *ngIf="lp.user_profile&&lp.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{lp.user_profile}}">{{lp.business_name}}</a>
+                        </li>
+                        <li *ngIf="!liked_places.length" style="display: table;margin: 0 auto;">
+                            <a style="margin-top: 30px;margin-bottom: 36px;">No likes</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-6 spot-favourite-text">
+                    <span class="active">Spot Reviewd</span><span class="overlay" style="cursor:pointer" routerLink="/user-reviews/{{this.unique_id}}/{{this.user_slug}}">Alles bekijken Review</span>
+                    <ul>
+                        <li *ngFor="let lp of review_places">
+                            <a routerLink="/spot/{{lp.unique_id}}/{{lp.user_slug}}"><img height="118px" width="118px" *ngIf="lp.user_profile&&lp.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{lp.user_profile}}">
+                                <img height="118px" width="118px" *ngIf="!lp.user_profile" src="/assets/front-assets/images/pic1.png">
+                                <img height="118px" width="118px"  *ngIf="lp.user_profile&&lp.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{lp.user_profile}}">{{lp.business_name}}</a><span>{{lp.rating}}</span>
+                        </li>
+                        <li *ngIf="!review_places.length" style="display: table;margin: 0 auto;">
+                            <a style="margin-top: 30px;margin-bottom: 36px;">No reviews</a>
+                        </li>
+                        <!-- <li>
+                            <a href="#"><img src="/assets/front-assets/images/profile2/img1.png" alt="img1" class="img-responsive">Bookstore</a><span>9.8</span>
+                        <li>
+                            <a href="#"><img src="/assets/front-assets/images/profile2/img2.png" alt="img2" class="img-responsive">Harvest Coffee</a><span>9.8</span>
+                        <li>
+                            <a href="#"><img src="/assets/front-assets/images/profile2/img3.png" alt="img3" class="img-responsive">Coffee Brewers</a><span>9.8</span>
+                        <li>
+                            <a href="#"><img src="/assets/front-assets/images/profile2/img4.png" alt="img4" class="img-responsive">Hot Coffee</a><span>9.8</span>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row my-row">
+            <div class="col-lg-12 spot-text1-profile2">
+                <div class="col-lg-12 spot-profile2-content">
+                    <div class="col-lg-12 spot-profile3-content">
+                        <ul>
+                            <li class="active"><a data-toggle="tab" href="#foto"><i class="fa fa-area-chart" aria-hidden="true"></i>Foto's</a></li>
+                            <li><a data-toggle="tab" href="#videos"><i class="fa fa-youtube-play" aria-hidden="true"></i>Videos</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tab-content">
+                    <div id="foto" class="tab-pane fade in active">
+                        <div class="col-lg-12 spot-gallery-img">
+                            <ul>
+                                <li *ngFor="let p of spot_photos_by_user"><img *ngIf="p.includes('png','jpeg','jpg','tiff','pjp','pjpeg','jfif','tif','gif','svg','bmp','svgz','webp','ico','xbm','dib')" src="https://ibigo.shadowis.nl/server-api/public/spot_photos_by_user/{{p}}" alt="img5" class="img-responsive"></li>
+                                <span *ngIf="!spot_photos_by_user.length">No foto's</span>
+                            </ul>
+                            <img *ngIf="spot_photos_by_user.length" class="profile2-last-icon" src="/assets/front-assets/images/profile2/profile2-loading-icon.png" alt="profile2-loading-icon">
+                        </div>
+                    </div>
+                    <!--tab1-->
+                    <div id="videos" class="tab-pane fade">
+                        <div class="col-lg-12 spot-gallery-img">
+                            <ul>
+                                <li *ngFor="let v of spot_videos_by_user">
+                                    <video width="100%" height="100%" controls>
+                                        <source *ngIf="v.includes('mp4','ogm','wmv','mpg','webm','ogv','mov','asx','mpeg','m4v','avi')" src="https://ibigo.shadowis.nl/server-api/public/spot_videos_by_user/{{v}}" type="video/mp4">
+                                    </video>
+                                </li>
+                                <span *ngIf="!spot_videos_by_user.length">No videos</span>
+                            </ul>
+                            <img *ngIf="spot_videos_by_user.length" class="profile2-last-icon" src="/assets/front-assets/images/profile2/profile2-loading-icon.png" alt="profile2-loading-icon">
+                        </div>
+                    </div>
+                    <!--tab-2-->
+                </div>
+                <!--tab-content-->
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--============== END GROUP SECTION ===============-->

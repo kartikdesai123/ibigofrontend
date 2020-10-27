@@ -1,0 +1,21 @@
+.img-user{
+    width: 33px;
+    height: 33px;
+    border-radius: 16px;
+}
+.img-profile{
+    width: 235px;height: 235px;border-radius: 118px;
+}
+/* .img-profile:hover{
+    opacity:0.8;
+	color:#996;	
+} */
+
+.text-area-control{
+    font-weight: 700;
+    font-size: 20px;
+    font-family:'Montserrat', sans-serif;
+}
+.checked{
+    background-color: teal!important;
+}

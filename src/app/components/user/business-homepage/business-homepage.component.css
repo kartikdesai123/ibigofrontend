@@ -1,0 +1,18 @@
+.img-user{
+    width: 33px;
+    height: 33px;
+    border-radius: 16px;
+}
+.img-profile{
+    width: 235px;height: 235px;border-radius: 118px;
+}
+.img-profile:hover{
+    opacity:0.8;
+	color:#996;	
+}
+.profile-img{
+    height: 150px;
+    width: 150px;
+    border: 0px solid;
+    border-radius: 75px;
+}

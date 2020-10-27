@@ -1,0 +1,319 @@
+<header class="home-header-profile">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 logo-profile">
+                <a routerLink="/user/homepage"><img src="/assets/front-assets/images/logo2.png" alt="logo2"></a>
+            </div>
+            <div class="col-lg-6 dropdown-profile">
+                <a routerLink="/business/home/notify"><img src="/assets/front-assets/images/icon1.png" alt="icon1"></a>
+                <a href="#"><img src="/assets/front-assets/images/icon2.png" alt="icon2"></a>
+                <a href="#"><img src="/assets/front-assets/images/icon3.png" alt="icon3"></a>
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><img class="img-user" src="{{this.user_profile}}" alt="icon4">{{this.business_name}}
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a routerLink="/home/business/profile"><img class="img-user" src="{{this.user_profile}}" alt="icon5">{{this.business_name}}</a>
+                        </li>
+                        <li><a routerLink="/business/home/profile"><i class="fa fa-user" aria-hidden="true"></i> Profile</a></li>
+                        <li><a routerLink="/business/home/password"><i class="fa fa-key" aria-hidden="true"></i>Wachtwoord</a></li>
+                        <li><a routerLink="/business/home/interest"><i class="fa fa-heart" aria-hidden="true"></i>Interesses</a></li>
+                        <li><a routerLink="/business/home/notify"><i class="fa fa-bell" aria-hidden="true"></i>Notificaties</a></li>
+                        <li><a routerLink="/user/logout"><i class="fa fa-sign-in" aria-hidden="true"></i>Uitloggen</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 search-form-heading">
+                <p>Vind de beste plaatsen om te eten, drinken, winkelen of bezoeken in elke stad ter wereld.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 search-form">
+                <form [formGroup]="searchForm" autocomplete="off">
+                    <div class="col-lg-9 search-form-location">
+                        <div class="form-group required" data-type="text" data-required="true">
+                            <i id="input-icon" class="fa fa-search"></i>
+                            <input type="text" (keydown)="keyDown($event)" (keyup.enter)="onSearchText()"  class="form-control" id="search-name" value="" formControlName="search_name" placeholder="Zoeken">
+                        </div>
+                        <div class="results-list" *ngIf="this.suggestions.length>0" >
+                            <li *ngFor="let list of suggestions; let i = index" [class.active]="i == arrowkeyLocation" (click)="myclick(i)" >
+                                <span class="result">{{list.user_name}}</span>
+                            </li>
+                        </div>
+                    </div>
+                </form>
+                <div class="col-lg-3 search-form-btn">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{this.selected_user_type | titlecase}}
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li><a href="javascript:void(0)" (click)="onUserType('Select')">Select</a></li>
+                            <li><a href="javascript:void(0)" (click)="onUserType('spot')">Spot</a></li>
+                            <li><a href="javascript:void(0)" (click)="onUserType('people')">People</a></li>
+                        </ul>
+                    </div>
+                </div>
+      
+        </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 search-form-nav">
+                <ul>
+                    <li *ngFor="let interest of interests"><a href="javascript:void(0)" (click)="selectInterest(this.interest.id)"><i class="fa {{this.interest.fa_icon}}" [ngClass]="(this.selectedInterests==this.interest.id)?'interest_icon_active':''" aria-hidden="true"></i>{{this.interest.title}}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+<!--============== END HEADER SECTION ===============-->
+
+<!--===== SPOT SECTION =====-->
+<section class="spot-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="col-lg-12 spot-text1">
+                    <div class="col-lg-12 spot-text1-content">
+                        <div class="col-lg-11 spot-text2-content">
+                            <ul>
+                                <li class="active"><a href="#menu1" data-toggle="pill"><i class="fa fa-area-chart" aria-hidden="true"></i>Post Bericht</a></li>
+                                <li><a href="#menu2" data-toggle="pill"><i class="fa fa-map-marker" aria-hidden="true"></i>Check In</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-1 spot-text3-dropdown">
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"></button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Spot 1</a></li>
+                                    <li><a href="#">Spot 2</a></li>
+                                    <li><a href="#">Spot 3</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Tab Content Start-->
+                    <div class="tab-content">
+                        <div id="menu1" class="tab-pane fade in active">
+                            <div class="col-lg-12 spot-text4-content">
+                                
+                                <img  src="{{this.user_profile}}" class="img-user" alt="icon5"><textarea id="form-input1" class="form-control" placeholder="Vertel iets over deze spot"></textarea>
+                            
+                            </div>
+                            <div class="col-lg-12 spot-delen-content">
+                                <div class="col-lg-9 spot-delen-content2">
+                                    <ul>
+                                        <li>
+                                            <a href="#"><img src="/assets/front-assets/images/icons/icon1.png" alt="icon1">foto's</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><img src="/assets/front-assets/images/icons/icon2.png" alt="icon2">Videos</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><img src="/assets/front-assets/images/icons/icon3.png" alt="icon3">Category</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-3 spot-delen-btn">
+                                  <button type="button" style="float:right;" class="btn-default">Plaatsen</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!--tab1-->
+                        <div id="menu2" class="tab-pane fade">
+                            <div class="col-lg-12 spot-check-form">
+                                
+                                    <div class="form-group required" data-type="text" data-required="true">
+                                        <i id="check-btn" class="fa fa-search"></i>
+                                        <input type="text" class="form-control" id="filter-name" value="" name="filter_name" placeholder="Zoek plek of evenement">
+                                    </div>
+                            </div>
+                            <div id="boeken-check-wrap" class="col-lg-12 boeken-text-wrap">
+                                <div class="col-lg-2 boeken-img">
+                                    <img src="/assets/front-assets/images/spots/boeken-img3.png" alt="img3">
+                                </div>
+                                <div class="col-lg-6 boeken-text">
+                                    <a href="#"><h2 class="active">Bosco's Resturent</h2></a>
+                                    <h4 class="active">Coffee, Tea, Breakfast, Lunch etc.</h4>
+                                    <ul>
+                                        <li>Like By</li>
+                                        <li><img src="/assets/front-assets/images/spots/boeken-icon1.png" alt="icon1"></li>
+                                        <li><img src="/assets/front-assets/images/spots/boeken-icon2.png" alt="icon2"></li>
+                                        <li><img src="/assets/front-assets/images/spots/boeken-icon3.png" alt="icon3"></li>
+                                        <li><img src="/assets/front-assets/images/spots/boeken-icon4.png" alt="icon1"></li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-4 boeken-icon-check">
+                                    <ul class="ratings3">
+                                        <li class="active"><a href="#">9.8</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 spot-text5-content">
+                               <textarea id="form-input1" class="form-control" placeholder="Vertel iets over deze spot"></textarea>
+                                
+                            </div>
+                            <div class="col-lg-12 spot-delen-content">
+                                <div class="col-lg-10 spot-delen-content2">
+                                    <ul>
+                                        <li>
+                                            <a href="#"><img src="/assets/front-assets/images/icons/icon1.png" alt="icon1">foto's</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><img src="/assets/front-assets/images/icons/icon2.png" alt="icon2">Videos</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><img src="/assets/front-assets/images/icons/icon4.png" alt="icon4">Delen met</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><img src="/assets/front-assets/images/icons/icon5.png" alt="icon5">Kies Vrienden</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-2 spot-delen-btn">
+                                        <button type="button" class="btn-default">Delen</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!--tab2-->
+                    </div>
+                    <!--tab-content-->
+                </div>
+                <!--spot-text1-->
+                
+                <!--spot-music-main-->
+                
+                <!--col-lg-12-->
+                
+                <!--spot-music-main-->
+                
+                <!--spot-music-main-->
+                <!-- <div class="clear"></div>
+                <img class="last-icon" src="/assets/front-assets/images/icon14.png" alt="icon14"> -->
+            </div>
+            <!--col-lg-9-->
+            <!-- Sidebar Section-->
+            <div class="col-lg-3">
+                <div class="connect-text">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li>
+                            <a href="#"><img src="/assets/front-assets/images/pic2.png" alt="pic2">Sinan Ros</a><span>5</span></li>
+                        <li>
+                            <a href="#"><img src="/assets/front-assets/images/pic3.png" alt="pic3">School groep</a><span>3</span></li>
+                        <li>
+                            <a href="#"><img src="/assets/front-assets/images/pic4.png" alt="pic4">College groep</a>
+                        </li>
+                        <li>
+                            <a href="#"><img src="/assets/front-assets/images/pic5.png" alt="pic5">The Village Coffee & </a>
+                        </li>
+                        <li>
+                            <a href="#"><img src="/assets/front-assets/images/pic6.png" alt="pic6">Munchen City Group</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="form-calender">
+                    <h3>Planning</h3>
+                    <table class="table-condensed table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th colspan="12">
+                                    <span class="btn-group">
+                        <a class="btn"><i class="fa fa-angle-left"></i></a>
+                        <a class="btn">November 2019</a>
+                        <a class="btn"><i class="fa fa-angle-right"></i></a>
+                    </span>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>S</th>
+                                <th>M</th>
+                                <th>T</th>
+                                <th>W</th>
+                                <th>T</th>
+                                <th>F</th>
+                                <th>S</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="muted"></td>
+                                <td class="muted"></td>
+                                <td class="muted"></td>
+                                <td></td>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td class="overlay">5</td>
+                                <td>6</td>
+                                <td>7</td>
+                                <td>8</td>
+                                <td>9</td>
+                                <td>10</td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td>12</td>
+                                <td class="btn-primary"><strong>13</strong></td>
+                                <td>14</td>
+                                <td class="btn-primary"><strong>15</strong></td>
+                                <td>16</td>
+                                <td>17</td>
+                            </tr>
+                            <tr>
+                                <td>18</td>
+                                <td>19</td>
+                                <td>20</td>
+                                <td>21</td>
+                                <td>22</td>
+                                <td>23</td>
+                                <td>24</td>
+                            </tr>
+                            <tr>
+                                <td>25</td>
+                                <td>26</td>
+                                <td>27</td>
+                                <td>28</td>
+                                <td>29</td>
+                                <td class="muted">30</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="amster-text">
+                    <ul>
+                        <li><span><i class="fa fa-map-marker"></i>Amsterdam</span>
+                            <a href="#">Muziekfestival met familie</a>
+                        </li>
+                        <li><span><i class="fa fa-map-marker"></i>Amsterdam</span>
+                            <a href="#">Diner met Schoolvrienden</a>
+                        </li>
+                        <li><span><i class="fa fa-map-marker"></i>Amsterdam</span>
+                            <a href="#">Film met Schoolvrienden</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="katja-text">
+                    <h3>Je Vriend checkt gewoon in</h3>
+                    <ul>
+                        <li><img src="/assets/front-assets/images/pic7.png" alt="pic7"><a href="#">Katja Meyer <span>op</span><br> Bowls & Bleders</a>
+                          <span>2 min geleden</span></li>
+                        <li><img src="/assets/front-assets/images/pic8.png" alt="pic8"><a href="#">Sarah Weachter <span>op</span><br> Romas</a>
+                            <span>4 min geleden</span></li>
+                        <li><img src="/assets/front-assets/images/pic9.png" alt="pic9"><a href="#">Mike Bachmeier <span>op</span><br> ARAN Funf Hofe</a>
+                        <span>10 min geleden</span></li>
+                        <li><img src="/assets/front-assets/images/pic10.png" alt="pic10"><a href="#">Lea Bumgarner <span>op</span><br> Patisserie Cafe Dukatz</a>
+                            <span>15 min geleden</span></li>
+                        <li><img src="/assets/front-assets/images/pic11.png" alt="pic11"><a href="#">Jessica Dreher <span>op</span><br> Thalassa</a>
+                            <span>19 min geleden</span></li>
+                    </ul>
+                </div>
+            </div>
+            <!--sidebar-section-->
+        </div>
+    </div>
+</section>

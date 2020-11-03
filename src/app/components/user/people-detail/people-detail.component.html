@@ -8,15 +8,15 @@
         <div class="row my-row">
             <div class="col-lg-12 spot-profile-group p-0">
                 <div class="cover-div">
-                    <img class="cover-bg  responsive" id="cover-background" [src]="imgURL" alt="group-bg2">
+                    <img [ngStyle]="{'display': (imgURL=='') ? 'none' : 'block'}" class="cover-bg  responsive" id="cover-background" [src]="imgURL">
                 </div>
                 <div class="col-lg-2 spot-profile2-pic">
                     <img class="profile-img"  src="{{this.people_profile}}" alt="pic29">
                 </div>
                 <div class="col-lg-9 spot-profile2-content">
                     <div class="spot-pic-content2">
-                        <h3>{{this.people_first_name}} {{this.people_last_name}}</h3>
-                        <span>{{this.people_age}}</span>
+                        <h3 [ngStyle]="{'color': (imgURL=='') ? '#323232' : '#ffffff'}">{{this.people_first_name}} {{this.people_last_name}}</h3>
+                        <span [ngStyle]="{'color': (imgURL=='') ? '#323232' : '#ffffff'}">{{this.people_age}}</span>
                     </div>
                 </div>
             </div>

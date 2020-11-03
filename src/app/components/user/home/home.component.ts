@@ -458,6 +458,9 @@ export class HomeComponent implements OnInit {
     });
     
   }
+
+  
+
   edit_share_groups2 = []
   share_groups_from_db2 = [];
   temp_share_groups_from_db2 = [];
@@ -1147,7 +1150,29 @@ export class HomeComponent implements OnInit {
       });
     }
   }
-
+  addToPlanning(event_id){
+    
+    if(this.logged_in_user!= ""){
+      if(confirm('Do you want to this event to planning?')){
+        const formData = new FormData();
+        const headers = new HttpHeaders({'Authorization': JSON.parse(localStorage.getItem('client_token'))});
+        headers.append('Content-Type', 'multipart/form-data');
+        headers.append('Accept', 'application/json');
+        formData.append('event_id', event_id);
+        formData.append('spot_id', null);        
+        this.http.post('https://ibigo.shadowis.nl/server-api/api/add-planning',formData,{headers:headers}).subscribe((data)=>{
+          if(data['status']==true){    
+            this.toastrservice.Success(data['event_message']);
+            //this.router.navigateByUrl('/DummyComponent', {skipLocationChange: true}).then(() => this.router.navigate(['/todo/planning']));
+          }else{
+            this.toastrservice.Success('Something wring!');
+          }
+        });
+      }
+    }else{
+      this.router.navigate(['/user/login']);
+    }
+  }
   deletePost(post_id){
     if(confirm("Are you sure want to delete this post ?")) {
       const headers = new HttpHeaders({'Authorization': JSON.parse(localStorage.getItem('client_token'))});

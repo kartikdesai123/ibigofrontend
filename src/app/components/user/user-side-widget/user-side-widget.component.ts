@@ -22,6 +22,7 @@ export class UserSideWidgetComponent implements OnInit {
 
   options: FullCalendarOptions;
   events: EventObject[];
+  displaynearevents: [];
   constructor(private cd : ChangeDetectorRef,private http:HttpClient) { }
   headers = new HttpHeaders({'Authorization': JSON.parse(localStorage.getItem('client_token'))});
   ngOnInit() {
@@ -36,6 +37,13 @@ export class UserSideWidgetComponent implements OnInit {
     });
     this.http.get('https://ibigo.shadowis.nl/server-api/api/calendar_events',{headers:this.headers}).subscribe((data)=>{      
       this.events = data['events'];        
+    });
+    this.http.post('https://ibigo.shadowis.nl/server-api/api/search',{headers:this.headers}).subscribe((data)=>{      
+      
+      this.displaynearevents = data['event_list'];
+            
+      console.log(this.displaynearevents)
+      
     });
     this.options = {
       editable: true,

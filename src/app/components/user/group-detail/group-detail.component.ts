@@ -181,6 +181,8 @@ export class GroupDetailComponent implements OnInit {
       })
       if(this.group_details.group_profile!=null){
         this.imgURL = 'https://ibigo.shadowis.nl/server-api/public/user_profiles/'+this.group_details.group_profile;
+      }else{
+        this.imgURL = '';
       }
     });
     

@@ -1,7 +1,14 @@
 <!--===== HEADER SECTION =====-->
 <app-user-header></app-user-header>
 <!--============== END KOFFIE SECTION ===============-->
-
+<style>
+    .fc-left h2 {
+        font-size: 0.7rem !important;
+    }
+    .fullcalnederdiv h2 {
+        font-size: 0.7rem !important;
+    }
+</style>
 <!--===== GROUP SECTION =====-->
 <section class="wacht-section2">
     <div class="container">
@@ -26,9 +33,10 @@
                 <div class="filters-text">
                     <h3>Filters<a (click)="hideFilter()" style="float: right;margin-right: 10px;"><i *ngIf="hide_filter==true" class="fa fa-plus"></i><i *ngIf="hide_filter==false" class="fa fa-minus"></i></a></h3>
                     <div class="filters-text-new" [hidden]="hide_filter==true">
-                        <h4 *ngIf="selected_user_type=='spot'">Waar</h4>
+                        <h4>Waar</h4>
+                        <!--<h4 *ngIf="selected_user_type=='spot'">Waar</h4>-->
                         <form [formGroup]="searchForm">
-                            <div class="form-group required" *ngIf="selected_user_type=='spot'" data-type="text" data-required="true">
+                            <div class="form-group required"  data-type="text" data-required="true">
                                 <input type="text" (keyup.enter)="onText($event)" class="form-control" formControlName="search_address" autocomplete="off" placeholder="Search City"><i id="filter-icon" class="fa fa-search"></i>
                             </div>
                         </form>
@@ -47,7 +55,7 @@
                             <!-- <li class="active"><a  href="javascript:void(0)" (click)="onSelectUserType('group')">Group<span>464</span></a></li> -->
                             <!-- <li *ngIf="logged_in_user==true" [ngClass]="(selected_user_type=='friend')?'active':''" ><a  href="javascript:void(0)" (click)="onSelectUserType('friend')">Friends<span class="overlay">{{this.counts['friend_count']}}</span></a></li> -->
                         </ul>                        
-                            <div *ngIf="selected_user_type=='event'">
+                            <div>
                                 <ul>
                                     <li><a href="#"><strong>Wanneer</strong></a></li>
                                     <li [ngClass]="(selected_duration=='today')?'active':''"><a href="javascript:void(0)" (click)="onSelectDuration('today')">Today<span class="overlay">{{today | date:'d MMM'}}</span></a></li>
@@ -55,12 +63,33 @@
                                     <li [ngClass]="(selected_duration=='next_month')?'active':''"><a href="javascript:void(0)" (click)="onSelectDuration('next_month')">Next Month<span class="overlay">{{next_month | date:'MMMM'}}</span></a></li>
                                     <!-- <li><a href="#">Geen specifieke datum</a></li> -->
                                 </ul>
-                                <input type="text"                                
+<!--                                <input type="text"                                
                                     (bsValueChange)="onValueChange($event)"
                                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', showWeekNumbers: false }" 
                                     placeholder="Geen specifieke datum"
                                     class="form-control"                                    
-                                    bsDaterangepicker>
+                                    bsDaterangepicker>-->
+                                
+                                <div class="row calenderdiv">
+                                <div class="col-lg-5">
+                                    <i class="fa fa-calendar-o icon"> </i>
+                                    <input type="text"                                
+                                    (bsValueChange)="onStartValueChange($event)"
+                                    [bsConfig]="{ dateInputFormat: 'D MMMM', showWeekNumbers: false }" 
+                                    placeholder="Geen specifieke datum"
+                                    class="form-control whendate"   #dp="bsDatepicker"                                 
+                                    bsDatepicker>
+                                   </div>
+                                    <div class="col-lg-2"><b>-</b></div>
+                                    <div class="col-lg-5">
+                                        <i class="fa fa-calendar-o icon"> </i><input type="text"                                
+                                    (bsValueChange)="onEndValueChange($event)"
+                                    [bsConfig]="{ dateInputFormat: 'D MMMM', showWeekNumbers: false }" 
+                                    placeholder="Geen specifieke datum"
+                                    class="form-control whendate"                                   
+                                    bsDatepicker>
+                                    </div>
+                                    </div>
                             </div>                        
                         <ul>
                             <li><strong>Wat</strong><a href="javascript:void(0)" (click)="onChangeInterest('')"><span>Reset</span></a></li>
@@ -74,6 +103,7 @@
             <div class="col-lg-6"  *ngIf="this.cnt==1">
                 <div *ngFor="let spot of spots; let i = index">
                     <!-- <h4 *ngIf="i==0">Spot</h4> -->
+                    
                     <div class="group-text"  [ngClass]="(spot.business_type=='premium')?'plaat-premium':''">
                     </div>
                     <div class="col-lg-12 boeken-text-wrap" [ngClass]="(spot.business_type=='premium')?'plaat-text-wrap':''">
@@ -101,7 +131,10 @@
                                         <div class="dropdown">
                                             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Go</button>
                                             <ul class="dropdown-menu">
-                                                <li style="display: block;"><a href="javascript:void(0)" (click)="addToGoList(spot.user_id)"><i class="fa fa-plus"></i>To Do</a></li>                                                    
+                                                <li style="display: block;"><a href="javascript:void(0)" (click)="addToGoList(spot.user_id)"><i class="fa fa-plus"></i>To Do</a></li>
+                                                 <li style="display: block;"><a href="javascript:void(0)" (click)="addToPlanning(spot.user_id)"><i class="fa fa-plus"></i>Add to planning</a></li>                                                    
+                                                <li style="display: block;"><a href="javascript:void(0)" (click)="shareEvent(spot.user_id)"><i class="fa fa-share"></i>Share</a></li>
+                                               
                                                 <!-- <li><a href="#"><i class="fa fa-map-marker"></i>Check in</a></li> -->
                                             </ul>
                                         </div>
@@ -149,6 +182,8 @@
                                         <div class="dropdown">
                                             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Go</button>
                                             <ul class="dropdown-menu">
+                                                  <li style="display: block;"><a href="javascript:void(0)" (click)="addToGoList(event.id)"><i class="fa fa-plus"></i>To Do</a></li>
+                                              
                                                 <li style="display: block;"><a href="javascript:void(0)" (click)="addToPlanning(event.id)"><i class="fa fa-plus"></i>Add to planning</a></li>                                                    
                                                 <li style="display: block;"><a href="javascript:void(0)" (click)="shareEvent(event.id)"><i class="fa fa-share"></i>Share</a></li>
                                                 <!-- <li><a href="#"><i class="fa fa-map-marker"></i>Check in</a></li> -->

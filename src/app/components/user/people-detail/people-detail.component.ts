@@ -130,7 +130,8 @@ export class PeopleDetailComponent implements OnInit {
         this.people_interest_details  = data['user_interests'];
         this.people_about  = this.people_details['user_about'];
         if(this.people_cover==null){
-          this.imgURL = '/assets/front-assets/images/group-bg2.png';
+          this.imgURL = '';
+        //  this.imgURL = '/assets/front-assets/images/group-bg2.png';
         }else{
           this.imgURL = 'https://ibigo.shadowis.nl/server-api/public/user_cover/'+this.people_cover;
         }

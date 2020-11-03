@@ -3,6 +3,22 @@
     height: 30px;
     border-radius: 15px;
 }
+.whendate{
+    border-radius: 5px !important;
+}
+.icon {
+   padding: 15px;
+   color: #bb8d51;
+   width: 15px;
+   margin-left: 40px;
+   text-align: right;
+}
+.calenderdiv i {
+   position: absolute;
+}
+.fc-toolbar h2 {
+    font-size: 0.7rem !important;
+}
 .boeken-icon {
     position: absolute !important;
     right: 7px !important;
@@ -44,6 +60,12 @@ ul.ratings2 {
     padding-right: 15px;
     padding-bottom: 10px;
     object-fit: cover;
+}
+
+.icon {
+   
+   margin-left: 210px;
+  
 }
 }
 .people-text h2{

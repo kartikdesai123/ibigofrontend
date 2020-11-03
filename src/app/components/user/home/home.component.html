@@ -465,11 +465,13 @@
                                     </div>
                                 </div>
                                 <div class="sm-left">
-                                    <div class="spot-music2-dropdown" *ngIf="(this.post.user_id==logged_in_user||this.post.spot_id)&&(!this.post.group_id&&!this.post.event_id)">
+                                    <div class="spot-music2-dropdown" *ngIf="(this.post.user_id==logged_in_user)">
                                         <div class="dropdown">
                                             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Go</button>
                                             <ul class="dropdown-menu">
-                                                <li *ngIf="this.post.spot_id"><a href="javascript:void(0)" (click)="addToGoList(this.post.spot_id)"><i class="fa fa-plus"></i>To Do</a></li>
+                                                <!-- <li *ngIf="this.post.spot_id"><a href="javascript:void(0)" (click)="addToGoList(this.post.id)"><i class="fa fa-plus"></i>To Do</a></li> -->
+                                                <li><a href="javascript:void(0)" (click)="addToGoList(this.post.id)"><i class="fa fa-plus"></i>To Do</a></li>
+                                                <li style="display: block;"><a href="javascript:void(0)" (click)="addToPlanning(this.post.id)"><i class="fa fa-plus"></i>Add to planning</a></li>                                                    
                                                 <li *ngIf="this.post.user_id==logged_in_user"><a href="javascript:void(0)" (click)="onShareOpen(this.post.id)"><i class="fa fa-share"></i>Share the post</a><button id="mysharemodalbutton" class="hidden" data-toggle="modal" data-target="#myShareModal"></button></li>
                                                 <!-- <li><a href="#"><i class="fa fa-map-marker"></i>Check in</a></li> -->
                                             </ul>
@@ -658,7 +660,10 @@
                                         <div class="dropdown">
                                             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Go</button>
                                             <ul class="dropdown-menu">
-                                                <li *ngIf="this.post.spot_id"><a href="javascript:void(0)" (click)="addToGoList(this.post.spot_id)"><i class="fa fa-plus"></i>To Do</a></li>
+                                                <!-- <li *ngIf="this.post.spot_id"><a href="javascript:void(0)" (click)="addToGoList(this.post.spot_id)"><i class="fa fa-plus"></i>To Do</a></li> -->
+                                                <!-- <li *ngIf="this.post.spot_id"><a href="javascript:void(0)" (click)="addToGoList(this.post.spot_id)"><i class="fa fa-plus"></i>To Do</a></li> -->
+                                                <li ><a href="javascript:void(0)" (click)="addToGoList(this.post.id)"><i class="fa fa-plus"></i>To Do</a></li>
+                                                <li style="display: block;"><a href="javascript:void(0)" (click)="addToPlanning(this.post.id)"><i class="fa fa-plus"></i>Add to planning</a></li>                                                    
                                                 <li *ngIf="this.post.user_id==logged_in_user"><a href="javascript:void(0)" (click)="onShareOpen(this.post.id)"><i class="fa fa-share"></i>Share the post</a><button id="mysharemodalbutton" class="hidden" data-toggle="modal" data-target="#myShareModal"></button></li>
                                                 <!-- <li><a href="#"><i class="fa fa-map-marker"></i>Check in</a></li> -->
                                             </ul>

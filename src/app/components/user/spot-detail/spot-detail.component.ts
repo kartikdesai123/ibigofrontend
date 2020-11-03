@@ -293,7 +293,8 @@ export class SpotDetailComponent implements OnInit {
         }
         this.user_about  = this.spot_details['user_about'];
         if(this.user_cover==null){
-          this.imgURL = '/assets/front-assets/images/group-bg2.png';
+      //    this.imgURL = '/assets/front-assets/images/group-bg2.png';
+          this.imgURL = '';
         }else{
           this.imgURL = 'https://ibigo.shadowis.nl/server-api/public/user_cover/'+this.user_cover;
         }

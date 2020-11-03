@@ -18,19 +18,20 @@
 </div>
 <div class="form-calender">
     <h3>Planning</h3>    
-    <ngx-fullcalendar (onEventMouseEnter)="eventMouseEnter($event)" (onEventClick)="eventClick($event)" (onDateClick)="dateClick($event)" defaultView="month" [events]="events" [options]="options"></ngx-fullcalendar>
+    <ngx-fullcalendar class="fullcalnederdiv" (onEventMouseEnter)="eventMouseEnter($event)" (onEventClick)="eventClick($event)" (onDateClick)="dateClick($event)" defaultView="month" [events]="events" [options]="options"></ngx-fullcalendar>
 </div>
 <div class="amster-text">
-    <ul>
-        <li><span><i class="fa fa-map-marker"></i>Amsterdam</span>
-            <a href="#">Muziekfestival met familie</a>
+    <ul  >
+        <li *ngFor="let event of displaynearevents; let i = index"><span>
+            <i class="fa fa-map-marker"></i>{{ event.location }}</span>
+            <a href="#">{{ event.event_title }}</a>
         </li>
-        <li><span><i class="fa fa-map-marker"></i>Amsterdam</span>
+        <!-- <li><span><i class="fa fa-map-marker"></i>Amsterdam</span>
             <a href="#">Diner met Schoolvrienden</a>
         </li>
         <li><span><i class="fa fa-map-marker"></i>Amsterdam</span>
             <a href="#">Film met Schoolvrienden</a>
-        </li>
+        </li> -->
     </ul>
 </div>
 <div class="katja-text" *ngIf="justcheckedin.length">

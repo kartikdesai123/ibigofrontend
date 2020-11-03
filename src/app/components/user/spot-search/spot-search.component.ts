@@ -48,6 +48,8 @@ export class SpotSearchComponent implements OnInit {
   counts =[];
   selected_duration = null;
   user_type;
+  start_date_ranges = '';
+  end_date_ranges = '';
   logged_in_user_type;
   constructor(private toastrservice:ToastrService,private formBuilder: FormBuilder,private mapsAPILoader: MapsAPILoader,private searchService:SpotSearchService,private http:HttpClient,private router:Router) { }
   //headers = new HttpHeaders({'Authorization': JSON.parse(localStorage.getItem('client_token'))});
@@ -146,9 +148,18 @@ export class SpotSearchComponent implements OnInit {
     }
   }
   date_ranges = [];
-  onValueChange(e) {
+  onStartValueChange(e) {
+    
     this.selected_duration = 'date_range';  
-    this.date_ranges = e;
+    this.start_date_ranges = e;
+    
+    //this.date_ranges.push(e);
+    this.search();
+  }
+  onEndValueChange(e) {
+    this.selected_duration = 'date_range';  
+    this.end_date_ranges = e;
+    //this.date_ranges.push(e);
     this.search();
   }
   onSelectDuration(duration){
@@ -184,12 +195,23 @@ export class SpotSearchComponent implements OnInit {
       this.user_type= 'normal'; 
       headers = headers.set('Authorization',JSON.parse(localStorage.getItem('client_token')));
     }
-    if(this.date_ranges.length > 0){
+   // alert(this.start_date_ranges);
+   // if(this.date_ranges.length > 0){
       //this.date_ranges[0] = this.date_ranges[0].toLocaleDateString();
       //this.date_ranges[1] = this.date_ranges[1].toLocaleDateString();  
-      this.formData.append('start_date',this.date_ranges[0].toLocaleDateString());
-      this.formData.append('end_date',this.date_ranges[1].toLocaleDateString());
-    }
+      
+     // this.formData.append('start_date',this.date_ranges[0].toLocaleDateString());
+    
+      if(this.start_date_ranges != "" && this.start_date_ranges != "undefined"){
+          var sdate = new Date(this.start_date_ranges);
+          this.formData.append('start_date',sdate.toLocaleDateString());
+      }
+      if(this.end_date_ranges != "" && this.end_date_ranges != "undefined"){
+           var edate = new Date(this.end_date_ranges);
+          this.formData.append('end_date',edate.toLocaleDateString());
+      }
+      
+  //  }
     this.formData.append('selected_duration',this.selected_duration);
     this.formData.append('searchAddress',this.searchAddress);       
       
@@ -203,7 +225,7 @@ export class SpotSearchComponent implements OnInit {
       this.peoples = data['people_list'];
       this.interests = data['all_interests'];
       this.spots = data['spots'];      
-      
+     
       if(this.spots.length==0&&this.peoples.length==0&&this.groups.length==0&&this.events.length==0){
         this.cnt=0;
       }else{

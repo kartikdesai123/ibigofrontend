@@ -9,14 +9,20 @@
                     <span *ngIf="this.group_details.group_created_by==this.logged_in_user_id+''" class="upload-image" (click)="file.click()"><i class="fa fa-pencil"></i></span>
                     <input class="hidden" #file type="file" accept='image/*' (change)="preview(file.files)" />
                     <div class="cover-div">
-                        <img *ngIf="this.imgURL==null" src="/assets/front-assets/images/group-bg2.png" alt="group-bg">
-                        <img *ngIf="this.imgURL!=null" class="cover-bg  responsive" id="cover-background" [src]="imgURL" alt="group-bg2">
+                        <!-- <img *ngIf="this.imgURL==null" src="/assets/front-assets/images/group-bg2.png" alt="group-bg">
+                        <img *ngIf="this.imgURL!=null" class="cover-bg  responsive" id="cover-background" [src]="imgURL" alt="group-bg2"> -->
+                        
+                        <img [ngStyle]="{'display': (imgURL=='') ? 'none' : 'block'}" class="cover-bg  responsive" id="cover-background" [src]="imgURL">
+                 
                     </div>
                     <button id="imageupload" type="submit" class="uploadbtn hidden"><i *ngIf="this.profile_loading==true" class="fa fa-spinner fa-spin"></i>&nbsp;{{(this.profile_loading==true)?'Uploading':'Upload'}} </button>
                 </form>
                 <div class="spot-pic-content">
-                    <h3>{{this.group_details.group_name}}</h3>
-                    <span>{{(this.group_details.group_members==0)?'No':''+this.group_details.group_members}} {{(this.group_details.group_members>1)?'members':'member'}}</span>
+                    <h3 [ngStyle]="{'color': (imgURL=='') ? '#323232' : '#ffffff'}">{{this.group_details.group_name}} </h3>
+                    <span [ngStyle]="{'color': (imgURL=='') ? '#323232' : '#ffffff'}">{{(this.group_details.group_members==0)?'No':''+this.group_details.group_members}} {{(this.group_details.group_members>1)?'members':'member'}}</span>
+               
+                    <!-- <h3>{{this.group_details.group_name}}</h3>
+                    <span>{{(this.group_details.group_members==0)?'No':''+this.group_details.group_members}} {{(this.group_details.group_members>1)?'members':'member'}}</span> -->
                 </div>
             </div>
         </div>

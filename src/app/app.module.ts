@@ -116,6 +116,7 @@ import { EventDetailComponent } from './components/user/event-detail/event-detai
 import { SpotEventComponent } from './components/user/spot-event/spot-event.component';
 
 import { NgxFullCalendarModule } from 'ngx-fullcalendar';
+import { ModalModule } from 'ngx-bootstrap';
 
 var global = global || window;
 declare global {
@@ -232,7 +233,8 @@ window.Echo = new Echo({
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCg9G7bor_Ovcg-5EQHiZLWgAm5Pr4RZ0E',
       libraries: ['places']
-    })
+    }),
+    ModalModule.forRoot(),
   ],
   providers: [
     PusherService,

@@ -1,13 +1,14 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, TemplateRef } from '@angular/core';
 import { SpotSearchService } from 'src/app/service/spot-search.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { getSyntheticPropertyName } from '@angular/compiler/src/render3/util';
-import { AgmCoreModule,MapsAPILoader } from '@agm/core';
+import { AgmCoreModule, MapsAPILoader } from '@agm/core';
 import { EMPTY } from 'rxjs';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'src/app/toastr.service';
 import { finalize } from 'rxjs/operators';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 // import { google } from "googlemaps";
 //import {} from '../../../../../node_modules/@types/googlemaps';
 //declare module 'googlemaps';
@@ -17,12 +18,12 @@ import { finalize } from 'rxjs/operators';
 @Component({
   selector: 'app-spot-search',
   templateUrl: './spot-search.component.html',
-  styleUrls: ['./spot-search.component.css','../../../../front-assets/css/bootstrap.min.css',
-  '../../../../front-assets/css/style.css',
-  '../../../../front-assets/css/responsive.css',
-  '../../../../front-assets/css/font-awesome.min.css',
-  '../../../../front-assets/css/owl-carousel.css',
-  '../../../../front-assets/css/pretty-checkbox.min.css','../font-user.css']
+  styleUrls: ['./spot-search.component.css', '../../../../front-assets/css/bootstrap.min.css',
+    '../../../../front-assets/css/style.css',
+    '../../../../front-assets/css/responsive.css',
+    '../../../../front-assets/css/font-awesome.min.css',
+    '../../../../front-assets/css/owl-carousel.css',
+    '../../../../front-assets/css/pretty-checkbox.min.css', '../font-user.css']
 })
 
 export class SpotSearchComponent implements OnInit {
@@ -44,68 +45,68 @@ export class SpotSearchComponent implements OnInit {
   searchAddress;
   now = new Date();
   next_month;
-  searchForm : FormGroup;
-  counts =[];
+  searchForm: FormGroup;
+  counts = [];
   selected_duration = null;
   user_type;
   start_date_ranges = '';
   end_date_ranges = '';
   logged_in_user_type;
-  constructor(private toastrservice:ToastrService,private formBuilder: FormBuilder,private mapsAPILoader: MapsAPILoader,private searchService:SpotSearchService,private http:HttpClient,private router:Router) { }
+  constructor(private toastrservice: ToastrService, private formBuilder: FormBuilder, private mapsAPILoader: MapsAPILoader, private searchService: SpotSearchService, private http: HttpClient, private router: Router, private modalService: BsModalService) { }
   //headers = new HttpHeaders({'Authorization': JSON.parse(localStorage.getItem('client_token'))});
   formData = new FormData();
-  onText(e){    
+  onText(e) {
     this.searchAddress = e.target.value
     this.search();
   }
   ngOnInit() {
     var now = new Date();
     if (now.getMonth() == 11) {
-        this.next_month = new Date(now.getFullYear() + 1, 0, 1);
+      this.next_month = new Date(now.getFullYear() + 1, 0, 1);
     } else {
-        this.next_month = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+      this.next_month = new Date(now.getFullYear(), now.getMonth() + 1, 1);
     }
-    
+
     var user_t = localStorage.getItem('user_type');
-    
+
     let headers = new HttpHeaders();
     //this.router.navigate(['/spot-reviews/'+id]);
-    if(user_t=='"normal"'){
+    if (user_t == '"normal"') {
       this.logged_in_user_type = 'normal';
-    }else if(user_t=='"normal"'){
+    } else if (user_t == '"normal"') {
       this.logged_in_user_type = 'business';
     }
-    if(user_t=='"normal"' || user_t=='"business"'){
-      this.user_type= 'normal'; 
-      
+    if (user_t == '"normal"' || user_t == '"business"') {
+      this.user_type = 'normal';
+
       this.logged_in_user = true;
-      headers = headers.set('Authorization',JSON.parse(localStorage.getItem('client_token')));
+      headers = headers.set('Authorization', JSON.parse(localStorage.getItem('client_token')));
     }
-    
+
     var data = this.searchService.retrieveSearchObject();
-    if(Object.keys(data).length>0){
+    if (Object.keys(data).length > 0) {
       this.searchText = data['search_name'];
       this.selected_interest = data['selected_interest'];
       this.selected_user_type = data['selected_user_type'];
-      this.spots=[];
-      this.peoples=[];
-      this.friends=[];
-      this.groups =[];
-      this.events =[];
+      this.spots = [];
+      this.peoples = [];
+      this.friends = [];
+      this.groups = [];
+      this.events = [];
     }
     console.log(this.selected_user_type);
-    
-    if(this.searchText || this.selected_interest){
+
+    if (this.searchText || this.selected_interest) {
       this.search();
-    }else{
+    } else {
       this.router.navigate(['/user/login']);
     }
     this.searchForm = this.formBuilder.group({
       search_address: ('')
-    });    
+    });
     if (window.screen.width >= 575) {
       this.hide_filter = false;
-    }else{
+    } else {
       this.hide_filter = true;
     }
     //var distance = require('google-distance-matrix'); 
@@ -136,33 +137,33 @@ export class SpotSearchComponent implements OnInit {
     // function callback(response, status) {
     //   console.log(response);
     //   console.log(status);
-      
+
     // }
   }
-  hide_filter:boolean;
-  hideFilter(){
-    if(this.hide_filter==false){
+  hide_filter: boolean;
+  hideFilter() {
+    if (this.hide_filter == false) {
       this.hide_filter = true;
-    }else{
+    } else {
       this.hide_filter = false;
     }
   }
   date_ranges = [];
   onStartValueChange(e) {
-    
-    this.selected_duration = 'date_range';  
+
+    this.selected_duration = 'date_range';
     this.start_date_ranges = e;
-    
+
     //this.date_ranges.push(e);
     this.search();
   }
   onEndValueChange(e) {
-    this.selected_duration = 'date_range';  
+    this.selected_duration = 'date_range';
     this.end_date_ranges = e;
     //this.date_ranges.push(e);
     this.search();
   }
-  onSelectDuration(duration){
+  onSelectDuration(duration) {
     this.selected_duration = duration;
     this.search();
   }
@@ -171,135 +172,228 @@ export class SpotSearchComponent implements OnInit {
   //   var jacksonville = new google.maps.LatLng(20.594,72.934);
   //   const distance = google.maps.geometry.spherical.computeDistanceBetween(mexicoCity, jacksonville);
   //   console.log(distance)
-    
+
   // }
-  addToGoList(spot_id){        
-    if(confirm('Do you want to add this spot in go to list ?')){
-      const formData = new FormData();
-      const headers = new HttpHeaders({'Authorization': JSON.parse(localStorage.getItem('client_token'))});
-      headers.append('Accept', 'application/json');
-      formData.append('spot_id', spot_id);
-      this.http.post('https://ibigo.shadowis.nl/server-api/api/add-to-goto',formData,{headers:headers}).subscribe((data)=>{
-        if(data['status']==true){
-          this.router.navigate(['/todo/go-list'])
-        }
-      });
+  // addToGoList(spot_id) {
+  //   if (confirm('Do you want to add this spot in go to list ?')) {
+  //     const formData = new FormData();
+  //     const headers = new HttpHeaders({ 'Authorization': JSON.parse(localStorage.getItem('client_token')) });
+  //     headers.append('Accept', 'application/json');
+  //     formData.append('spot_id', spot_id);
+  //     this.http.post('https://ibigo.shadowis.nl/server-api/api/add-to-goto', formData, { headers: headers }).subscribe((data) => {
+  //       if (data['status'] == true) {
+  //         this.router.navigate(['/todo/go-list'])
+  //       }
+  //     });
+  //   }
+  // }
+
+  // -------------------------------------------------------------------------------------------------------------
+  // Add to go modal popup
+  // -------------------------------------------------------------------------------------------------------------
+  addToGoModal: BsModalRef;
+  addToGoList(addToList: TemplateRef<any>) {
+    this.addToGoModal = this.modalService.show(addToList);
+  }
+
+  public confirmAddToGoList(spotId): void {
+    const formData = new FormData();
+    const headers = new HttpHeaders({ 'Authorization': JSON.parse(localStorage.getItem('client_token')) });
+    headers.append('Accept', 'application/json');
+    formData.append('spot_id', spotId);
+    this.http.post('https://ibigo.shadowis.nl/server-api/api/add-to-goto', formData, { headers: headers }).subscribe((data) => {
+      if (data['status'] == true) {
+        this.router.navigate(['/todo/go-list'])
+      }
+    });
+    this.addToGoModal.hide();
+  }
+
+  public declineAddToGoList(): void {
+    this.addToGoModal.hide();
+  }
+
+  // -------------------------------------------------------------------------------------------------------------
+  // Add to planning modal popup
+  // -------------------------------------------------------------------------------------------------------------
+  addTPlanningModal: BsModalRef;
+  addToPlanning(addPlanning: TemplateRef<any>) {
+    if (this.logged_in_user == true) {
+      this.addTPlanningModal = this.modalService.show(addPlanning);
+    } else {
+      this.router.navigate(['/user/login']);
     }
   }
 
-  search(){
+  public confirmAddtoPlanningList(eventId): void {
+    const formData = new FormData();
+    const headers = new HttpHeaders({ 'Authorization': JSON.parse(localStorage.getItem('client_token')) });
+    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'application/json');
+    formData.append('event_id', eventId);
+    formData.append('spot_id', null);
+    this.http.post('https://ibigo.shadowis.nl/server-api/api/add-planning', formData, { headers: headers }).subscribe((data) => {
+      if (data['status'] == true) {
+        this.toastrservice.Success(data['event_message']);
+        //this.router.navigateByUrl('/DummyComponent', {skipLocationChange: true}).then(() => this.router.navigate(['/todo/planning']));
+      } else {
+        this.toastrservice.Success('Something wring!');
+      }
+    });
+    this.addTPlanningModal.hide();
+  }
+
+  public declineAddtoPlanningList(): void {
+    this.addTPlanningModal.hide();
+  }
+
+  // -------------------------------------------------------------------------------------------------------------
+  // Share event modal popup
+  // -------------------------------------------------------------------------------------------------------------
+  shareEventModalRef: BsModalRef;
+  shareEvent(shareEventTemplate: TemplateRef<any>) {
+    if (this.logged_in_user == true) {
+      this.shareEventModalRef = this.modalService.show(shareEventTemplate);
+    } else {
+      this.router.navigate(['/user/login']);
+    }
+  }
+
+  public confirmshareEvent(eventId): void {
+    const formData = new FormData();
+    const headers = new HttpHeaders({ 'Authorization': JSON.parse(localStorage.getItem('client_token')) });
+    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'application/json');
+    formData.append('event_id', eventId);
+    this.http.post('https://ibigo.shadowis.nl/server-api/api/add-spot', formData, { headers: headers }).pipe(
+      finalize(() => {
+      })
+    ).subscribe((data) => {
+      if (data['status'] == true) {
+        this.toastrservice.Success(data['message']);
+        //this.router.navigateByUrl('/DummyComponent', {skipLocationChange: true}).then(() => this.router.navigate(['/user/homepage']));
+      } else {
+        this.toastrservice.Error(data['message']);
+      }
+    });
+    this.shareEventModalRef.hide();
+  }
+
+  public declineshareEvent(): void {
+    this.shareEventModalRef.hide();
+  }
+
+  search() {
     var user_t = localStorage.getItem('user_type');
     let headers = new HttpHeaders();
     //this.router.navigate(['/spot-reviews/'+id]);
-    if(user_t=='"normal"' || user_t=='"business"'){
-      this.user_type= 'normal'; 
-      headers = headers.set('Authorization',JSON.parse(localStorage.getItem('client_token')));
+    if (user_t == '"normal"' || user_t == '"business"') {
+      this.user_type = 'normal';
+      headers = headers.set('Authorization', JSON.parse(localStorage.getItem('client_token')));
     }
-   // alert(this.start_date_ranges);
-   // if(this.date_ranges.length > 0){
-      //this.date_ranges[0] = this.date_ranges[0].toLocaleDateString();
-      //this.date_ranges[1] = this.date_ranges[1].toLocaleDateString();  
-      
-     // this.formData.append('start_date',this.date_ranges[0].toLocaleDateString());
-    
-      if(this.start_date_ranges != "" && this.start_date_ranges != "undefined"){
-          var sdate = new Date(this.start_date_ranges);
-          this.formData.append('start_date',sdate.toLocaleDateString());
-      }
-      if(this.end_date_ranges != "" && this.end_date_ranges != "undefined"){
-           var edate = new Date(this.end_date_ranges);
-          this.formData.append('end_date',edate.toLocaleDateString());
-      }
-      
-  //  }
-    this.formData.append('selected_duration',this.selected_duration);
-    this.formData.append('searchAddress',this.searchAddress);       
-      
+    // alert(this.start_date_ranges);
+    // if(this.date_ranges.length > 0){
+    //this.date_ranges[0] = this.date_ranges[0].toLocaleDateString();
+    //this.date_ranges[1] = this.date_ranges[1].toLocaleDateString();  
+
+    // this.formData.append('start_date',this.date_ranges[0].toLocaleDateString());
+
+    if (this.start_date_ranges != "" && this.start_date_ranges != "undefined") {
+      var sdate = new Date(this.start_date_ranges);
+      this.formData.append('start_date', sdate.toLocaleDateString());
+    }
+    if (this.end_date_ranges != "" && this.end_date_ranges != "undefined") {
+      var edate = new Date(this.end_date_ranges);
+      this.formData.append('end_date', edate.toLocaleDateString());
+    }
+
+    //  }
+    this.formData.append('selected_duration', this.selected_duration);
+    this.formData.append('searchAddress', this.searchAddress);
+
     this.formData.append('searchText', this.searchText);
     this.formData.append('selected_user_type', this.selected_user_type);
     this.formData.append('search_interest', this.selected_interest);
-    this.http.post('https://ibigo.shadowis.nl/server-api/api/search',this.formData,{headers:headers}).subscribe((data)=>{      
+    this.http.post('https://ibigo.shadowis.nl/server-api/api/search', this.formData, { headers: headers }).subscribe((data) => {
       this.counts = data['counts'];
       this.groups = data['group_list'];
       this.events = data['event_list'];
       this.peoples = data['people_list'];
       this.interests = data['all_interests'];
-      this.spots = data['spots'];      
-     
-      if(this.spots.length==0&&this.peoples.length==0&&this.groups.length==0&&this.events.length==0){
-        this.cnt=0;
-      }else{
-        this.cnt=1;
+      this.spots = data['spots'];
+
+      if (this.spots.length == 0 && this.peoples.length == 0 && this.groups.length == 0 && this.events.length == 0) {
+        this.cnt = 0;
+      } else {
+        this.cnt = 1;
       }
     });
   }
 
-  shareEvent(event_id){
-    if(this.logged_in_user==true){
-      if(confirm('Do you want to share this event?')){
-        const formData = new FormData();
-        const headers = new HttpHeaders({'Authorization': JSON.parse(localStorage.getItem('client_token'))});
-        headers.append('Content-Type', 'multipart/form-data');
-        headers.append('Accept', 'application/json');
-        formData.append('event_id', event_id);
-        this.http.post('https://ibigo.shadowis.nl/server-api/api/add-spot',formData,{headers:headers}).pipe(
-          finalize(() => {
-          })
-        ).subscribe((data)=>{
-          if(data['status']==true){
-            this.toastrservice.Success(data['message']);
-            //this.router.navigateByUrl('/DummyComponent', {skipLocationChange: true}).then(() => this.router.navigate(['/user/homepage']));
-          }else{
-            this.toastrservice.Error(data['message']);
-          }
-        });
-      }
-    }else{
-      this.router.navigate(['/user/login']);
-    }
-  }
-  
-  addToPlanning(event_id){
-    if(this.logged_in_user==true){
-      if(confirm('Do you want to this event to planning?')){
-        const formData = new FormData();
-        const headers = new HttpHeaders({'Authorization': JSON.parse(localStorage.getItem('client_token'))});
-        headers.append('Content-Type', 'multipart/form-data');
-        headers.append('Accept', 'application/json');
-        formData.append('event_id', event_id);
-        formData.append('spot_id', null);        
-        this.http.post('https://ibigo.shadowis.nl/server-api/api/add-planning',formData,{headers:headers}).subscribe((data)=>{
-          if(data['status']==true){    
-            this.toastrservice.Success(data['event_message']);
-            //this.router.navigateByUrl('/DummyComponent', {skipLocationChange: true}).then(() => this.router.navigate(['/todo/planning']));
-          }else{
-            this.toastrservice.Success('Something wring!');
-          }
-        });
-      }
-    }else{
-      this.router.navigate(['/user/login']);
-    }
-  }
-  
-  onChangeInterest(id){
-    if(id){
+  // shareEvent(event_id) {
+  //   if (this.logged_in_user == true) {
+  //     if (confirm('Do you want to share this event?')) {
+  //       const formData = new FormData();
+  //       const headers = new HttpHeaders({ 'Authorization': JSON.parse(localStorage.getItem('client_token')) });
+  //       headers.append('Content-Type', 'multipart/form-data');
+  //       headers.append('Accept', 'application/json');
+  //       formData.append('event_id', event_id);
+  //       this.http.post('https://ibigo.shadowis.nl/server-api/api/add-spot', formData, { headers: headers }).pipe(
+  //         finalize(() => {
+  //         })
+  //       ).subscribe((data) => {
+  //         if (data['status'] == true) {
+  //           this.toastrservice.Success(data['message']);
+  //           //this.router.navigateByUrl('/DummyComponent', {skipLocationChange: true}).then(() => this.router.navigate(['/user/homepage']));
+  //         } else {
+  //           this.toastrservice.Error(data['message']);
+  //         }
+  //       });
+  //     }
+  //   } else {
+  //     this.router.navigate(['/user/login']);
+  //   }
+  // }
+
+  // addToPlanning(event_id) {
+  //   if (this.logged_in_user == true) {
+  //     if (confirm('Do you want to this event to planning?')) {
+  //       const formData = new FormData();
+  //       const headers = new HttpHeaders({ 'Authorization': JSON.parse(localStorage.getItem('client_token')) });
+  //       headers.append('Content-Type', 'multipart/form-data');
+  //       headers.append('Accept', 'application/json');
+  //       formData.append('event_id', event_id);
+  //       formData.append('spot_id', null);
+  //       this.http.post('https://ibigo.shadowis.nl/server-api/api/add-planning', formData, { headers: headers }).subscribe((data) => {
+  //         if (data['status'] == true) {
+  //           this.toastrservice.Success(data['event_message']);
+  //           //this.router.navigateByUrl('/DummyComponent', {skipLocationChange: true}).then(() => this.router.navigate(['/todo/planning']));
+  //         } else {
+  //           this.toastrservice.Success('Something wring!');
+  //         }
+  //       });
+  //     }
+  //   } else {
+  //     this.router.navigate(['/user/login']);
+  //   }
+  // }
+
+  onChangeInterest(id) {
+    if (id) {
       this.selected_interest = id;
-    }else{
+    } else {
       this.selected_interest = null;
     }
     //this.searchService.saveSearchObject({search_name:this.searchText,selected_interest:this.selected_interest,selected_user_type:this.selected_user_type});
     this.search();
   }
 
-  onSelectUserType(user_type){
-    if(user_type){
+  onSelectUserType(user_type) {
+    if (user_type) {
       this.selected_user_type = user_type;
-    }else{
+    } else {
       this.selected_user_type = null;
     }
     this.search();
   }
-
-
 }

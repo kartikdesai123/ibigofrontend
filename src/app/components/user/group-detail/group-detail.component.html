@@ -1,26 +1,34 @@
 <app-user-header></app-user-header>
- <!--===== GROUP SECTION =====-->
+<!--===== GROUP SECTION =====-->
 <div class="loading" *ngIf="this.loading==true">Loading&#8230;</div>
 <section class="group-section">
     <div class="container">
         <div class="row m-0">
             <div class="col-lg-12 spot-pic-group p-0">
-                <form [formGroup]="groupProfileForm" (ngSubmit)="onProfileSubmit()" >
-                    <span *ngIf="this.group_details.group_created_by==this.logged_in_user_id+''" class="upload-image" (click)="file.click()"><i class="fa fa-pencil"></i></span>
+                <form [formGroup]="groupProfileForm" (ngSubmit)="onProfileSubmit()">
+                    <span *ngIf="this.group_details.group_created_by==this.logged_in_user_id+''" class="upload-image"
+                        (click)="file.click()"><i class="fa fa-pencil"></i></span>
                     <input class="hidden" #file type="file" accept='image/*' (change)="preview(file.files)" />
                     <div class="cover-div">
                         <!-- <img *ngIf="this.imgURL==null" src="/assets/front-assets/images/group-bg2.png" alt="group-bg">
                         <img *ngIf="this.imgURL!=null" class="cover-bg  responsive" id="cover-background" [src]="imgURL" alt="group-bg2"> -->
-                        
-                        <img [ngStyle]="{'display': (imgURL=='') ? 'none' : 'block'}" class="cover-bg  responsive" id="cover-background" [src]="imgURL">
-                 
+
+                        <img [ngStyle]="{'display': (imgURL=='') ? 'none' : 'block'}" class="cover-bg  responsive"
+                            id="cover-background" [src]="imgURL">
+
                     </div>
-                    <button id="imageupload" type="submit" class="uploadbtn hidden"><i *ngIf="this.profile_loading==true" class="fa fa-spinner fa-spin"></i>&nbsp;{{(this.profile_loading==true)?'Uploading':'Upload'}} </button>
+                    <button id="imageupload" type="submit" class="uploadbtn hidden"><i
+                            *ngIf="this.profile_loading==true"
+                            class="fa fa-spinner fa-spin"></i>&nbsp;{{(this.profile_loading==true)?'Uploading':'Upload'}}
+                    </button>
                 </form>
                 <div class="spot-pic-content">
-                    <h3 [ngStyle]="{'color': (imgURL=='') ? '#323232' : '#ffffff'}">{{this.group_details.group_name}} </h3>
-                    <span [ngStyle]="{'color': (imgURL=='') ? '#323232' : '#ffffff'}">{{(this.group_details.group_members==0)?'No':''+this.group_details.group_members}} {{(this.group_details.group_members>1)?'members':'member'}}</span>
-               
+                    <h3 [ngStyle]="{'color': (imgURL=='') ? '#323232' : '#ffffff'}">{{this.group_details.group_name}}
+                    </h3>
+                    <span
+                        [ngStyle]="{'color': (imgURL=='') ? '#323232' : '#ffffff'}">{{(this.group_details.group_members==0)?'No':''+this.group_details.group_members}}
+                        {{(this.group_details.group_members>1)?'members':'member'}}</span>
+
                     <!-- <h3>{{this.group_details.group_name}}</h3>
                     <span>{{(this.group_details.group_members==0)?'No':''+this.group_details.group_members}} {{(this.group_details.group_members>1)?'members':'member'}}</span> -->
                 </div>
@@ -32,28 +40,44 @@
                     <ul>
                         <!-- <li><a href="#"><i class="fa fa-id-card-o" aria-hidden="true"></i>Agenda</a></li>
                         <li><a href="#"><i class="fa fa-american-sign-language-interpreting" aria-hidden="true"></i>Order</a></li> -->
-                        <li><a href="javscript:void(0)"><i class="fa fa-comment-o" aria-hidden="true"></i>Message</a></li> 
+                        <li><a href="javscript:void(0)"><i class="fa fa-comment-o" aria-hidden="true"></i>Message</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="col-lg-6 spot-pic-nav3">
                     <ul *ngIf="this.user_type=='normal'">
-                        <li *ngIf="another_friends.length"><a data-toggle="modal" data-target="#groupModal" class="active" href="#">Nodig uit</a></li>
-                        <li><a data-toggle="modal" data-target="#myCheckinModal" class="active" href="#"><i class="fa fa-plus"></i>Add post</a></li>
+                        <li *ngIf="another_friends.length"><a class="active" type="submit" (click)="onEventEdit('')">Add
+                                Event</a></li>
+                        <li *ngIf="another_friends.length"><button data-toggle="modal" id="event-button"
+                                data-target="#eventModal" class="hidden"></button></li>
+                        <li *ngIf="another_friends.length"><a data-toggle="modal" data-target="#groupModal"
+                                class="active" href="#">Nodig uit</a></li>
+                        <li><a data-toggle="modal" data-target="#myCheckinModal" class="active" href="#"><i
+                                    class="fa fa-plus"></i>Add post</a></li>
                         <span *ngIf="this.group_status!=null">
-                            <li *ngIf="group_status.invited==0"><a (click)="leaveGroup()" href="javascript:void(0)"><i class="fa fa-spin fa-spinner" *ngIf="status==true"></i>Leave Group</a></li>
+                            <li *ngIf="group_status.invited==0"><a (click)="leaveGroup()" href="javascript:void(0)"><i
+                                        class="fa fa-spin fa-spinner" *ngIf="status==true"></i>Leave Group</a></li>
                             <li *ngIf="group_status.invited==1">
-                                <div class="dropdown"><a class="active dropdown-toggle"  data-toggle="dropdown" href="#"><i [ngClass]="(this.status==true)?'fa-spin fa-spinner':''" class="fa" aria-hidden="true"></i>Respond</a>
+                                <div class="dropdown"><a class="active dropdown-toggle" data-toggle="dropdown"
+                                        href="#"><i [ngClass]="(this.status==true)?'fa-spin fa-spinner':''" class="fa"
+                                            aria-hidden="true"></i>Respond</a>
                                     <ul class="dropdown-menu">
                                         <li><a href="javascript:void(0)" (click)="confirmRequest()">Accept</a></li>
-                                        <li><a href="javascript:void(0)" (click)="rejectRequest()">Decline Request</a></li>
+                                        <li><a href="javascript:void(0)" (click)="rejectRequest()">Decline Request</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </li>
-                            <li *ngIf="group_status.requested==1"><a (click)="cancelRequest()" href="javascript:void(0)"><i class="fa fa-spin fa-spinner" *ngIf="status==true"></i>Cancel Request</a></li>
-                            <li *ngIf="this.group_status.requested==0" ><a (click)="joinGroup()" href="javascript:void(0)"><i class="fa fa-spin fa-spinner" *ngIf="status==true"></i>Join Group</a></li>
+                            <li *ngIf="group_status.requested==1"><a (click)="cancelRequest()"
+                                    href="javascript:void(0)"><i class="fa fa-spin fa-spinner"
+                                        *ngIf="status==true"></i>Cancel Request</a></li>
+                            <li *ngIf="this.group_status.requested==0"><a (click)="joinGroup()"
+                                    href="javascript:void(0)"><i class="fa fa-spin fa-spinner"
+                                        *ngIf="status==true"></i>Join Group</a></li>
                         </span>
                         <span *ngIf="this.group_details.group_created_by!=this.logged_in_user_id+''">
-                            <li *ngIf="this.group_status==null" ><a (click)="joinGroup()" href="javascript:void(0)"><i class="fa fa-spin fa-spinner" *ngIf="status==true"></i>Join Group</a></li>
+                            <li *ngIf="this.group_status==null"><a (click)="joinGroup()" href="javascript:void(0)"><i
+                                        class="fa fa-spin fa-spinner" *ngIf="status==true"></i>Join Group</a></li>
                         </span>
                     </ul>
                 </div>
@@ -61,13 +85,13 @@
         </div>
         <div id="groupModal" class="modal fade" role="dialog">
             <div class="modal-dialog modal-md">
-              <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Invite friends to {{group_details.group_name}}</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <!-- <div class="friend-check-form">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Invite friends to {{group_details.group_name}}</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- <div class="friend-check-form">
                         <div class="row">
                             <div class="col-md-9">
                                 <div class="form-group required" data-type="text" data-required="true">
@@ -80,27 +104,32 @@
                             </div>
                         </div>
                     </div> -->
-                    <div style="max-height: 325px;overflow-y: scroll;">
-                        <p class="list-heading " id="group-tagged">INVITE PEOPLE TO GROUP</p>
-                        <div class="friend-tag-text" id="group-friend-tag-text">
-                            <span *ngFor="let friend of group_invite_friends">{{friend.first_name}} {{friend.last_name}}<a href="JavaScript:void(0)" (click)="removeGroupFromTagList(friend.id)"><i class="fa fa-times times-icon"></i></a></span>
-                        </div>
-                        <p class="list-heading" id="suggesions">SUGGESTIONS</p>
-                        <div *ngFor="let friend of another_friends">
-                            <div class="friends-list" (click)="addGroupTaglist(friend.id)">
-                                <img style="height: 45px;width: 45px;border-radius: 45px;" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{friend.user_profile}}">
-                                <span class="search-friend-name">{{friend.first_name}} {{friend.last_name}}</span>
+                        <div style="max-height: 325px;overflow-y: scroll;">
+                            <p class="list-heading " id="group-tagged">INVITE PEOPLE TO GROUP</p>
+                            <div class="friend-tag-text" id="group-friend-tag-text">
+                                <span *ngFor="let friend of group_invite_friends">{{friend.first_name}}
+                                    {{friend.last_name}}<a href="JavaScript:void(0)"
+                                        (click)="removeGroupFromTagList(friend.id)"><i
+                                            class="fa fa-times times-icon"></i></a></span>
+                            </div>
+                            <p class="list-heading" id="suggesions">SUGGESTIONS</p>
+                            <div *ngFor="let friend of another_friends">
+                                <div class="friends-list" (click)="addGroupTaglist(friend.id)">
+                                    <img style="height: 45px;width: 45px;border-radius: 45px;"
+                                        src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{friend.user_profile}}">
+                                    <span class="search-friend-name">{{friend.first_name}} {{friend.last_name}}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="modal-footer" *ngIf="group_invite_friends.length">
+                        <button (click)="onSubmit()" type="submit" class="btn-invite">
+                            <i id="spinner-icon" *ngIf="this.profile_loading==true"
+                                class="fa fa-spinner fa-spin"></i>&nbsp;Invite
+                        </button>
+                    </div>
                 </div>
-                <div class="modal-footer" *ngIf="group_invite_friends.length">
-                    <button (click)="onSubmit()" type="submit" class="btn-invite">
-                        <i id="spinner-icon" *ngIf="this.profile_loading==true" class="fa fa-spinner fa-spin"></i>&nbsp;Invite
-                    </button>
-                </div>
-              </div>
-          
+
             </div>
         </div>
         <div class="row mt-4 mr-0 ml-0">
@@ -113,27 +142,34 @@
                 </div>
                 <ul>
                     <li *ngFor="let lu of group_members">
-                        <a href="#"><img *ngIf="lu.user_profile&&lu.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{lu.user_profile}}">
+                        <a href="#"><img
+                                *ngIf="lu.user_profile&&lu.user_profile.indexOf('https://graph.facebook.com')==-1"
+                                src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{lu.user_profile}}">
                             <img *ngIf="!lu.user_profile" src="/assets/front-assets/images/pic1.png">
-                            <img *ngIf="lu.user_profile&&lu.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{lu.user_profile}}">{{lu.first_name}}</a>
+                            <img *ngIf="lu.user_profile&&lu.user_profile.indexOf('https://graph.facebook.com') != -1"
+                                src="{{lu.user_profile}}">{{lu.first_name}}</a>
                     </li>
                     <li *ngIf="!group_members.length" style="display: table;margin: 0 auto;">
                         <a style="margin-top: 30px;margin-bottom: 36px;">No members</a>
                     </li>
                 </ul>
             </div>
-            <div *ngIf="this.group_details.group_created_by==this.logged_in_user_id+''" class="spot-friends-spot col-lg-12 mb-0" >
+            <div *ngIf="this.group_details.group_created_by==this.logged_in_user_id+''"
+                class="spot-friends-spot col-lg-12 mb-0">
                 <div class="col-lg-7 spot-friends-nav2">
                     <a>Requested users</a>
                 </div>
                 <div class="col-lg-5 spot-friends-nav3">
-                    <a >Bekijk alle requests</a>
+                    <a>Bekijk alle requests</a>
                 </div>
-                <ul >
+                <ul>
                     <li *ngFor="let ru of users_requests">
-                        <a href="#"><img *ngIf="ru.user_profile&&ru.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{ru.user_profile}}">
+                        <a href="#"><img
+                                *ngIf="ru.user_profile&&ru.user_profile.indexOf('https://graph.facebook.com')==-1"
+                                src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{ru.user_profile}}">
                             <img *ngIf="!ru.user_profile" src="/assets/front-assets/images/pic1.png">
-                            <img *ngIf="ru.user_profile&&ru.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{ru.user_profile}}">{{ru.first_name}}</a>
+                            <img *ngIf="ru.user_profile&&ru.user_profile.indexOf('https://graph.facebook.com') != -1"
+                                src="{{ru.user_profile}}">{{ru.first_name}}</a>
                     </li>
                     <li *ngIf="!users_requests.length" style="display: table;margin: 0 auto;">
                         <a style="margin-top: 30px;margin-bottom: 36px;">No requests</a>
@@ -143,20 +179,27 @@
         </div>
         <div *ngFor="let post of posts">
             <div class="post-gallery" id="post-gallery{{this.post_id}}">
-                <span class="post-gallery-close" (click)="closeImageVideo(this.post_id)"><i class="fa fa-times"></i></span>
-                <div id="carousel-example-generic{{this.post_id}}" class="carousel slide carousel-example-generic" data-ride="carousel">
-                    <div class="carousel-inner" role="listbox" >
-                            <div *ngFor="let pv of photos_videos ;let i = index"  class="item" [ngClass]="(i==this.photo_index)?'active':''"  >
-                                <img *ngIf="photos_extensions.includes(pv.split('.').pop())" src="https://ibigo.shadowis.nl/server-api/public/spot_images/{{pv}}" alt="img3" >
-                                <video *ngIf="video_extensions.includes(pv.split('.').pop())" controls>
-                                    <source  src="https://ibigo.shadowis.nl/server-api/public/spot_videos/{{pv}}" type="video/mp4">
-                                </video>
-                            </div>
+                <span class="post-gallery-close" (click)="closeImageVideo(this.post_id)"><i
+                        class="fa fa-times"></i></span>
+                <div id="carousel-example-generic{{this.post_id}}" class="carousel slide carousel-example-generic"
+                    data-ride="carousel">
+                    <div class="carousel-inner" role="listbox">
+                        <div *ngFor="let pv of photos_videos ;let i = index" class="item"
+                            [ngClass]="(i==this.photo_index)?'active':''">
+                            <img *ngIf="photos_extensions.includes(pv.split('.').pop())"
+                                src="https://ibigo.shadowis.nl/server-api/public/spot_images/{{pv}}" alt="img3">
+                            <video *ngIf="video_extensions.includes(pv.split('.').pop())" controls>
+                                <source src="https://ibigo.shadowis.nl/server-api/public/spot_videos/{{pv}}"
+                                    type="video/mp4">
+                            </video>
+                        </div>
                     </div>
-                    <a class="left carousel-control" href="#carousel-example-generic{{this.post_id}}" role="button" data-slide="prev">
+                    <a class="left carousel-control" href="#carousel-example-generic{{this.post_id}}" role="button"
+                        data-slide="prev">
                         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                     </a>
-                    <a class="right carousel-control" href="#carousel-example-generic{{this.post_id}}" role="button" data-slide="next">
+                    <a class="right carousel-control" href="#carousel-example-generic{{this.post_id}}" role="button"
+                        data-slide="next">
                         <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                     </a>
                 </div>
@@ -165,13 +208,28 @@
                 <div class="col-lg-12 spot-music2">
                     <div class="sm-left">
                         <div class="spot-music2-img">
-                            <img class="spot-post-img" *ngIf="this.post.user_profile!=null" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{this.post.user_profile}}" alt="pic27">
-                            <img class="spot-post-img" *ngIf="this.post.user_profile==null" src="/assets/front-assets/images/pic27.png" alt="pic27">
+                            <img class="spot-post-img" *ngIf="this.post.user_profile!=null"
+                                src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{this.post.user_profile}}"
+                                alt="pic27">
+                            <img class="spot-post-img" *ngIf="this.post.user_profile==null"
+                                src="/assets/front-assets/images/pic27.png" alt="pic27">
                         </div>
                         <div class="spot-music2-text">
-                            <h3><a routerLink="/people/{{this.post.unique_id}}/{{this.post.user_slug}}">{{this.post.user_name}}</a><span *ngIf="this.post.tagged_users_names.length > 0">&nbsp;with&nbsp;</span></h3>
-                            <div style="display:inline-block;" *ngIf="this.post.tagged_users_names.length < 3"><h3 *ngFor="let f of post.tagged_users_names; let i = index" ><span *ngIf="i>0">&nbsp;and&nbsp;</span><a routerLink="/people/{{this.f.unique_id}}/{{this.f.user_slug}}">{{f.user_name}}</a></h3></div>
-                            <div style="display:inline-block;" *ngIf="this.post.tagged_users_names.length > 2"><h3><a routerLink="/people/{{this.post.tagged_users_names[0].unique_id}}/{{this.post.tagged_users_names[0].user_slug}}">{{this.post.tagged_users_names[0].user_name}}</a></h3><span>and&nbsp;</span><h3>{{this.post.tagged_users_names.length - 1}} others</h3></div>
+                            <h3><a
+                                    routerLink="/people/{{this.post.unique_id}}/{{this.post.user_slug}}">{{this.post.user_name}}</a><span
+                                    *ngIf="this.post.tagged_users_names.length > 0">&nbsp;with&nbsp;</span></h3>
+                            <div style="display:inline-block;" *ngIf="this.post.tagged_users_names.length < 3">
+                                <h3 *ngFor="let f of post.tagged_users_names; let i = index"><span
+                                        *ngIf="i>0">&nbsp;and&nbsp;</span><a
+                                        routerLink="/people/{{this.f.unique_id}}/{{this.f.user_slug}}">{{f.user_name}}</a>
+                                </h3>
+                            </div>
+                            <div style="display:inline-block;" *ngIf="this.post.tagged_users_names.length > 2">
+                                <h3><a
+                                        routerLink="/people/{{this.post.tagged_users_names[0].unique_id}}/{{this.post.tagged_users_names[0].user_slug}}">{{this.post.tagged_users_names[0].user_name}}</a>
+                                </h3><span>and&nbsp;</span>
+                                <h3>{{this.post.tagged_users_names.length - 1}} others</h3>
+                            </div>
                             <p>{{this.post.checked_in_datetime}}</p>
                         </div>
                     </div>
@@ -187,38 +245,55 @@
                         </div> -->
                         <div class="spot-text3-dropdown2" *ngIf="this.post.user_id==logged_in_user_id&&post.group_id">
                             <div class="dropdown">
-                                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"></button>
+                                <button class="btn btn-primary dropdown-toggle" type="button"
+                                    data-toggle="dropdown"></button>
                                 <ul class="dropdown-menu">
-                                    <li *ngIf="this.post.user_id==logged_in_user_id"><a href="JavaScript:void(0)" (click)="editPost(this.post.id)">Edit Post</a></li>
-                                    <li *ngIf="this.post.user_id==logged_in_user_id"><a href="JavaScript:void(0)" (click)="deletePost(this.post.id)">Delete Post</a></li>
+                                    <li *ngIf="this.post.user_id==logged_in_user_id"><a href="JavaScript:void(0)"
+                                            (click)="editPost(this.post.id)">Edit Post</a></li>
+                                    <li *ngIf="this.post.user_id==logged_in_user_id"><a href="JavaScript:void(0)"
+                                            (click)="deletePost(this.post.id)">Delete Post</a></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-12 spot-royal">
-                    <h4 *ngIf="this.post.spot_id"><span>at</span>&nbsp;<a routerLink="/spot/{{this.post.spot_unique_id}}/{{this.post.spot_slug}}">{{this.post.spot_name}}</a></h4>
+                    <h4 *ngIf="this.post.spot_id"><span>at</span>&nbsp;<a
+                            routerLink="/spot/{{this.post.spot_unique_id}}/{{this.post.spot_slug}}">{{this.post.spot_name}}</a>
+                    </h4>
                     <p *ngIf="this.post.spot_description">{{this.post.spot_description}}</p>
                 </div>
-                <div class="col-lg-12" >
-                    <div class="spot-garden-wrap" [ngClass]="(this.post.photos_videos.length>=5)?'in-post-5':'in-post-'+(this.post.photos_videos.length)" >
-                            <div *ngFor="let post_img_video of this.post.photos_videos ; let i = index" class="spot-garden-img spi-{{i}}" (click)="openImageVideo(this.post.id,this.post.spot_id,this.post_img_video)" >
-                                <div *ngIf="i<5">
-                                    <div class="sgi-inner" *ngIf="photos_extensions.includes(post_img_video.split('.').pop())" >
-                                        <div class="last-post">
-                                            <span *ngIf="this.post.photos_videos.length >= 6"><a *ngIf="i==4" href="#" class="plus-post"><span class="pp-plus">+{{this.post.photos_videos.length-5}}</span></a></span>
-                                            <img src="https://ibigo.shadowis.nl/server-api/public/spot_images/{{post_img_video}}" alt="img3">
-                                        </div>
-                                    </div>
-                                    <div class="sgi-inner last-post" *ngIf="video_extensions.includes(post_img_video.split('.').pop())">
-                                        <span *ngIf="this.post.photos_videos.length >= 6"><a *ngIf="i==4" href="#" class="plus-post"><span class="pp-plus">+{{this.post.photos_videos.length-5}}</span></a></span>
-                                        <video width="100%" height="100%" >
-                                            <source src="https://ibigo.shadowis.nl/server-api/public/spot_videos/{{post_img_video}}" type="video/mp4">
-                                        </video>
+                <div class="col-lg-12">
+                    <div class="spot-garden-wrap"
+                        [ngClass]="(this.post.photos_videos.length>=5)?'in-post-5':'in-post-'+(this.post.photos_videos.length)">
+                        <div *ngFor="let post_img_video of this.post.photos_videos ; let i = index"
+                            class="spot-garden-img spi-{{i}}"
+                            (click)="openImageVideo(this.post.id,this.post.spot_id,this.post_img_video)">
+                            <div *ngIf="i<5">
+                                <div class="sgi-inner"
+                                    *ngIf="photos_extensions.includes(post_img_video.split('.').pop())">
+                                    <div class="last-post">
+                                        <span *ngIf="this.post.photos_videos.length >= 6"><a *ngIf="i==4" href="#"
+                                                class="plus-post"><span
+                                                    class="pp-plus">+{{this.post.photos_videos.length-5}}</span></a></span>
+                                        <img src="https://ibigo.shadowis.nl/server-api/public/spot_images/{{post_img_video}}"
+                                            alt="img3">
                                     </div>
                                 </div>
+                                <div class="sgi-inner last-post"
+                                    *ngIf="video_extensions.includes(post_img_video.split('.').pop())">
+                                    <span *ngIf="this.post.photos_videos.length >= 6"><a *ngIf="i==4" href="#"
+                                            class="plus-post"><span
+                                                class="pp-plus">+{{this.post.photos_videos.length-5}}</span></a></span>
+                                    <video width="100%" height="100%">
+                                        <source
+                                            src="https://ibigo.shadowis.nl/server-api/public/spot_videos/{{post_img_video}}"
+                                            type="video/mp4">
+                                    </video>
+                                </div>
                             </div>
-                            
+                        </div>
+
                         <!-- <div class="spot-garden-img spi-5">
                             <div class="sgi-inner">
                                 <div class="last-post">
@@ -233,17 +308,27 @@
                     <hr>
                     <div class="spot-heart-like-comment">
                         <div class="spot-heart2">
-                            <a class="react" href="JavaScript:void(0)"><i class="fa fa-heart" (click)="onLike(this.post.id)" [ngClass]="(this.post.liked_by_logged_in_user==1)?'fa-heart-spot':'in-post-'"></i>
+                            <a class="react" href="JavaScript:void(0)"><i class="fa fa-heart"
+                                    (click)="onLike(this.post.id)"
+                                    [ngClass]="(this.post.liked_by_logged_in_user==1)?'fa-heart-spot':'in-post-'"></i>
                                 <span *ngIf="this.post.liked_by_logged_in_user==1">&nbsp;You</span>
-                                        <span *ngIf="this.post.liked_users_names.length > 1 && this.post.liked_by_logged_in_user==1">,</span>
-                                        <span *ngIf="this.post.liked_users_names.length == 1 && this.post.liked_by_logged_in_user==1">&nbsp;and</span>
-                                        <span *ngIf="this.post.liked_users_names.length > 2">&nbsp;{{this.post.liked_users_names[0]}} and {{this.post.liked_users_names.length - 1}} others</span>
-                                        <span *ngIf="this.post.liked_users_names.length < 3">&nbsp;{{this.post.liked_users_names.join(' and ')}}</span></a>
+                                <span
+                                    *ngIf="this.post.liked_users_names.length > 1 && this.post.liked_by_logged_in_user==1">,</span>
+                                <span
+                                    *ngIf="this.post.liked_users_names.length == 1 && this.post.liked_by_logged_in_user==1">&nbsp;and</span>
+                                <span
+                                    *ngIf="this.post.liked_users_names.length > 2">&nbsp;{{this.post.liked_users_names[0]}}
+                                    and {{this.post.liked_users_names.length - 1}} others</span>
+                                <span
+                                    *ngIf="this.post.liked_users_names.length < 3">&nbsp;{{this.post.liked_users_names.join(' and ')}}</span></a>
                         </div>
-                        <div class="spot-heart3" *ngIf="(this.logged_in_user==true&&user_type=='normal')||this.post.comments.length">
-                            <a href="javascript:void(0)" (click)="clickEvent(this.post.id)"  
-                            class="comment-btn"><img src="/assets/front-assets/images/icons/icon6.png" alt="icon6"><span *ngIf="this.post.comments.length > 0">{{this.post.comments.length}}</span></a>
-                            <a href="#" class="hidden"><img src="/assets/front-assets/images/icons/icon8.png" alt="icon8">8</a>
+                        <div class="spot-heart3"
+                            *ngIf="(this.logged_in_user==true&&user_type=='normal')||this.post.comments.length">
+                            <a href="javascript:void(0)" (click)="clickEvent(this.post.id)" class="comment-btn"><img
+                                    src="/assets/front-assets/images/icons/icon6.png" alt="icon6"><span
+                                    *ngIf="this.post.comments.length > 0">{{this.post.comments.length}}</span></a>
+                            <a href="#" class="hidden"><img src="/assets/front-assets/images/icons/icon8.png"
+                                    alt="icon8">8</a>
                         </div>
                     </div>
                 </div>
@@ -253,30 +338,51 @@
                             <ul>
                                 <li *ngFor="let comment of this.post.comments">
                                     <span class="comment-profile">
-                                        <img *ngIf="this.comment.comment_user_type=='normal'" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{this.comment.comment_user_profile}}" alt="pic27">
-                                        <img *ngIf="this.comment.comment_user_type=='business'" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{this.comment.comment_user_profile}}" alt="pic27">
+                                        <img *ngIf="this.comment.comment_user_type=='normal'"
+                                            src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{this.comment.comment_user_profile}}"
+                                            alt="pic27">
+                                        <img *ngIf="this.comment.comment_user_type=='business'"
+                                            src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{this.comment.comment_user_profile}}"
+                                            alt="pic27">
                                     </span>
                                     <div class="comment-wrap">
                                         <div class="comment-detail" id="comment-detail{{this.comment.id}}">
-                                            <a *ngIf="this.comment.comment_user_type=='normal'" routerLink="/people/{{this.comment.comment_user_unique_id}}/{{this.comment.comment_user_slug}}" class="comment-name">{{this.comment.comment_user_name}} . <span>{{this.comment.comment_date_time}}</span></a>
-                                            <a *ngIf="this.comment.comment_user_type=='business'" routerLink="/spot/{{this.comment.comment_user_unique_id}}/{{this.comment.comment_user_slug}}" class="comment-name">{{this.comment.comment_user_name}} . <span>{{this.comment.comment_date_time}}</span></a>
+                                            <a *ngIf="this.comment.comment_user_type=='normal'"
+                                                routerLink="/people/{{this.comment.comment_user_unique_id}}/{{this.comment.comment_user_slug}}"
+                                                class="comment-name">{{this.comment.comment_user_name}} .
+                                                <span>{{this.comment.comment_date_time}}</span></a>
+                                            <a *ngIf="this.comment.comment_user_type=='business'"
+                                                routerLink="/spot/{{this.comment.comment_user_unique_id}}/{{this.comment.comment_user_slug}}"
+                                                class="comment-name">{{this.comment.comment_user_name}} .
+                                                <span>{{this.comment.comment_date_time}}</span></a>
                                             <span class="comment-text">{{this.comment.comment}}</span>
-                                            <form [formGroup]="commentEditForm" (ngSubmit)="onCommentEditSubmit(this.comment.id,this.post.id)">
-                                                <input formControlName="comment" class="comment-input-inner" id="comment-input{{this.comment.id}}" autocomplete="off" type="text" name="comment" placeholder="Update a comment...">
+                                            <form [formGroup]="commentEditForm"
+                                                (ngSubmit)="onCommentEditSubmit(this.comment.id,this.post.id)">
+                                                <input formControlName="comment" class="comment-input-inner"
+                                                    id="comment-input{{this.comment.id}}" autocomplete="off" type="text"
+                                                    name="comment" placeholder="Update a comment...">
                                                 <div class="hidden spinner" id="spinner{{this.comment.id}}">
                                                     <div class="bounce1"></div>
                                                     <div class="bounce2"></div>
                                                     <div class="bounce3"></div>
-                                                  </div>
+                                                </div>
                                                 <div class="hidden cancel-btn" id="cancel-btn{{this.comment.id}}">
-                                                    <span>Press ESC to </span><span class="only-cancel" (click)="onCancel(this.comment.id)" >cancel</span>
+                                                    <span>Press ESC to </span><span class="only-cancel"
+                                                        (click)="onCancel(this.comment.id)">cancel</span>
                                                 </div>
                                             </form>
-                                            
-                                            <span *ngIf="comment.comment_user_id==logged_in_user_id" class="comment-menu-icon" id="comment-menu-icon{{this.comment.id}}"><i class="fa fa-ellipsis-h fa-3x"  (click)="onOpenModal(this.comment.id)"></i></span>
+
+                                            <span *ngIf="comment.comment_user_id==logged_in_user_id"
+                                                class="comment-menu-icon" id="comment-menu-icon{{this.comment.id}}"><i
+                                                    class="fa fa-ellipsis-h fa-3x"
+                                                    (click)="onOpenModal(this.comment.id)"></i></span>
                                             <ul class="comment-box-option">
-                                                <li><a href="javascript:void(0)" (click)="editComment(this.comment.id,this.comment.comment)" class="comment-edit">Edit</a></li>
-                                                <li><a href="javascript:void(0)" (click)="deleteComment(this.comment.id,this.post.id)" class="comment-delete">Delete</a></li>
+                                                <li><a href="javascript:void(0)"
+                                                        (click)="editComment(this.comment.id,this.comment.comment)"
+                                                        class="comment-edit">Edit</a></li>
+                                                <li><a href="javascript:void(0)"
+                                                        (click)="deleteComment(this.comment.id,this.post.id)"
+                                                        class="comment-delete">Delete</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -284,10 +390,12 @@
                             </ul>
                         </div>
                         <div *ngIf="this.logged_in_user==true&&user_type=='normal'" class="write-comment">
-                            <form [formGroup]="commentForm" (ngSubmit)="onCommentSubmit(this.post.id)" class="comment-form">
+                            <form [formGroup]="commentForm" (ngSubmit)="onCommentSubmit(this.post.id)"
+                                class="comment-form">
                                 <div class="comment-input">
                                     <span class="comment-profile"><img src="{{this.user_profile}}" alt="pic27"></span>
-                                    <input formControlName="comment" autocomplete="off" type="text" name="comment" placeholder="Write a comment...">
+                                    <input formControlName="comment" autocomplete="off" type="text" name="comment"
+                                        placeholder="Write a comment...">
                                 </div>
                             </form>
                         </div>
@@ -296,52 +404,209 @@
             </div>
         </div>
         <div class="clear"></div>
-        <div *ngIf="this.posts.length!=post_length" class="dot-loader"><div></div></div>
+        <div *ngIf="this.posts.length!=post_length" class="dot-loader">
+            <div></div>
+        </div>
     </div>
 </section>
 <section class="model-section">
     <input type="button" id="mycheckinbtn" class="hidden" data-toggle="modal" data-target="#myCheckinModal">
-    <div class="modal fade" id="myCheckinModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="myCheckinModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content modal-spot-popup2">
-                <button id="close-btn" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <button id="close-btn" type="button" class="close" data-dismiss="modal"
+                    aria-hidden="true">&times;</button>
                 <div class="modal-body spot-review-popup2">
                     <span class="share"><i class="fa fa-share-alt"></i></span>
                     <h2 class="deel">Share Post</h2>
-                    <form [formGroup]="spotForm" (ngSubmit)="onPostSubmit()" >
-                    <div class="col-lg-12 spot-popup-input">
-                       <textarea formControlName="review"  class="form-control form-input-modal" placeholder="Vertel iets over deze spot"></textarea>
-                    </div>
-                    <h5 class="upload">Upload afbeelding en video</h5>
-                        <div class="popup-uploadvideo">
-                        <ul>
-                        <li><input class="hidden"  #image_video_spot type='file' accept="image/*,video/*" (change)="onSelectFileForSpot($event)" multiple/><a href="JavaScript:void(0)" (click)="image_video_spot.click()"><img src="/assets/front-assets/images/popup-img/select-icon3.png" alt="icon3"></a></li>
-                        <li style="border: 1px solid #ddd;"><input class="hidden"  #audio_spot type='file' accept="audio/*" (change)="onAudioFileForSpot($event)" multiple/><a href="JavaScript:void(0)" (click)="audio_spot.click()"><img src="/assets/front-assets/images/popup-img/select-icon4.png" alt="icon4"></a></li>
-                        <li *ngFor="let list of myaudiodata;let i = index">
-                            <audio controls><source [src]="list.url | sanitizerUrl"></audio><a href="JavaScript:void(0)" (click)="onRemoveAudioFileForSpot(list.id)"><i class="fa fa-close"></i></a>
-                        </li>
-                        <li *ngFor="let list of my_spot_data;let i = index"><img class="image-video" *ngIf="list.type == 'img'" [src]="list.url" />
-                            <video class="image-video" *ngIf="list.type == 'video'" [src]="list.url" controls></video><a href="JavaScript:void(0)" (click)="onRemoveFileForSpot(list.id)"><i class="fa fa-close"></i></a>
-                        </li>
-                        <li *ngFor="let list of spot_dbfiles;let i = index">
-                            <img class="image-video" *ngIf="photos_extensions.includes(list.split('.').pop())" src="https://ibigo.shadowis.nl/server-api/public/spot_images/{{list}}" />
-                            <video class="image-video" *ngIf="video_extensions.includes(list.split('.').pop())" src="https://ibigo.shadowis.nl/server-api/public/spot_videos/{{list}}" controls></video>
-                            <a href="JavaScript:void(0)" (click)="onRemoveFileFromDBForSpot(list)"><i class="fa fa-close"></i></a>
-                        </li>
-                        <li *ngFor="let list of afiles;let i = index">
-                            <audio controls><source src="https://ibigo.shadowis.nl/server-api/public/spot_audio/{{list}}"></audio><a href="JavaScript:void(0)" (click)="onRemoveAudioFileFromDB(list)"><i class="fa fa-close"></i></a>
-                        </li>
-                        </ul>
+                    <form [formGroup]="spotForm" (ngSubmit)="onPostSubmit()">
+                        <div class="col-lg-12 spot-popup-input">
+                            <textarea formControlName="review" class="form-control form-input-modal"
+                                placeholder="Vertel iets over deze spot"></textarea>
                         </div>
-                        <button type="submit" id="spinner-btn-modal"  class="delen btn-share-modal">
+                        <h5 class="upload">Upload afbeelding en video</h5>
+                        <div class="popup-uploadvideo">
+                            <ul>
+                                <li><input class="hidden" #image_video_spot type='file' accept="image/*,video/*"
+                                        (change)="onSelectFileForSpot($event)" multiple /><a href="JavaScript:void(0)"
+                                        (click)="image_video_spot.click()"><img
+                                            src="/assets/front-assets/images/popup-img/select-icon3.png"
+                                            alt="icon3"></a></li>
+                                <li style="border: 1px solid #ddd;"><input class="hidden" #audio_spot type='file'
+                                        accept="audio/*" (change)="onAudioFileForSpot($event)" multiple /><a
+                                        href="JavaScript:void(0)" (click)="audio_spot.click()"><img
+                                            src="/assets/front-assets/images/popup-img/select-icon4.png"
+                                            alt="icon4"></a></li>
+                                <li *ngFor="let list of myaudiodata;let i = index">
+                                    <audio controls>
+                                        <source [src]="list.url | sanitizerUrl"></audio><a href="JavaScript:void(0)"
+                                        (click)="onRemoveAudioFileForSpot(list.id)"><i class="fa fa-close"></i></a>
+                                </li>
+                                <li *ngFor="let list of my_spot_data;let i = index"><img class="image-video"
+                                        *ngIf="list.type == 'img'" [src]="list.url" />
+                                    <video class="image-video" *ngIf="list.type == 'video'" [src]="list.url"
+                                        controls></video><a href="JavaScript:void(0)"
+                                        (click)="onRemoveFileForSpot(list.id)"><i class="fa fa-close"></i></a>
+                                </li>
+                                <li *ngFor="let list of spot_dbfiles;let i = index">
+                                    <img class="image-video" *ngIf="photos_extensions.includes(list.split('.').pop())"
+                                        src="https://ibigo.shadowis.nl/server-api/public/spot_images/{{list}}" />
+                                    <video class="image-video" *ngIf="video_extensions.includes(list.split('.').pop())"
+                                        src="https://ibigo.shadowis.nl/server-api/public/spot_videos/{{list}}"
+                                        controls></video>
+                                    <a href="JavaScript:void(0)" (click)="onRemoveFileFromDBForSpot(list)"><i
+                                            class="fa fa-close"></i></a>
+                                </li>
+                                <li *ngFor="let list of afiles;let i = index">
+                                    <audio controls>
+                                        <source src="https://ibigo.shadowis.nl/server-api/public/spot_audio/{{list}}">
+                                        </audio><a href="JavaScript:void(0)" (click)="onRemoveAudioFileFromDB(list)"><i
+                                            class="fa fa-close"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <button type="submit" id="spinner-btn-modal" class="delen btn-share-modal">
                             <i *ngIf="btnloading==true" class="fa fa-spin fa-spinner"></i>&nbsp;Delen
-                          </button>
+                        </button>
                     </form>
                 </div>
-                
+
             </div>
         </div>
     </div>
     <!-- <audio controls><source src="https://ibigo.shadowis.nl/server-api/public/spot_audio/audio1.mp3"></audio> -->
 </section>
 <!--============== END GROUP SECTION ===============-->
+<section class="model-section">
+    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content modal-spot-popup2">
+                <button id="close-btn" type="button" class="close" data-dismiss="modal"
+                    aria-hidden="true">&times;</button>
+                <div class="modal-body spot-review-popup2">
+                    <span class="share"><i class="fa fa-calendar-plus-o"></i></span>
+                    <h2 class="deel"> {{(is_edit_event==false) ? 'Create' : 'Edit'}} Event</h2>
+                    <form [formGroup]="eventForm" (ngSubmit)="onEventSubmit()">
+                        <div class="row">
+                            <div class="col-sm-12 event-popup-input">
+                                <div class="form-group"
+                                    [ngClass]="{ 'has-error': event_submitted && ef.event_title.errors }">
+                                    <input type="text" formControlName="event_title"
+                                        class="form-control form-input-modal" placeholder="Event title" />
+                                    <div *ngIf="event_submitted && ef.event_title.errors">
+                                        <span class="help-block">Event title is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-7 event-popup-input">
+                                <div class="form-group"
+                                    [ngClass]="{ 'has-error': event_submitted && ef.start_date.errors }">
+                                    <input type="text" placeholder="Start Date" [minDate]="minDate"
+                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', showWeekNumbers: false }"
+                                        #dp="bsDatepicker" bsDatepicker formControlName="start_date"
+                                        class="form-control form-input-modal form-input-date" />
+                                    <div *ngIf="event_submitted && ef.start_date.errors">
+                                        <span class="help-block" *ngIf="ef.start_date.errors.required">Start date is
+                                            required</span>
+                                        <span class="help-block" *ngIf="ef.start_date.errors.bsDate">Invalid start
+                                            date</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-5 event-popup-input">
+                                <div class="form-group"
+                                    [ngClass]="{ 'has-error': event_submitted && ef.start_time.errors }">
+                                    <timepicker [minuteStep]="15" [showSpinners]="true" [showMeridian]="false"
+                                        formControlName="start_time"></timepicker>
+                                    <div *ngIf="event_submitted && ef.start_time.errors">
+                                        <span class="help-block">Start time is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-7 event-popup-input">
+                                <div class="form-group"
+                                    [ngClass]="{ 'has-error': event_submitted && ef.end_date.errors }">
+                                    <input type="text" [minDate]="minDate" placeholder="End Date"
+                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', showWeekNumbers: false }"
+                                        #dp="bsDatepicker" bsDatepicker formControlName="end_date"
+                                        class="form-control form-input-modal form-input-date" />
+                                    <div *ngIf="event_submitted && ef.end_date.errors">
+                                        <span class="help-block">End date is required</span>
+                                        <span class="help-block" *ngIf="ef.end_date.errors.bsDate">Invalid end
+                                            date</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-5 event-popup-input">
+                                <div class="form-group"
+                                    [ngClass]="{ 'has-error': event_submitted && ef.end_time.errors }">
+                                    <timepicker [minuteStep]="15" [showSpinners]="true" [showMeridian]="false"
+                                        formControlName="end_time"></timepicker>
+                                    <div *ngIf="event_submitted && ef.end_time.errors">
+                                        <span class="help-block">End time is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group" *ngIf="this.error_status==true">
+                                    <span class="help-block">End date & time is greater than start date & time.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 event-popup-input">
+                                <div class="form-group"
+                                    [ngClass]="{ 'has-error': event_submitted && ef.location.errors }">
+                                    <input type="text" formControlName="location" class="form-control form-input-modal"
+                                        placeholder="Location" />
+                                    <div *ngIf="event_submitted && ef.location.errors">
+                                        <span class="help-block">Location is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 event-popup-input">
+                                <div class="form-group"
+                                    [ngClass]="{ 'has-error': event_submitted && ef.event_description.errors }">
+                                    <textarea formControlName="event_description" class="form-control form-input-modal"
+                                        placeholder="Vertel iets over deze event"></textarea>
+                                    <div *ngIf="event_submitted && ef.event_description.errors">
+                                        <span class="help-block">Event description is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="this.groups?.length">
+                            <div class="col-sm-12 form-group">
+                                <input formControlName="is_host_by_group" type="checkbox" /> Host by group
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="this.mode==true">
+                            <div class="col-sm-12 event-popup-input">
+                                <div class="form-group">
+                                    <select formControlName="group" [(ngModel)]="selectedQuantity">
+                                        <option *ngFor="let group of this.groups" [value]="group.id">
+                                            {{group.group_name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="delen btn-share-modal">
+                            <i *ngIf="btnloading==true"
+                                class="fa fa-spin fa-spinner"></i>&nbsp;{{(is_edit_event==false) ? 'Create' : 'Update'}}
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- <audio controls><source src="https://ibigo.shadowis.nl/server-api/public/spot_audio/audio1.mp3"></audio> -->
+</section>

@@ -8,7 +8,7 @@
                 <form [formGroup]="groupProfileForm" (ngSubmit)="onProfileSubmit()" >
                     <span *ngIf="this.event_details.host_id==this.logged_in_user_id+''" class="upload-image" (click)="file.click()"><i class="fa fa-pencil"></i></span>
                     <input class="hidden" #file type="file" accept='image/*' (change)="preview(file.files)" />
-                    <div class="cover-div">
+                    <div class="cover-div" [ngStyle]="{'min-height': (imgURL==null) ? '150px' : '240px'}">
                         <!-- <img *ngIf="this.imgURL==null" src="/assets/front-assets/images/group-bg.png" alt="group-bg">
                         <img *ngIf="this.imgURL!=null" class="cover-bg  responsive" id="cover-background" [src]="imgURL" alt="group-bg2"> -->
                         <img [ngStyle]="{'display': (imgURL==null) ? 'none' : 'block'}" class="cover-bg  responsive" id="cover-background" [src]="imgURL">

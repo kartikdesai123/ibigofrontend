@@ -60,20 +60,20 @@
                                 data-toggle="dropdown">Go</button>
                             <ul class="dropdown-menu godetail">
                                 <li style="display: block;"><a href="javascript:void(0)"
-                                        (click)="addToGoList()"><i class="fa fa-plus"></i>To
+                                        (click)="addToGoList(addToList)"><i class="fa fa-plus"></i>To
                                         Do</a></li>
                                 <li style="display: block;"><a href="javascript:void(0)"
-                                        (click)="addToPlanning()"><i
-                                            class="fa fa-plus"></i>Add to planning</a></li>
+                                        (click)="addToPlanning(addPlanning)"><i class="fa fa-plus"></i>Add to
+                                        planning</a></li>
                                 <li style="display: block;"><a href="javascript:void(0)"
-                                        (click)="shareEvent()"><i
-                                            class="fa fa-share"></i>Share</a></li>
+                                        (click)="shareEvent(shareEventTemplate)"><i class="fa fa-share"></i>Share</a>
+                                </li>
                                 <!-- shareEvent(spot.user_id) -->
 
                                 <!-- <li><a href="#"><i class="fa fa-map-marker"></i>Check in</a></li> -->
                             </ul>
                         </div>
-                   
+
 
                         <ul>
                             <li *ngIf="this.user_type=='normal'||logged_in_user==false"><a class="active"
@@ -103,6 +103,66 @@
                                         class="fa fa-car" aria-hidden="true"></i>Parking</a></li>
                         </ul>
                     </div>
+                    <!-- add to list for go button modal popup start -->
+                    <ng-template #addToList>
+                        <div class="modal-header">
+                            <h4 class="modal-title pull-left">Go To List</h4>
+                            <button type="button" class="close pull-right" aria-label="Close"
+                                (click)="addToGoModal.hide()">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Do you want to add this spot in go to list ?
+                        </div>
+                        <div class="modal-footer text-right">
+                            <button type="button" class="btn btn-primary"
+                                (click)="confirmAddToGoList(spot_details.id)">Yes</button>
+                            <button type="button" class="btn btn-danger" (click)="declineAddToGoList()">No</button>
+                        </div>
+                    </ng-template>
+                    <!-- add to list for go button modal popup end -->
+
+                    <!-- add to planning for go button modal popup start -->
+                    <ng-template #addPlanning>
+                        <div class="modal-header">
+                            <h4 class="modal-title pull-left">Add To Planning</h4>
+                            <button type="button" class="close pull-right" aria-label="Close"
+                                (click)="addTPlanningModal.hide()">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Do you want to this event to planning?
+                        </div>
+                        <div class="modal-footer text-right">
+                            <button type="button" class="btn btn-primary"
+                                (click)="confirmAddtoPlanningList(spot_details.id)">Yes</button>
+                            <button type="button" class="btn btn-danger"
+                                (click)="declineAddtoPlanningList()">No</button>
+                        </div>
+                    </ng-template>
+                    <!-- add to planning for go button modal popup end -->
+
+                    <!-- Share event for go button modal popup start -->
+                    <ng-template #shareEventTemplate>
+                        <div class="modal-header">
+                            <h4 class="modal-title pull-left">Share Event</h4>
+                            <button type="button" class="close pull-right" aria-label="Close"
+                                (click)="shareEventModalRef.hide()">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Do you want to share this event?
+                        </div>
+                        <div class="modal-footer text-right">
+                            <button type="button" class="btn btn-primary"
+                                (click)="confirmshareEvent(spot_details.id)">Yes</button>
+                            <button type="button" class="btn btn-danger" (click)="declineshareEvent()">No</button>
+                        </div>
+                    </ng-template>
+                    <!-- Share event for go button modal popup end -->
                 </div>
             </div>
         </div>

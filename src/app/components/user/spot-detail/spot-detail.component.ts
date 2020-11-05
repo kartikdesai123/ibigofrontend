@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, HostListener, ChangeDetectorRef, TemplateRef } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'src/app/toastr.service';
@@ -6,6 +6,7 @@ import { finalize } from 'rxjs/operators';
 import { UserLoginService } from 'src/app/service/user-login.service';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { Title } from "@angular/platform-browser";
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 
 
 
@@ -85,7 +86,7 @@ export class SpotDetailComponent implements OnInit {
   photos_extensions = ['png', 'jpeg', 'jpg', 'tiff', 'pjp', 'pjpeg', 'jfif', 'tif', 'gif', 'svg', 'bmp', 'svgz', 'webp', 'ico', 'xbm', 'dib'];
   video_extensions = ['mp4', 'ogm', 'wmv', 'mpg', 'webm', 'ogv', 'mov', 'asx', 'mpeg', 'm4v', 'avi'];
   logged_in_user: boolean; spot_type;
-  constructor(private cd: ChangeDetectorRef, private titleService: Title, private formBuilder: FormBuilder, private us: UserLoginService, private route: ActivatedRoute, private http: HttpClient, private router: Router, private toastrservice: ToastrService) {
+  constructor(private cd: ChangeDetectorRef, private titleService: Title, private formBuilder: FormBuilder, private us: UserLoginService, private route: ActivatedRoute, private http: HttpClient, private router: Router, private toastrservice: ToastrService, private modalService: BsModalService) {
     this.titleService.setTitle('IBIGO | Spot')
   }
 
@@ -221,6 +222,9 @@ export class SpotDetailComponent implements OnInit {
         this.spot_interest_details = data['user_interests'];
         this.unique_spot_id = this.spot_details['unique_id'];
         this.spot_slug = this.spot_details['user_slug'];
+
+        console.log(this.spot_details.id);
+
         if (parseInt(this.unique_spot_id) == parseInt(this.logged_in_user_unique_id)) {
           this.router.navigate(['/home/business/profile']);
         } else {
@@ -1009,5 +1013,100 @@ export class SpotDetailComponent implements OnInit {
     } else {
       this.router.navigate(['/user/login']);
     }
+  }
+
+  // -------------------------------------------------------------------------------------------------------------
+  // Add to go modal popup
+  // -------------------------------------------------------------------------------------------------------------
+  addToGoModal: BsModalRef;
+  addToGoList(addToList: TemplateRef<any>) {
+    this.addToGoModal = this.modalService.show(addToList);
+  }
+
+  public confirmAddToGoList(spotId): void {
+    const formData = new FormData();
+    const headers = new HttpHeaders({ 'Authorization': JSON.parse(localStorage.getItem('client_token')) });
+    headers.append('Accept', 'application/json');
+    formData.append('spot_id', spotId);
+    this.http.post('https://ibigo.shadowis.nl/server-api/api/add-to-goto', formData, { headers: headers }).subscribe((data) => {
+      if (data['status'] == true) {
+        this.router.navigate(['/todo/go-list'])
+      }
+    });
+    this.addToGoModal.hide();
+  }
+
+  public declineAddToGoList(): void {
+    this.addToGoModal.hide();
+  }
+
+  // -------------------------------------------------------------------------------------------------------------
+  // Add to planning modal popup
+  // -------------------------------------------------------------------------------------------------------------
+  addTPlanningModal: BsModalRef;
+  addToPlanning(addPlanning: TemplateRef<any>) {
+    if (this.logged_in_user == true) {
+      this.addTPlanningModal = this.modalService.show(addPlanning);
+    } else {
+      this.router.navigate(['/user/login']);
+    }
+  }
+
+  public confirmAddtoPlanningList(eventId): void {
+    const formData = new FormData();
+    const headers = new HttpHeaders({ 'Authorization': JSON.parse(localStorage.getItem('client_token')) });
+    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'application/json');
+    formData.append('event_id', eventId);
+    formData.append('spot_id', null);
+    this.http.post('https://ibigo.shadowis.nl/server-api/api/add-planning', formData, { headers: headers }).subscribe((data) => {
+      if (data['status'] == true) {
+        this.toastrservice.Success(data['event_message']);
+        //this.router.navigateByUrl('/DummyComponent', {skipLocationChange: true}).then(() => this.router.navigate(['/todo/planning']));
+      } else {
+        this.toastrservice.Success('Something wring!');
+      }
+    });
+    this.addTPlanningModal.hide();
+  }
+
+  public declineAddtoPlanningList(): void {
+    this.addTPlanningModal.hide();
+  }
+
+  // -------------------------------------------------------------------------------------------------------------
+  // Share event modal popup
+  // -------------------------------------------------------------------------------------------------------------
+  shareEventModalRef: BsModalRef;
+  shareEvent(shareEventTemplate: TemplateRef<any>) {
+    if (this.logged_in_user == true) {
+      this.shareEventModalRef = this.modalService.show(shareEventTemplate);
+    } else {
+      this.router.navigate(['/user/login']);
+    }
+  }
+
+  public confirmshareEvent(eventId): void {
+    const formData = new FormData();
+    const headers = new HttpHeaders({ 'Authorization': JSON.parse(localStorage.getItem('client_token')) });
+    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'application/json');
+    formData.append('event_id', eventId);
+    this.http.post('https://ibigo.shadowis.nl/server-api/api/add-spot', formData, { headers: headers }).pipe(
+      finalize(() => {
+      })
+    ).subscribe((data) => {
+      if (data['status'] == true) {
+        this.toastrservice.Success(data['message']);
+        //this.router.navigateByUrl('/DummyComponent', {skipLocationChange: true}).then(() => this.router.navigate(['/user/homepage']));
+      } else {
+        this.toastrservice.Error(data['message']);
+      }
+    });
+    this.shareEventModalRef.hide();
+  }
+
+  public declineshareEvent(): void {
+    this.shareEventModalRef.hide();
   }
 }

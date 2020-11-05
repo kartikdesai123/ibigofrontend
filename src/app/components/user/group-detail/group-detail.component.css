@@ -1,3 +1,57 @@
+.event-popup-input{
+  margin-bottom: 0px;
+}
+.event-popup-input input{
+  background: #fff !important;
+  height: 44px !important;
+  border: 1px solid #ddd !important;
+  border-radius: 4px !important;
+  margin-bottom: 0 !important;
+  font-family: Montserrat,sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  color: #000 !important;
+  box-shadow: inset 0 0 0 rgba(0,0,0,.075) !important;
+  padding: 10px 46px 10px 14px !important;
+}
+.form-input-date{
+  margin: 28px 0 !important;
+}
+.event-popup-input textarea{
+  background: #fff !important;
+  height: 80px !important;
+  border: 1px solid #ddd !important;
+  border-radius: 4px !important;
+  margin-bottom: 0 !important;
+  font-family: Montserrat,sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  color: #000 !important;
+  box-shadow: inset 0 0 0 rgba(0,0,0,.075) !important;
+  padding: 6px 12px !important;
+}
+
+.event-popup-input select{
+  display: block !important;
+  outline-width: 0 !important;
+  padding: 10px !important;
+  margin-bottom: 15px !important;
+  width: 100% !important;
+  height: 44px !important;
+  border: none !important;
+  border: 1px solid #ddd !important;
+  border-radius: 4px;
+  background: url(../../../../assets/front-assets/images/popup-img/select-icon1.png) right center no-repeat !important;
+  background-position: right 15px center !important;
+  background-color: #ffffff !important;
+  color: #040404 !important;
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  line-height: 19px !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+}
 .img-user{
     width: 33px;
     height: 33px;

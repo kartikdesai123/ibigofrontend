@@ -7,7 +7,7 @@
     <div class="container">
         <div class="row my-row">
             <div class="col-lg-12 spot-profile-group p-0">
-                <div class="cover-div">
+                <div class="cover-div" [ngStyle]="{'min-height': (imgURL=='') ? '150px' : '240px'}">
                     <img [ngStyle]="{'display': (imgURL=='') ? 'none' : 'block'}" class="cover-bg  responsive" id="cover-background" [src]="imgURL">
                 </div>
                 <div class="col-lg-2 spot-profile2-pic">

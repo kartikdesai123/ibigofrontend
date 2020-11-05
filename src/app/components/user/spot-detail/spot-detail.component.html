@@ -117,7 +117,7 @@
                         </div>
                         <div class="modal-footer text-right">
                             <button type="button" class="btn btn-primary"
-                                (click)="confirmAddToGoList(spot_details.id)">Yes</button>
+                                (click)="confirmAddToGoList(spot_details?.id)">Yes</button>
                             <button type="button" class="btn btn-danger" (click)="declineAddToGoList()">No</button>
                         </div>
                     </ng-template>
@@ -137,7 +137,7 @@
                         </div>
                         <div class="modal-footer text-right">
                             <button type="button" class="btn btn-primary"
-                                (click)="confirmAddtoPlanningList(spot_details.id)">Yes</button>
+                                (click)="confirmAddtoPlanningList(spot_details?.id)">Yes</button>
                             <button type="button" class="btn btn-danger"
                                 (click)="declineAddtoPlanningList()">No</button>
                         </div>
@@ -158,7 +158,7 @@
                         </div>
                         <div class="modal-footer text-right">
                             <button type="button" class="btn btn-primary"
-                                (click)="confirmshareEvent(spot_details.id)">Yes</button>
+                                (click)="confirmshareEvent(spot_details?.id)">Yes</button>
                             <button type="button" class="btn btn-danger" (click)="declineshareEvent()">No</button>
                         </div>
                     </ng-template>

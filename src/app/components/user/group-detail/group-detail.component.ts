@@ -928,4 +928,72 @@ export class GroupDetailComponent implements OnInit {
       element.click();
     }
   }
+
+  mode: boolean = false;
+  formControlValueChanged() {
+    this.eventForm.get('is_host_by_group').valueChanges.subscribe(
+      (mode: boolean) => {
+        this.mode = mode;
+      })
+  }
+
+  start_date_time;
+  end_date_time;
+  error_status = false;
+  event_submitted = false;
+  minDate: Date = new Date(); 
+  groups = [];
+  onEventSubmit() {
+
+    this.event_submitted = true;
+    if (this.eventForm.invalid) {
+      return;
+    }
+    this.btnloading = true;
+    var d = this.eventForm.get('start_date').value;
+    var d2 = this.eventForm.get('end_date').value;
+    var t = new Date(this.eventForm.get('start_time').value);
+    var t2 = new Date(this.eventForm.get('end_time').value);
+
+    this.start_date_time = new Date(d.getFullYear(), d.getMonth(), d.getDate(), t.getHours(), t.getMinutes());
+    this.end_date_time = new Date(d2.getFullYear(), d2.getMonth(), d2.getDate(), t2.getHours(), t2.getMinutes());
+    if (this.start_date_time < this.end_date_time) {
+      this.error_status = false;
+    } else {
+      this.error_status = true;
+      return;
+    }
+    var create_or_update_event;
+    var formData = new FormData();
+    if (this.mode == true) {
+      formData.append('host_group', this.eventForm.get('group').value);
+    } else {
+      formData.append('host_group', null);
+    }
+    if (this.is_edit_event == true) {
+      formData.append('event_id', this.edit_event.id);
+      create_or_update_event = 'update-event';
+    } else {
+      create_or_update_event = 'create-event';
+    }
+    formData.append('event_title', this.eventForm.get('event_title').value);
+    formData.append('start_date_time', this.start_date_time.toLocaleString());
+    formData.append('end_date_time', this.end_date_time.toLocaleString());
+    formData.append('location', this.eventForm.get('location').value);
+    formData.append('event_description', this.eventForm.get('event_description').value);
+    const headers = new HttpHeaders({ 'Authorization': JSON.parse(localStorage.getItem('client_token')) });
+    this.http.post('https://ibigo.shadowis.nl/server-api/api/' + create_or_update_event, formData, { headers: headers }).pipe(
+      finalize(() => {
+        this.btnloading = false;
+        var bodyelement = document.getElementsByClassName('modal-open');
+        bodyelement[0].classList.add('my-extra-css');
+      })
+    ).subscribe((data) => {
+      if (data['status'] == true) {
+        this.router.navigateByUrl('/DummyComponent', { skipLocationChange: true }).then(() => this.router.navigate(['/user/info/spots']));
+      }
+    });
+  }
+
+  get ef() { return this.eventForm.controls; }
 }

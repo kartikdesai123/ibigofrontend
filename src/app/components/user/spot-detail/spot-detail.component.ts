@@ -22,7 +22,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 })
 export class SpotDetailComponent implements OnInit {
   users_details = [];
-  spot_details = [];
+  spot_details: any;
   about_submitted = false;
   interest_details = [];
   spot_videos = [];

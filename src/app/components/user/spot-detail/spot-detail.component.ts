@@ -222,9 +222,6 @@ export class SpotDetailComponent implements OnInit {
         this.spot_interest_details = data['user_interests'];
         this.unique_spot_id = this.spot_details['unique_id'];
         this.spot_slug = this.spot_details['user_slug'];
-
-        console.log(this.spot_details.id);
-
         if (parseInt(this.unique_spot_id) == parseInt(this.logged_in_user_unique_id)) {
           this.router.navigate(['/home/business/profile']);
         } else {

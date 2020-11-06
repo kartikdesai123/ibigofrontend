@@ -1,135 +1,192 @@
 <app-user-header></app-user-header>
- <!--===== GROUP SECTION =====-->
+<!--===== GROUP SECTION =====-->
 <div class="loading" *ngIf="this.loading==true">Loading&#8230;</div>
 <section class="group-section">
-    <div class="container">
-        <div class="row m-0">
-            <div class="col-lg-12 spot-pic-group p-0">
-                <form [formGroup]="groupProfileForm" (ngSubmit)="onProfileSubmit()" >
-                    <span *ngIf="this.event_details.host_id==this.logged_in_user_id+''" class="upload-image" (click)="file.click()"><i class="fa fa-pencil"></i></span>
-                    <input class="hidden" #file type="file" accept='image/*' (change)="preview(file.files)" />
-                    <div class="cover-div" [ngStyle]="{'min-height': (imgURL==null) ? '150px' : '240px'}">
-                        <!-- <img *ngIf="this.imgURL==null" src="/assets/front-assets/images/group-bg.png" alt="group-bg">
+  <div class="container">
+    <div class="row m-0">
+      <div class="col-lg-12 spot-pic-group p-0">
+        <form [formGroup]="groupProfileForm" (ngSubmit)="onProfileSubmit()">
+          <span *ngIf="this.event_details.host_id==this.logged_in_user_id+''" class="upload-image"
+            (click)="file.click()"><i class="fa fa-pencil"></i></span>
+          <input class="hidden" #file type="file" accept='image/*' (change)="preview(file.files)" />
+          <div class="cover-div" [ngStyle]="{'min-height': (imgURL==null) ? '150px' : '240px'}">
+            <!-- <img *ngIf="this.imgURL==null" src="/assets/front-assets/images/group-bg.png" alt="group-bg">
                         <img *ngIf="this.imgURL!=null" class="cover-bg  responsive" id="cover-background" [src]="imgURL" alt="group-bg2"> -->
-                        <img [ngStyle]="{'display': (imgURL==null) ? 'none' : 'block'}" class="cover-bg  responsive" id="cover-background" [src]="imgURL">
-                 
-                    </div>
-                    <button id="imageupload" type="submit" class="uploadbtn hidden"><i *ngIf="this.profile_loading==true" class="fa fa-spinner fa-spin"></i>&nbsp;{{(this.profile_loading==true)?'Uploading':'Upload'}} </button>
-                </form>
-                <div class="spot-pic-content">
-                    <h3 [ngStyle]="{'color': (imgURL==null) ? '#323232' : '#ffffff'}">{{this.event_details.event_title}}</h3>
-                    <span [ngStyle]="{'color': (imgURL==null) ? '#323232' : '#ffffff'}" *ngIf="event_details.host_group!=null" > Hosted by {{ event_details.group_name }}</span>
-                    <span [ngStyle]="{'color': (imgURL==null) ? '#323232' : '#ffffff'}" *ngIf="event_details.host_group==null&&event_details.user_type=='normal'"> Hosted by {{ event_details.first_name }} {{ event_details.last_name }}</span>
-                    <span [ngStyle]="{'color': (imgURL==null) ? '#323232' : '#ffffff'}" *ngIf="event_details.host_group==null&&event_details.user_type=='business'"> Hosted by {{ event_details.business_name }}</span>
-                </div>
-            </div>
+            <img [ngStyle]="{'display': (imgURL==null) ? 'none' : 'block'}" class="cover-bg  responsive"
+              id="cover-background" [src]="imgURL">
+
+          </div>
+          <button id="imageupload" type="submit" class="uploadbtn hidden"><i *ngIf="this.profile_loading==true"
+              class="fa fa-spinner fa-spin"></i>&nbsp;{{(this.profile_loading==true)?'Uploading':'Upload'}}
+          </button>
+        </form>
+        <div class="spot-pic-content">
+          <h3 [ngStyle]="{'color': (imgURL==null) ? '#323232' : '#ffffff'}">{{this.event_details.event_title}}
+          </h3>
+          <span [ngStyle]="{'color': (imgURL==null) ? '#323232' : '#ffffff'}" *ngIf="event_details.host_group!=null">
+            Hosted by {{ event_details.group_name }}</span>
+          <span [ngStyle]="{'color': (imgURL==null) ? '#323232' : '#ffffff'}"
+            *ngIf="event_details.host_group==null&&event_details.user_type=='normal'"> Hosted by
+            {{ event_details.first_name }} {{ event_details.last_name }}</span>
+          <span [ngStyle]="{'color': (imgURL==null) ? '#323232' : '#ffffff'}"
+            *ngIf="event_details.host_group==null&&event_details.user_type=='business'"> Hosted by
+            {{ event_details.business_name }}</span>
         </div>
-        <div id="myModal" class="modal fade" role="dialog">
-            <div class="modal-dialog modal-md">
-              <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Invite friends to {{event_details.event_title}}</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body" *ngIf="this.user_type=='normal'">
-                    <div style="max-height: 325px;overflow-y: scroll;">
-                        <p class="list-heading " *ngIf="share_friends.length||share_groups.length">INVITE PEOPLE OR GROUP TO EVENT</p>
-                        <div class="friend-tag-text" *ngIf="share_friends.length||share_groups.length">
-                            <span *ngFor="let friend of share_friends">{{friend.user_name}}<a href="JavaScript:void(0)" (click)="removeFromShareList(friend.id)"><i class="fa fa-times times-icon"></i></a></span>
-                            <span *ngFor="let group of share_groups">{{group.group_name}}<a href="javascript:void(0)" (click)="removeFromShareGroupList(group.id)"><i class="fa fa-times times-icon"></i></a></span>
-                        </div>
-                        <p class="list-heading" id="suggesions">SUGGESTIONS</p>
-                        <div *ngFor="let friend of another_friends">
-                            <div class="friends-list" (click)="addSharelist(friend.id)">
-                                <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="friend.user_profile&&friend.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{friend.user_profile}}">
-                                <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="!friend.user_profile" src="/assets/front-assets/images/pic1.png">
-                                <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="friend.user_profile&&friend.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{friend.user_profile}}">
-                                <span class="search-friend-name">{{friend.first_name}} {{friend.last_name}}</span>
-                            </div>
-                        </div>
-                        <div *ngFor="let group of groups">
-                            <div class="friends-list" *ngIf="groups.length" (click)="addShareGrouplist(group.id)">
-                                <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="!group.group_profile" src="/assets/front-assets/images/group_pic1.png">
-                                <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="group.group_profile" src="{{group.group_profile}}">
-                                <span class="search-friend-name">{{group.group_name}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-body" *ngIf="this.user_type=='business'">
-                    <div style="max-height: 325px;overflow-y: scroll;">
-                        <p class="list-heading " *ngIf="connect_friends.length">INVITE PEOPLE TO EVENT</p>
-                        <div class="friend-tag-text" *ngIf="connect_friends.length">
-                            <span *ngFor="let friend of connect_friends">{{friend.first_name}} {{friend.last_name}}<a href="JavaScript:void(0)" (click)="removeList(friend.id)"><i class="fa fa-times times-icon"></i></a></span>
-                        </div>
-                        <p class="list-heading" id="suggesions">SUGGESTIONS</p>
-                        <div *ngFor="let friend of connected_users">
-                            <div class="friends-list" (click)="addlist(friend.id)">
-                                <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="friend.user_profile&&friend.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{friend.user_profile}}">
-                                <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="!friend.user_profile" src="/assets/front-assets/images/pic1.png">
-                                <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="friend.user_profile&&friend.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{friend.user_profile}}">
-                                <span class="search-friend-name">{{friend.first_name}} {{friend.last_name}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer"  *ngIf="this.user_type=='normal'">
-                    <button (click)="onSubmit()" *ngIf="share_friends.length||share_groups.length" type="submit" class="btn-invite">
-                        <i *ngIf="this.profile_loading==true" class="fa fa-spinner fa-spin"></i>&nbsp;Invite
-                    </button>
-                </div>
-                <div class="modal-footer"  *ngIf="this.user_type=='business'">
-                    <button (click)="onConnectSubmit()" *ngIf="connect_friends.length" type="submit" class="btn-invite">
-                        <i *ngIf="this.profile_loading==true" class="fa fa-spinner fa-spin"></i>&nbsp;Invite
-                    </button>
+      </div>
+    </div>
+    <div id="myModal" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Invite friends to {{event_details.event_title}}</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body" *ngIf="this.user_type=='normal'">
+            <div style="max-height: 325px;overflow-y: scroll;">
+              <p class="list-heading " *ngIf="share_friends.length||share_groups.length">INVITE PEOPLE OR
+                GROUP TO EVENT</p>
+              <div class="friend-tag-text" *ngIf="share_friends.length||share_groups.length">
+                <span *ngFor="let friend of share_friends">{{friend.user_name}}<a href="JavaScript:void(0)"
+                    (click)="removeFromShareList(friend.id)"><i class="fa fa-times times-icon"></i></a></span>
+                <span *ngFor="let group of share_groups">{{group.group_name}}<a href="javascript:void(0)"
+                    (click)="removeFromShareGroupList(group.id)"><i class="fa fa-times times-icon"></i></a></span>
+              </div>
+              <p class="list-heading" id="suggesions">SUGGESTIONS</p>
+              <div *ngFor="let friend of another_friends">
+                <div class="friends-list" (click)="addSharelist(friend.id)">
+                  <img style="height: 45px;width: 45px;border-radius: 45px;"
+                    *ngIf="friend.user_profile&&friend.user_profile.indexOf('https://graph.facebook.com')==-1"
+                    src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{friend.user_profile}}">
+                  <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="!friend.user_profile"
+                    src="/assets/front-assets/images/pic1.png">
+                  <img style="height: 45px;width: 45px;border-radius: 45px;"
+                    *ngIf="friend.user_profile&&friend.user_profile.indexOf('https://graph.facebook.com') != -1"
+                    src="{{friend.user_profile}}">
+                  <span class="search-friend-name">{{friend.first_name}} {{friend.last_name}}</span>
                 </div>
               </div>
-          
-            </div>
-        </div>
-        <div class="row m-0">
-            <div class="col-lg-12 spot-pic-nav">
-                <div class="col-lg-6 spot-pic-nav2">
-                    <ul>
-                        <li><a href="javascript:void(0)" data-toggle="modal" data-target="#myLikedModal"><i class="fa fa-users" aria-hidden="true"></i>0<br><span>Connected</span></a></li>
-                    </ul>
+              <div *ngFor="let group of groups">
+                <div class="friends-list" *ngIf="groups.length" (click)="addShareGrouplist(group.id)">
+                  <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="!group.group_profile"
+                    src="/assets/front-assets/images/group_pic1.png">
+                  <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="group.group_profile"
+                    src="{{group.group_profile}}">
+                  <span class="search-friend-name">{{group.group_name}}</span>
                 </div>
-                <div class="col-lg-6 spot-pic-nav3">
-                    <ul >
-                        <li><a class="active" (click)="invite()" href="javascript:void(0)"><i class="fa fa-user"></i>Invite</a></li>
-                        <button data-toggle="modal" id="invite_btn" data-target="#myModal" class="hidden"></button>
-                        <li><a class="active" href="javascript:void(0)" (click)="addToPlanning()"><i class="fa fa-calendar"></i>Add to calendar</a></li>
-                    </ul>
-                    <!-- <ul *ngIf="this.user_type=='business'">
+              </div>
+            </div>
+          </div>
+          <div class="modal-body" *ngIf="this.user_type=='business'">
+            <div style="max-height: 325px;overflow-y: scroll;">
+              <p class="list-heading " *ngIf="connect_friends.length">INVITE PEOPLE TO EVENT</p>
+              <div class="friend-tag-text" *ngIf="connect_friends.length">
+                <span *ngFor="let friend of connect_friends">{{friend.first_name}}
+                  {{friend.last_name}}<a href="JavaScript:void(0)" (click)="removeList(friend.id)"><i
+                      class="fa fa-times times-icon"></i></a></span>
+              </div>
+              <p class="list-heading" id="suggesions">SUGGESTIONS</p>
+              <div *ngFor="let friend of connected_users">
+                <div class="friends-list" (click)="addlist(friend.id)">
+                  <img style="height: 45px;width: 45px;border-radius: 45px;"
+                    *ngIf="friend.user_profile&&friend.user_profile.indexOf('https://graph.facebook.com')==-1"
+                    src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{friend.user_profile}}">
+                  <img style="height: 45px;width: 45px;border-radius: 45px;" *ngIf="!friend.user_profile"
+                    src="/assets/front-assets/images/pic1.png">
+                  <img style="height: 45px;width: 45px;border-radius: 45px;"
+                    *ngIf="friend.user_profile&&friend.user_profile.indexOf('https://graph.facebook.com') != -1"
+                    src="{{friend.user_profile}}">
+                  <span class="search-friend-name">{{friend.first_name}} {{friend.last_name}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer" *ngIf="this.user_type=='normal'">
+            <button (click)="onSubmit()" *ngIf="share_friends.length||share_groups.length" type="submit"
+              class="btn-invite">
+              <i *ngIf="this.profile_loading==true" class="fa fa-spinner fa-spin"></i>&nbsp;Invite
+            </button>
+          </div>
+          <div class="modal-footer" *ngIf="this.user_type=='business'">
+            <button (click)="onConnectSubmit()" *ngIf="connect_friends.length" type="submit" class="btn-invite">
+              <i *ngIf="this.profile_loading==true" class="fa fa-spinner fa-spin"></i>&nbsp;Invite
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="row m-0">
+      <div class="col-lg-12 spot-pic-nav">
+        <div class="col-lg-6 spot-pic-nav2">
+          <ul>
+            <li><a href="javascript:void(0)" data-toggle="modal" data-target="#myLikedModal"><i class="fa fa-users"
+                  aria-hidden="true"></i>0<br><span>Connected</span></a></li>
+          </ul>
+        </div>
+        <div class="col-lg-6 spot-pic-nav3">
+          <ul>
+            <li><a class="active" (click)="invite()" href="javascript:void(0)"><i class="fa fa-user"></i>Invite</a></li>
+            <button data-toggle="modal" id="invite_btn" data-target="#myModal" class="hidden"></button>
+            <li><a class="active" href="javascript:void(0)" (click)="addToPlanning()"><i class="fa fa-calendar"></i>Add
+                to calendar</a></li>
+          </ul>
+          <!-- <ul *ngIf="this.user_type=='business'">
                         <li><a data-toggle="modal" data-target="#myBusinessModal" class="active" href="#"><i class="fa fa-user"></i>Invite</a></li>
                     </ul> -->
-                </div>
-            </div>
         </div>
-        <!-- <div class="row mt-4 mr-0 ml-0">
-            <div class="spot-friends-spot col-lg-12">
-                <div class="col-lg-9 spot-friends-nav2">
-                    <a href="#">Group members</a>
-                </div>
-                <div class="col-lg-3 spot-friends-nav3">
-                    <a href="javascript:void(0)" data-toggle="modal" data-target="#myLikedModal">Alles zien</a>
-                </div>
-                <ul>
-                    
-                </ul>
-            </div>
-            <div class="spot-friends-spot col-lg-12 mb-0" >
-                <div class="col-lg-7 spot-friends-nav2">
-                    <a>Requested users</a>
-                </div>
-                <div class="col-lg-5 spot-friends-nav3">
-                    <a >Bekijk alle requests</a>
-                </div>
-                <ul >
-                    
-                </ul>
-            </div>
-        </div> -->
+      </div>
     </div>
+    <!-- <div class="row mt-4 mr-0 ml-0">
+      <div class="spot-friends-spot col-lg-12">
+        <div class="col-lg-6 spot-friends-nav2">
+          <a href="#">Group members</a>
+        </div>
+        <div class="col-lg-6 spot-friends-nav3">
+          <a href="javascript:void(0)" data-toggle="modal" data-target="#myLikedModal">Alles zien</a>
+        </div>
+        <ul>
+        </ul>
+      </div>
+      <div class="spot-friends-spot col-lg-12 mb-0">
+        <div class="col-lg-6 spot-friends-nav2">
+          <a>Requested users</a>
+        </div>
+        <div class="col-lg-6 spot-friends-nav3">
+          <a>Bekijk alle requests</a>
+        </div>
+        <ul>
+        </ul>
+      </div>
+    </div> -->
+    <div class="row my-row">
+      <div class="col-lg-12 spot-profile2-nav">
+        <div class="col-lg-6 spot-about-text">
+          <h3>Event Detail</h3>
+          <h3 class="col-md-5">Start Date:</h3>
+          <h3 class="col-md-7" style="font-weight: 300;">{{ event_details?.start_date_time | date: 'medium' }}</h3>
+          <h3 class="col-md-5">End Date: </h3>
+          <h3 class="col-md-7" style="font-weight: 300;">{{ event_details?.end_date_time | date: 'medium' }}</h3>
+          <h3 class="col-md-5">Event Description: </h3>
+          <h3 class="col-md-7" style="font-weight: 300;">{{ event_details?.event_description}}</h3>
+          <h3 class="col-md-5">Location: </h3>
+          <h3 class="col-md-7" style="font-weight: 300;">{{ event_details?.location}}</h3>
+        </div>
+        <div class="col-lg-6 spot-interest-text spot-friends-spot" style="border: none;">
+          <h3>Invited People</h3>
+          <ul>
+            <li *ngFor="let eventInvite of event_invitations">
+              <a routerLink="/people/{{eventInvite.unique_id}}/{{eventInvite.user_slug}}"><img
+                  *ngIf="eventInvite.user_profile&&eventInvite.user_profile.indexOf('https://graph.facebook.com')==-1"
+                  src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{eventInvite.user_profile}}">
+                <img *ngIf="!eventInvite.user_profile" src="/assets/front-assets/images/pic1.png">
+                <img
+                  *ngIf="eventInvite.user_profile&&eventInvite.user_profile.indexOf('https://graph.facebook.com') != -1"
+                  src="{{eventInvite.user_profile}}">{{eventInvite.first_name}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 <!--============== END GROUP SECTION ===============-->

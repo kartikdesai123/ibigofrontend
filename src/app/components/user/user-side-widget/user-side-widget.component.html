@@ -3,27 +3,32 @@
     <ul>
         <li *ngFor="let user of recent_users">
             <a routerLink="/people/{{user.unique_id}}/{{user.user_slug}}">
-                <img *ngIf="user.user_profile&&user.user_profile.indexOf('https://graph.facebook.com')==-1" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{user.user_profile}}">
+                <img *ngIf="user.user_profile&&user.user_profile.indexOf('https://graph.facebook.com')==-1"
+                    src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{user.user_profile}}">
                 <img *ngIf="!user.user_profile" src="/assets/front-assets/images/pic1.png">
-                <img *ngIf="user.user_profile&&user.user_profile.indexOf('https://graph.facebook.com') != -1" src="{{user.user_profile}}">
+                <img *ngIf="user.user_profile&&user.user_profile.indexOf('https://graph.facebook.com') != -1"
+                    src="{{user.user_profile}}">
                 {{user.first_name}} {{user.last_name}}</a>
-        </li>        
+        </li>
         <li *ngFor="let group of recent_groups">
-            <a routerLink="/group/{{group.group_unique_id}}/{{group.group_slug}}">            
+            <a routerLink="/group/{{group.group_unique_id}}/{{group.group_slug}}">
                 <img *ngIf="!group.group_profile" src="/assets/front-assets/images/group_pic1.png">
-                <img *ngIf="group.group_profile" src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{group.group_profile}}" alt="pic2">
+                <img *ngIf="group.group_profile"
+                    src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{group.group_profile}}" alt="pic2">
                 {{group.group_name}}</a>
         </li>
     </ul>
 </div>
 <div class="form-calender">
-    <h3>Planning</h3>    
-    <ngx-fullcalendar class="fullcalnederdiv" (onEventMouseEnter)="eventMouseEnter($event)" (onEventClick)="eventClick($event)" (onDateClick)="dateClick($event)" defaultView="month" [events]="events" [options]="options"></ngx-fullcalendar>
+    <h3>Planning</h3>
+    <ngx-fullcalendar class="fullcalnederdiv" (onEventMouseEnter)="eventMouseEnter($event)"
+        (onEventClick)="eventClick($event)" (onDateClick)="dateClick($event)" defaultView="month" [events]="events"
+        [options]="options"></ngx-fullcalendar>
 </div>
 <div class="amster-text">
-    <ul  >
+    <ul>
         <li *ngFor="let event of displaynearevents; let i = index"><span>
-            <i class="fa fa-map-marker"></i>{{ event.location }}</span>
+                <i class="fa fa-map-marker"></i>{{ event.location }}</span>
             <a href="#">{{ event.event_title }}</a>
         </li>
         <!-- <li><span><i class="fa fa-map-marker"></i>Amsterdam</span>
@@ -36,7 +41,7 @@
 </div>
 <div class="katja-text" *ngIf="justcheckedin.length">
     <h3>Je Vriend checkt gewoon in</h3>
-    <ul>                        
+    <ul>
         <li *ngFor="let post of justcheckedin">
             <img src="https://ibigo.shadowis.nl/server-api/public/user_profiles/{{post.user_profile}}" alt="pic7">
             <div>

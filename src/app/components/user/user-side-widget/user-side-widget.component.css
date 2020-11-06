@@ -19,16 +19,19 @@
     padding-left: 0px;
 } */
 .fullcalnederdiv {
-    font-size: 0.7em !important;
+  font-size: 0.7em !important;
 }
+
 .fc-left h2 {
-    font-size: 0.7rem !important;
+  font-size: 0.7rem !important;
 }
+
 .fullcalnederdiv h2 {
-    font-size: 0.7em !important;
-    margin: 10px !important;
+  font-size: 0.7em !important;
+  margin: 10px !important;
 }
-.fc .fc-toolbar > * > :first-child {
-    font-size: 0.7em !important;
-    margin: 10px !important;
+
+.fc .fc-toolbar>*> :first-child {
+  font-size: 0.7em !important;
+  margin: 10px !important;
 }

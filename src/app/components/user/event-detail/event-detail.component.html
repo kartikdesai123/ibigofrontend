@@ -159,7 +159,7 @@
               Do you want to add this spot in go to list ?
             </div>
             <div class="modal-footer text-right">
-              <button type="button" class="btn btn-primary" (click)="confirmAddToGoList(spot_details?.id)">Yes</button>
+              <button type="button" class="btn btn-primary" (click)="confirmAddToGoList(event_details?.id)">Yes</button>
               <button type="button" class="btn btn-danger" (click)="declineAddToGoList()">No</button>
             </div>
           </ng-template>
@@ -178,7 +178,7 @@
             </div>
             <div class="modal-footer text-right">
               <button type="button" class="btn btn-primary"
-                (click)="confirmAddtoPlanningList(spot_details?.id)">Yes</button>
+                (click)="confirmAddtoPlanningList(event_details?.id)">Yes</button>
               <button type="button" class="btn btn-danger" (click)="declineAddtoPlanningList()">No</button>
             </div>
           </ng-template>
@@ -196,7 +196,7 @@
               Do you want to share this event?
             </div>
             <div class="modal-footer text-right">
-              <button type="button" class="btn btn-primary" (click)="confirmshareEvent(spot_details?.id)">Yes</button>
+              <button type="button" class="btn btn-primary" (click)="confirmshareEvent(event_details?.id)">Yes</button>
               <button type="button" class="btn btn-danger" (click)="declineshareEvent()">No</button>
             </div>
           </ng-template>

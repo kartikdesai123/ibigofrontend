@@ -347,3 +347,27 @@
 .godetail a {
   text-align: left !important;
 }
+
+
+@media (max-width:992px){
+  .spot-pic-nav{
+    padding-bottom: 0px !important;
+  }
+  .spot-pic-nav2 ul{
+    padding-left: 0px !important;
+    text-align: left !important; 
+  }
+
+  .spot-pic-nav2 ul li:last-child{
+    border-left:0px !important;
+  }
+  
+}
+
+@media (max-width:776px){
+  .spot-pic-nav3 ul {
+    margin-top: 0px !important;
+    padding-top :0px;
+    display:flex !important;
+  }
+}

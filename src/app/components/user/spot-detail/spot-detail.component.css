@@ -326,6 +326,7 @@
 }
 }
 @media only screen and (max-width: 991px) {
+ 
 .spot-pic-nav3 ul {
   display: flex !important;
   justify-content: center;

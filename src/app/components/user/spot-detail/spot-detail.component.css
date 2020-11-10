@@ -305,7 +305,8 @@
 .cover-div{
   overflow: hidden;
   position: relative;
-  min-height: 240px;
+  min-height:auto !important;
+  margin-top: 50px;
 }
 
 .spot-profile-group .cover-div img {
@@ -316,19 +317,61 @@
     height: 100%;
     top: 0;
 }
+.spot-profile-nav2{
+padding :0px;
+}
 
+.spot-profile2-pic img{
+ position:unset !important;
+  margin-top: 0px !important;
+}
+.spot-pic-content2{
+  position:unset !important;
+  margin-top: 0px !important;
+}
+.spot-profile2-rating{
+  position: unset;
+  margin-top: 0px !important;
+}
+.spot-pic-rating{
+  margin-top: 20px;
+}
+.spot-profile-nav2 ul{
+padding-left:0px !important;
+text-align: left !important;
+height:100%;
+display: flex !important;
 
+}
 
+.spot-profile-nav2 ul li {
+  height: 100%;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+.spot-pic-nav3 ul li{
+margin-bottom: 25px !important;
+}
+.dropdown{
+text-align: right !important;
+padding:10px !important;
+}
+.spot-profile2-nav{
+  height: 100% !important;
+}
 @media only screen and (max-width: 1199px) {
 
 .spot-profile-nav2 ul {
     padding-left: 0 !important;
 }
+.spot-profile-group img{
+  max-width: 120px;
+}
 }
 @media only screen and (max-width: 991px) {
 .spot-pic-nav3 ul {
-  display: flex !important;
-  justify-content: center;
+ 
   flex-wrap: wrap;
 }
 .spot-profile-nav2 ul li {
@@ -346,5 +389,12 @@
 .spot-pic-nav3 ul li {
   line-height: normal !important;
   margin: 3px 5px !important;
+}
+}
+
+@media only screen and (max-width: 768px) {
+.spot-pic-nav3 ul li{
+  display: inline-block !important;
+
 }
 }

@@ -1,0 +1,14 @@
+127.0.0.1 - - [31/Oct/2020:01:33:29 +0530] "GET / HTTP/1.1" 200 1550
+127.0.0.1 - - [31/Oct/2020:01:33:29 +0530] "GET /styles.ed7363b624437abb53cd.css HTTP/1.1" 200 209568
+127.0.0.1 - - [31/Oct/2020:01:33:29 +0530] "GET /runtime-es2015.cdfb0ddb511f65fdc0a0.js HTTP/1.1" 200 1485
+127.0.0.1 - - [31/Oct/2020:01:33:29 +0530] "GET /polyfills-es2015.ffa9bb4e015925544f91.js HTTP/1.1" 200 37148
+127.0.0.1 - - [31/Oct/2020:01:33:29 +0530] "GET /scripts.04e6e5deb62583c3cf68.js HTTP/1.1" 200 616633
+127.0.0.1 - - [31/Oct/2020:01:33:29 +0530] "GET /main-es2015.cbbfc1d9e6e1c9fcadc1.js HTTP/1.1" 200 5029687
+127.0.0.1 - - [31/Oct/2020:01:33:31 +0530] "GET /favicon.ico HTTP/1.1" 200 948
+127.0.0.1 - - [31/Oct/2020:01:33:31 +0530] "GET /assets/front-assets/images/ibigo-golden.png HTTP/1.1" 200 8905
+127.0.0.1 - - [31/Oct/2020:01:33:31 +0530] "GET /profile-bg.8d7fba72456998f7489b.jpg HTTP/1.1" 200 418925
+127.0.0.1 - - [31/Oct/2020:01:33:31 +0530] "GET /fontawesome-webfont.af7ae505a9eed503f8b8.woff2?v=4.7.0 HTTP/1.1" 200 77160
+127.0.0.1 - - [31/Oct/2020:01:33:35 +0530] "GET /assets/front-assets/images/ibigo-dark100.png HTTP/1.1" 200 3332
+127.0.0.1 - - [31/Oct/2020:01:33:35 +0530] "GET /assets/front-assets/images/group-bg.png HTTP/1.1" 200 165172
+127.0.0.1 - - [31/Oct/2020:01:33:35 +0530] "GET /assets/front-assets/images/search_pic1.png HTTP/1.1" 200 4758
+127.0.0.1 - - [31/Oct/2020:01:33:35 +0530] "GET /assets/front-assets/images/group_pic1.png HTTP/1.1" 200 6857

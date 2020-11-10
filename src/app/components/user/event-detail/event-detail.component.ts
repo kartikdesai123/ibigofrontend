@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { UserLoginService } from 'src/app/service/user-login.service';
 import { ToastrService } from 'src/app/toastr.service';
@@ -40,7 +41,7 @@ export class EventDetailComponent implements OnInit {
   groups = [];
   connected_users = [];
   connect_friends: any = [];
-  constructor(private router: Router, private toastrservice: ToastrService, private formBuilder: FormBuilder, private route: ActivatedRoute, private us: UserLoginService, private http: HttpClient) { }
+  constructor(private router: Router, private toastrservice: ToastrService, private formBuilder: FormBuilder, private route: ActivatedRoute, private us: UserLoginService, private http: HttpClient, private modalService: BsModalService) { }
 
   ngOnInit() {
     this.loading = true;
@@ -300,4 +301,100 @@ export class EventDetailComponent implements OnInit {
       }
     });
   }
+
+  // -------------------------------------------------------------------------------------------------------------
+  // Add to go modal popup
+  // -------------------------------------------------------------------------------------------------------------
+  addToGoModal: BsModalRef;
+  addToGoList(addToList: TemplateRef<any>) {
+    this.addToGoModal = this.modalService.show(addToList);
+  }
+
+  public confirmAddToGoList(spotId): void {
+    const formData = new FormData();
+    const headers = new HttpHeaders({ 'Authorization': JSON.parse(localStorage.getItem('client_token')) });
+    headers.append('Accept', 'application/json');
+    formData.append('spot_id', spotId);
+    this.http.post('https://ibigo.shadowis.nl/server-api/api/add-to-goto', formData, { headers: headers }).subscribe((data) => {
+      if (data['status'] == true) {
+        this.router.navigate(['/todo/go-list'])
+      }
+    });
+    this.addToGoModal.hide();
+  }
+
+  public declineAddToGoList(): void {
+    this.addToGoModal.hide();
+  }
+
+  // -------------------------------------------------------------------------------------------------------------
+  // Add to planning modal popup
+  // -------------------------------------------------------------------------------------------------------------
+  addTPlanningModal: BsModalRef;
+  addToPlanningFn(addPlanningFn: TemplateRef<any>) {
+    if (this.logged_in_user == true) {
+      this.addTPlanningModal = this.modalService.show(addPlanningFn);
+    } else {
+      this.router.navigate(['/user/login']);
+    }
+  }
+
+  public confirmAddtoPlanningList(eventId): void {
+    const formData = new FormData();
+    const headers = new HttpHeaders({ 'Authorization': JSON.parse(localStorage.getItem('client_token')) });
+    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'application/json');
+    formData.append('event_id', eventId);
+    formData.append('spot_id', null);
+    this.http.post('https://ibigo.shadowis.nl/server-api/api/add-planning', formData, { headers: headers }).subscribe((data) => {
+      if (data['status'] == true) {
+        this.toastrservice.Success(data['event_message']);
+        //this.router.navigateByUrl('/DummyComponent', {skipLocationChange: true}).then(() => this.router.navigate(['/todo/planning']));
+      } else {
+        this.toastrservice.Success('Something wring!');
+      }
+    });
+    this.addTPlanningModal.hide();
+  }
+
+  public declineAddtoPlanningList(): void {
+    this.addTPlanningModal.hide();
+  }
+
+  // -------------------------------------------------------------------------------------------------------------
+  // Share event modal popup
+  // -------------------------------------------------------------------------------------------------------------
+  shareEventModalRef: BsModalRef;
+  shareEvent(shareEventTemplate: TemplateRef<any>) {
+    if (this.logged_in_user == true) {
+      this.shareEventModalRef = this.modalService.show(shareEventTemplate);
+    } else {
+      this.router.navigate(['/user/login']);
+    }
+  }
+
+  public confirmshareEvent(eventId): void {
+    const formData = new FormData();
+    const headers = new HttpHeaders({ 'Authorization': JSON.parse(localStorage.getItem('client_token')) });
+    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'application/json');
+    formData.append('event_id', eventId);
+    this.http.post('https://ibigo.shadowis.nl/server-api/api/add-spot', formData, { headers: headers }).pipe(
+      finalize(() => {
+      })
+    ).subscribe((data) => {
+      if (data['status'] == true) {
+        this.toastrservice.Success(data['message']);
+        //this.router.navigateByUrl('/DummyComponent', {skipLocationChange: true}).then(() => this.router.navigate(['/user/homepage']));
+      } else {
+        this.toastrservice.Error(data['message']);
+      }
+    });
+    this.shareEventModalRef.hide();
+  }
+
+  public declineshareEvent(): void {
+    this.shareEventModalRef.hide();
+  }
+
 }

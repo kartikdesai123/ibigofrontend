@@ -318,3 +318,56 @@
   width: 570px;
   height: 150px !important;
 }
+
+.customgo {
+
+  background: 0 0 !important;
+  color: #838383 !important;
+  border: 2px solid #ddd !important;
+  border-radius: 34px !important;
+  font-family: Montserrat, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  width: 35px !important;
+  height: 34px !important;
+  line-height: 25px !important;
+  text-align: center !important;
+  padding: 0 !important;
+
+}
+
+.open .godetail {
+  display: block !important;
+}
+
+.godetail {
+  display: none !important;
+}
+
+.godetail a {
+  text-align: left !important;
+}
+
+
+@media (max-width:992px){
+  .spot-pic-nav{
+    padding-bottom: 0px !important;
+  }
+  .spot-pic-nav2 ul{
+    padding-left: 0px !important;
+    text-align: left !important; 
+  }
+
+  .spot-pic-nav2 ul li:last-child{
+    border-left:0px !important;
+  }
+  
+}
+
+@media (max-width:776px){
+  .spot-pic-nav3 ul {
+    margin-top: 0px !important;
+    padding-top :0px;
+    display:flex !important;
+  }
+}

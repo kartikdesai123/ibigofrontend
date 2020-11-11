@@ -118,13 +118,13 @@
     <div class="row m-0">
       <div class="col-lg-12 spot-pic-nav">
 
-        <div class=" col-lg-6 col-md-6 col-sm-6 col-xs-6 spot-pic-nav2">
+        <div class=" col-lg-6 col-md-4 col-sm-12 col-xs-12 spot-pic-nav2">
           <ul>
             <li><a href="javascript:void(0)" data-toggle="modal" data-target="#myLikedModal"><i class="fa fa-users"
                   aria-hidden="true"></i>0<br><span>Connected</span></a></li>
           </ul>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 spot-pic-nav3">
+        <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12 spot-pic-nav3">
           <ul>
             <li class="dropdown">
               <button class="btn btn-primary dropdown-toggle customgo" type="button" data-toggle="dropdown">Go</button>
@@ -230,7 +230,7 @@
     </div> -->
     <div class="row my-row">
       <div class="col-lg-12 spot-profile2-nav">
-        <div class="col-lg-6 spot-about-text">
+        <div class="col-lg-6 col-md-6 col-sm-12 spot-about-text">
           <h3>Event Detail</h3>
           <h3 class="col-md-5">Start Date:</h3>
           <h3 class="col-md-7" style="font-weight: 300;">{{ event_details?.start_date_time | date: 'medium' }}</h3>
@@ -241,7 +241,7 @@
           <h3 class="col-md-5">Location: </h3>
           <h3 class="col-md-7" style="font-weight: 300;">{{ event_details?.location}}</h3>
         </div>
-        <div class="col-lg-6 spot-interest-text spot-friends-spot" style="border: none;">
+        <div class="col-lg-6 col-md-6 col-sm-12 spot-interest-text spot-friends-spot" style="border: none;">
           <h3>Invited People</h3>
           <ul>
             <li *ngFor="let eventInvite of event_invitations">

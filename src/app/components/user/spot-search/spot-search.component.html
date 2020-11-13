@@ -134,7 +134,8 @@
                     <div class="col-lg-12 boeken-text-wrap"
                         [ngClass]="(spot.business_type=='premium')?'plaat-text-wrap':''">
                         <div class="row">
-                            <div class="col-sm-4 plaat-img" *ngIf="spot.user_profile.indexOf('https://igx.4sqi.net/')!=0">
+                            
+                            <div class="col-sm-4 plaat-img" *ngIf="spot.user_profile.indexOf('https://fastly.4sqi.net/')!=0">
                                
                                 <img height="150px"
                                     *ngIf="spot.user_profile&&spot.user_profile.indexOf('https://graph.facebook.com')==-1"
@@ -149,10 +150,10 @@
                                     src="{{spot.user_profile}}">
                                 <span *ngIf="spot.business_type=='premium'">Premium</span>
                             </div>
-                            <div class="col-sm-4 plaat-img" *ngIf="spot.user_profile&&spot.user_profile.indexOf('https://igx.4sqi.net/')==0">
+                            <div class="col-sm-4 plaat-img" *ngIf="spot.user_profile&&spot.user_profile.indexOf('https://fastly.4sqi.net/')==0">
                                 
                                 <img height="150px"
-                                    *ngIf="spot.user_profile&&spot.user_profile.indexOf('https://igx.4sqi.net/')==0"
+                                    *ngIf="spot.user_profile&&spot.user_profile.indexOf('https://fastly.4sqi.net/')==0"
                                     src="{{spot.user_profile}}">
                                 
                                 <span *ngIf="spot.business_type=='premium'">Premium</span>

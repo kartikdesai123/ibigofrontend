@@ -238,6 +238,10 @@ export class HomeComponent implements OnInit {
     this.locationService.getPosition().then(pos => {
       this.long = pos.lng
       this.lat = pos.lat;
+      //console.log(pos);
+     // localStorage.setItem('posdetail',pos);
+      localStorage.setItem('long',this.long);
+      localStorage.setItem('lat',this.lat);
       this.searchService.getAllSpotSuggestions(this.lat, this.long).subscribe((data) => {
         this.spot_suggestions = data['all_spots'];
       })

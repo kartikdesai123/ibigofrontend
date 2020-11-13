@@ -310,6 +310,8 @@ export class SpotSearchComponent implements OnInit {
     //  }
     this.formData.append('selected_duration', this.selected_duration);
     this.formData.append('searchAddress', this.searchAddress);
+    this.formData.append('latitude', localStorage.getItem('lat'));
+    this.formData.append('longitude', localStorage.getItem('long'));
 
     this.formData.append('searchText', this.searchText);
     this.formData.append('selected_user_type', this.selected_user_type);
